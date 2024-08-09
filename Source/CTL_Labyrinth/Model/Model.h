@@ -5,7 +5,7 @@
 #include <memory>
 #include <unordered_map>
 #include "ModelStructures.h"
-#include "StateNode.h"
+#include "StateTree/StateNode.h"
 
 
 class Model {

@@ -2,8 +2,8 @@
 
 #include <functional>
 #include <memory>
-#include "StateNode.h"
-#include "StateTreeUtils.h"
+#include "../StateTree/StateNode.h"
+#include "../StateTree/StateTreeUtils.h"
 
 enum class CTLOperator {
     AND,
