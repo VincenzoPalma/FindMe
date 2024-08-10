@@ -1,15 +1,28 @@
 #pragma once
 
-#include <map>
-#include <string>
+#include "CoreMinimal.h"
+#include "ModelStructures.generated.h"
 
-struct State
+USTRUCT(BlueprintType)
+struct FState
 {
-	int id;
-	std::map<std::string, bool> Properties;
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
+    int32 Id;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
+    TMap<FString, bool> Properties;
 };
 
-struct Transition {
-	State* From;
-	State* To;
+USTRUCT(BlueprintType)
+struct FTransition
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Transition")
+    FState From;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Transition")
+    FState To;
 };

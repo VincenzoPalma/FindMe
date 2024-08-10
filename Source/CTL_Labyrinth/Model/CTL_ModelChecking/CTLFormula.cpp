@@ -1,76 +1,104 @@
 #include "CTLFormula.h"
 
-AtomicFormula::AtomicFormula(std::function<bool(const State&)> predicate) : predicate(predicate) {}
-
-bool AtomicFormula::Evaluate(const std::shared_ptr<StateNode>& stateNode) const {
-    return predicate(stateNode->GetState());
+UAtomicFormula::UAtomicFormula()
+{
 }
 
-UnaryFormula::UnaryFormula(CTLOperator op, std::shared_ptr<CTLFormula> subFormula) : op(op), subFormula(subFormula) {}
+void UAtomicFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+{
+    Predicate = InPredicate;
+}
 
-bool UnaryFormula::Evaluate(const std::shared_ptr<StateNode>& stateNode) const {
-    switch (op)
+bool UAtomicFormula::Evaluate(UStateNode* stateNode) const
+{
+    if (stateNode)
     {
-    case CTLOperator::NOT:
-        return !subFormula->Evaluate(stateNode);
-        break;
-    case CTLOperator::EX:
-        return StateTreeUtils::VerifyIfAnyChild(stateNode, [this](const std::shared_ptr<StateNode>& child) {
-            return subFormula->Evaluate(child);
+        return Predicate(stateNode->GetState());
+    }
+    return false;
+}
+
+UUnaryFormula::UUnaryFormula()
+{
+}
+
+void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
+{
+    Op = InOp;
+    SubFormula = InSubFormula;
+}
+
+bool UUnaryFormula::Evaluate(UStateNode* stateNode) const
+{
+    if (!stateNode || !SubFormula)
+    {
+        return false;
+    }
+
+    switch (Op)
+    {
+    case ECTLOperator::NOT:
+        return !SubFormula->Evaluate(stateNode);
+    case ECTLOperator::EX:
+        return UStateTreeUtils::VerifyIfAnyChild(stateNode, [this](UStateNode* child) {
+            return SubFormula->Evaluate(child);
             });
-        break;
-    case CTLOperator::AX:
-        return StateTreeUtils::VerifyIfAllChildren(stateNode, [this](const std::shared_ptr<StateNode>& child) {
-            return subFormula->Evaluate(child);
+    case ECTLOperator::AX:
+        return UStateTreeUtils::VerifyIfAllChildren(stateNode, [this](UStateNode* child) {
+            return SubFormula->Evaluate(child);
             });
-        break;
-    case CTLOperator::EF:
-        return StateTreeUtils::VerifyEFFormula(stateNode, [this](const std::shared_ptr<StateNode>& child) {
-            return subFormula->Evaluate(child);
+    case ECTLOperator::EF:
+        return UStateTreeUtils::VerifyEFFormula(stateNode, [this](UStateNode* node) {
+            return SubFormula->Evaluate(node);
             });
-        break;
-    case CTLOperator::AF:
-        return StateTreeUtils::VerifyAFFormula(stateNode, [this](const std::shared_ptr<StateNode>& child) {
-            return subFormula->Evaluate(child);
+    case ECTLOperator::AF:
+        return UStateTreeUtils::VerifyAFFormula(stateNode, [this](UStateNode* node) {
+            return SubFormula->Evaluate(node);
             });
-        break;
-    case CTLOperator::EG:
-        return StateTreeUtils::VerifyEGFormula(stateNode, [this](const std::shared_ptr<StateNode>& child) {
-            return subFormula->Evaluate(child);
+    case ECTLOperator::EG:
+        return UStateTreeUtils::VerifyEGFormula(stateNode, [this](UStateNode* node) {
+            return SubFormula->Evaluate(node);
             });
-        break;
-    case CTLOperator::AG:
-        return StateTreeUtils::VerifyAGFormula(stateNode, [this](const std::shared_ptr<StateNode>& child) {
-            return subFormula->Evaluate(child);
+    case ECTLOperator::AG:
+        return UStateTreeUtils::VerifyAGFormula(stateNode, [this](UStateNode* node) {
+            return SubFormula->Evaluate(node);
             });
-        break;
     default:
         return false;
-        break;
     }
 }
 
-BinaryFormula::BinaryFormula(CTLOperator op, std::shared_ptr<CTLFormula> left, std::shared_ptr<CTLFormula> right) : op(op), left(left), right(right) {}
+UBinaryFormula::UBinaryFormula()
+{
+}
 
-bool BinaryFormula::Evaluate(const std::shared_ptr<StateNode>& stateNode) const {
-    switch (op)
+void UBinaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight)
+{
+    Op = InOp;
+    Left = InLeft;
+    Right = InRight;
+}
+
+bool UBinaryFormula::Evaluate(UStateNode* stateNode) const
+{
+    if (!stateNode || !Left || !Right)
     {
-    case CTLOperator::AND:
-        return left->Evaluate(stateNode) && right->Evaluate(stateNode);
-        break;
-    case CTLOperator::OR:
-        return left->Evaluate(stateNode) || right->Evaluate(stateNode);
-        break;
-    case CTLOperator::EU:
-        //TODO
         return false;
-        break;
-    case CTLOperator::AU:
-        //TODO
+    }
+
+    switch (Op)
+    {
+    case ECTLOperator::AND:
+        return Left->Evaluate(stateNode) && Right->Evaluate(stateNode);
+    case ECTLOperator::OR:
+        return Left->Evaluate(stateNode) || Right->Evaluate(stateNode);
+    case ECTLOperator::EU:
+        // TODO: Implementare la logica per EU
         return false;
-        break;
+    case ECTLOperator::AU:
+        // TODO: Implementare la logica per AU
+        return false;
     default:
         return false;
-        break;
     }
 }

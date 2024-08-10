@@ -1,141 +1,125 @@
 #include "StateTreeUtils.h"
 
-bool StateTreeUtils::VerifyEGFormula(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate) {
+bool UStateTreeUtils::VerifyEGFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate) {
     if (!root) return false;
 
-    std::stack<std::shared_ptr<StateNode>> toVisit;
-    toVisit.push(root);
+    TArray<UStateNode*> toVisit;
+    toVisit.Add(root);
 
-    while (!toVisit.empty()) {
-        auto currentNode = toVisit.top();
-        toVisit.pop();
+    while (toVisit.Num() > 0) {
+        UStateNode* currentNode = toVisit.Pop();
 
         bool allStatesSatisfy = true;
-        std::stack<std::shared_ptr<StateNode>> pathStack;
-        pathStack.push(currentNode);
+        TArray<UStateNode*> pathStack;
+        pathStack.Add(currentNode);
 
-        while (!pathStack.empty()) {
-            auto pathNode = pathStack.top();
-            pathStack.pop();
+        while (pathStack.Num() > 0) {
+            UStateNode* pathNode = pathStack.Pop();
 
-            // If the current node does not verify the formula, this path is not valid
             if (!evaluate(pathNode)) {
                 allStatesSatisfy = false;
                 break;
             }
 
-            for (const auto& child : pathNode->GetChildren()) {
-                pathStack.push(child);
+            for (UStateNode* child : pathNode->GetChildren()) {
+                pathStack.Add(child);
             }
         }
 
-        // Returns true if all the states of the current path verify the formula
         if (allStatesSatisfy) {
             return true;
         }
 
-        for (const auto& child : currentNode->GetChildren()) {
-            toVisit.push(child);
+        for (UStateNode* child : currentNode->GetChildren()) {
+            toVisit.Add(child);
         }
     }
 
     return false;
 }
 
-bool StateTreeUtils::VerifyAGFormula(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate) {
+bool UStateTreeUtils::VerifyAGFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate) {
     if (!root) return false;
 
-    std::stack<std::shared_ptr<StateNode>> toVisit;
-    toVisit.push(root);
+    TArray<UStateNode*> toVisit;
+    toVisit.Add(root);
 
-    while (!toVisit.empty()) {
-        auto currentNode = toVisit.top();
-        toVisit.pop();
+    while (toVisit.Num() > 0) {
+        UStateNode* currentNode = toVisit.Pop();
 
-        // If the current node does not verify the formula, the formula is not valid
         if (!evaluate(currentNode)) {
             return false;
         }
 
-        for (const auto& child : currentNode->GetChildren()) {
-            toVisit.push(child);
+        for (UStateNode* child : currentNode->GetChildren()) {
+            toVisit.Add(child);
         }
     }
-    // Returns true if all states of all paths verify the formula
     return true;
 }
 
-bool StateTreeUtils::VerifyAFFormula(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate) {
+bool UStateTreeUtils::VerifyAFFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate) {
     if (!root) return false;
 
-    std::stack<std::shared_ptr<StateNode>> toVisit;
-    toVisit.push(root);
+    TArray<UStateNode*> toVisit;
+    toVisit.Add(root);
 
-    while (!toVisit.empty()) {
-        auto currentNode = toVisit.top();
-        toVisit.pop();
+    while (toVisit.Num() > 0) {
+        UStateNode* currentNode = toVisit.Pop();
 
-        std::stack<std::shared_ptr<StateNode>> pathStack;
-        pathStack.push(currentNode);
+        TArray<UStateNode*> pathStack;
+        pathStack.Add(currentNode);
 
         bool pathContainsValidState = false;
-        while (!pathStack.empty()) {
-            auto pathNode = pathStack.top();
-            pathStack.pop();
+        while (pathStack.Num() > 0) {
+            UStateNode* pathNode = pathStack.Pop();
 
-            // If the state verifies the formula, the path is valid
             if (evaluate(pathNode)) {
                 pathContainsValidState = true;
                 break;
             }
 
-            for (const auto& child : pathNode->GetChildren()) {
-                pathStack.push(child);
+            for (UStateNode* child : pathNode->GetChildren()) {
+                pathStack.Add(child);
             }
         }
 
-        // If the path is not valid, returns false
         if (!pathContainsValidState) {
             return false;
         }
 
-        for (const auto& child : currentNode->GetChildren()) {
-            toVisit.push(child);
+        for (UStateNode* child : currentNode->GetChildren()) {
+            toVisit.Add(child);
         }
     }
 
-    // Returns true if all paths have at least on state that verifies the formula
     return true;
 }
 
-bool StateTreeUtils::VerifyEFFormula(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate) {
+bool UStateTreeUtils::VerifyEFFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate) {
     if (!root) return false;
 
-    std::queue<std::shared_ptr<StateNode>> toVisit;
-    toVisit.push(root);
+    TQueue<UStateNode*> toVisit;
+    toVisit.Enqueue(root);
 
-    while (!toVisit.empty()) {
-        auto currentNode = toVisit.front();
-        toVisit.pop();
-
-        // Returns true if the current state of the current path verifies the formula
+    UStateNode* currentNode;
+    while (toVisit.Dequeue(currentNode)) {
         if (evaluate(currentNode)) {
             return true;
         }
 
-        for (const auto& child : currentNode->GetChildren()) {
-            toVisit.push(child);
+        for (UStateNode* child : currentNode->GetChildren()) {
+            toVisit.Enqueue(child);
         }
     }
 
-    // Return false there are no states in any path that verifies the formula
     return false;
 }
 
-bool StateTreeUtils::VerifyIfAnyChild(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate) {
+bool UStateTreeUtils::VerifyIfAnyChild(UStateNode* root, TFunction<bool(UStateNode*)> evaluate) {
     if (!root) return false;
 
-    for (const auto& child : root->GetChildren()) {
+    for (UStateNode* child : root->GetChildren()) {
         if (evaluate(child)) {
             return true;
         }
@@ -144,10 +128,10 @@ bool StateTreeUtils::VerifyIfAnyChild(const std::shared_ptr<StateNode>& root, st
     return false;
 }
 
-bool StateTreeUtils::VerifyIfAllChildren(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate) {
+bool UStateTreeUtils::VerifyIfAllChildren(UStateNode* root, TFunction<bool(UStateNode*)> evaluate) {
     if (!root) return false;
 
-    for (const auto& child : root->GetChildren()) {
+    for (UStateNode* child : root->GetChildren()) {
         if (!evaluate(child)) {
             return false;
         }

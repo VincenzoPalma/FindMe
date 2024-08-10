@@ -1,11 +1,12 @@
 #pragma once
 
-#include <functional>
-#include <memory>
+#include "CoreMinimal.h"
 #include "../StateTree/StateNode.h"
 #include "../StateTree/StateTreeUtils.h"
+#include "CTLFormula.generated.h"
 
-enum class CTLOperator {
+UENUM(BlueprintType)
+enum class ECTLOperator : uint8 {
     AND,
     OR,
     NOT,
@@ -19,38 +20,60 @@ enum class CTLOperator {
     AU
 };
 
-class CTLFormula {
+UCLASS(Blueprintable)
+class CTL_LABYRINTH_API UCTLFormula : public UObject
+{
+    GENERATED_BODY()
+
 public:
-    virtual ~CTLFormula() = default;
-    virtual bool Evaluate(const std::shared_ptr<StateNode>& node) const = 0;
+    virtual ~UCTLFormula() = default;
+    virtual bool Evaluate(UStateNode* node) const PURE_VIRTUAL(UCTLFormula::Evaluate, return false;);
 };
 
-class AtomicFormula : public CTLFormula {
+UCLASS(Blueprintable)
+class CTL_LABYRINTH_API UAtomicFormula : public UCTLFormula
+{
+    GENERATED_BODY()
+
 public:
-    AtomicFormula(std::function<bool(const State&)> predicate);
-    bool Evaluate(const std::shared_ptr<StateNode>& node) const override;
+    UAtomicFormula();
+    virtual bool Evaluate(UStateNode* node) const override;
+
+    void Initialize(TFunction<bool(const FState&)> InPredicate);
 
 private:
-    std::function<bool(const State&)> predicate;
+    TFunction<bool(const FState&)> Predicate;
 };
 
-class UnaryFormula : public CTLFormula {
+UCLASS(Blueprintable)
+class CTL_LABYRINTH_API UUnaryFormula : public UCTLFormula
+{
+    GENERATED_BODY()
+
 public:
-    UnaryFormula(CTLOperator op, std::shared_ptr<CTLFormula> subFormula);
-    bool Evaluate(const std::shared_ptr<StateNode>& node) const override;
+    UUnaryFormula();
+    virtual bool Evaluate(UStateNode* node) const override;
+
+    void Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula);
 
 private:
-    CTLOperator op;
-    std::shared_ptr<CTLFormula> subFormula;
+    ECTLOperator Op;
+    UCTLFormula* SubFormula;
 };
 
-class BinaryFormula : public CTLFormula {
+UCLASS(Blueprintable)
+class CTL_LABYRINTH_API UBinaryFormula : public UCTLFormula
+{
+    GENERATED_BODY()
+
 public:
-    BinaryFormula(CTLOperator op, std::shared_ptr<CTLFormula> left, std::shared_ptr<CTLFormula> right);
-    bool Evaluate(const std::shared_ptr<StateNode>& node) const override;
+    UBinaryFormula();
+    virtual bool Evaluate(UStateNode* node) const override;
+
+    void Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight);
 
 private:
-    CTLOperator op;
-    std::shared_ptr<CTLFormula> left;
-    std::shared_ptr<CTLFormula> right;
+    ECTLOperator Op;
+    UCTLFormula* Left;
+    UCTLFormula* Right;
 };

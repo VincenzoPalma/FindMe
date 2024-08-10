@@ -1,22 +1,24 @@
 #pragma once
 
-#include <queue>
-#include <stack>
-#include <functional>
-#include <unordered_set>
+#include "CoreMinimal.h"
 #include "StateNode.h"
+#include "StateTreeUtils.generated.h"
 
-class StateTreeUtils {
+UCLASS()
+class CTL_LABYRINTH_API UStateTreeUtils : public UObject
+{
+    GENERATED_BODY()
+
 public:
-    static bool VerifyEFFormula(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate);
+    static bool VerifyEFFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
 
-    static bool VerifyAFFormula(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate);
+    static bool VerifyAFFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
 
-    static bool VerifyEGFormula(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate);
+    static bool VerifyEGFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
 
-    static bool VerifyAGFormula(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate);
+    static bool VerifyAGFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
 
-    static bool VerifyIfAnyChild(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate);
+    static bool VerifyIfAnyChild(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
 
-    static bool VerifyIfAllChildren(const std::shared_ptr<StateNode>& root, std::function<bool(const std::shared_ptr<StateNode>&)> evaluate);
+    static bool VerifyIfAllChildren(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
 };
