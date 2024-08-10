@@ -1,1 +1,5 @@
-#include "Model.h"
+#include "CTLModel.h"
+
+UCTLModel::UCTLModel()
+{
+}
