@@ -21,11 +21,10 @@ public:
         return rootNode;
     }
 
+private:
     UPROPERTY()
     TMap<int32, UStateNode*> stateNodes;
 
     UPROPERTY()
     UStateNode* rootNode;
-
-private:
 };
