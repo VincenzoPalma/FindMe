@@ -93,11 +93,17 @@ bool UBinaryFormula::Evaluate(UStateNode* stateNode) const
     case ECTLOperator::OR:
         return Left->Evaluate(stateNode) || Right->Evaluate(stateNode);
     case ECTLOperator::EU:
-        // TODO: Implementare la logica per EU
-        return false;
+        return UStateTreeUtils::VerifyEUFormula(
+            stateNode,
+            [this](UStateNode* node) { return Left->Evaluate(node); },
+            [this](UStateNode* node) { return Right->Evaluate(node); }
+        );
     case ECTLOperator::AU:
-        // TODO: Implementare la logica per AU
-        return false;
+        return UStateTreeUtils::VerifyAUFormula(
+            stateNode,
+            [this](UStateNode* node) { return Left->Evaluate(node); },
+            [this](UStateNode* node) { return Right->Evaluate(node); }
+        );
     default:
         return false;
     }

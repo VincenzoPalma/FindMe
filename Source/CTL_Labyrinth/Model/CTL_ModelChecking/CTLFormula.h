@@ -37,6 +37,8 @@ class CTL_LABYRINTH_API UAtomicFormula : public UCTLFormula
 
 public:
     UAtomicFormula();
+
+    UFUNCTION(BlueprintCallable, Category = "AtomicFormula")
     virtual bool Evaluate(UStateNode* node) const override;
 
     void Initialize(TFunction<bool(const FState&)> InPredicate);

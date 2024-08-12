@@ -10,15 +10,20 @@ class CTL_LABYRINTH_API UStateTreeUtils : public UObject
     GENERATED_BODY()
 
 public:
-    static bool VerifyEFFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
+    static bool VerifyEFFormula(UStateNode* root, TFunction<bool(UStateNode*)> predicate);
 
-    static bool VerifyAFFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
+    static bool VerifyAFFormula(UStateNode* root, TFunction<bool(UStateNode*)> predicate);
 
-    static bool VerifyEGFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
+    static bool VerifyEGFormula(UStateNode* root, TFunction<bool(UStateNode*)> predicate);
 
-    static bool VerifyAGFormula(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
+    static bool VerifyAGFormula(UStateNode* root, TFunction<bool(UStateNode*)> predicate);
 
-    static bool VerifyIfAnyChild(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
+    static bool VerifyEUFormula(UStateNode* root, TFunction<bool(UStateNode*)> predicateA, TFunction<bool(UStateNode*)> predicateB);
 
-    static bool VerifyIfAllChildren(UStateNode* root, TFunction<bool(UStateNode*)> evaluate);
+    static bool VerifyAUFormula(UStateNode* root, TFunction<bool(UStateNode*)> predicateA, TFunction<bool(UStateNode*)> predicateB);
+
+    static bool VerifyIfAnyChild(UStateNode* root, TFunction<bool(UStateNode*)> predicate);
+
+    static bool VerifyIfAllChildren(UStateNode* root, TFunction<bool(UStateNode*)> predicate);
+
 };

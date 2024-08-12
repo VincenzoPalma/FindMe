@@ -45,6 +45,18 @@ public:
     UFUNCTION(BlueprintSetter)
     void SetChildrenArray(const TArray<UStateNode*>& InChildren) { Children = InChildren; }
 
+    UFUNCTION(BlueprintCallable, Category = "StateNode")
+    void SetStateId(int32 NewId)
+    {
+        StateData.Id = NewId;
+    }
+
+    UFUNCTION(BlueprintCallable, Category = "StateNode")
+    void SetStateProperty(const FString& Key, bool Value)
+    {
+        StateData.Properties.Add(Key, Value);
+    }
+
 private:
     UPROPERTY(BlueprintGetter = GetStateData, BlueprintSetter = SetStateData, Category = "StateNode")
     FState StateData;

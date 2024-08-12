@@ -17,6 +17,10 @@ public:
 
     void AddTransition(const FState& from, const FState& to);
 
+    void RegisterPredicate(const FString& name, TFunction<bool(const FState&)> predicate);
+
+    bool EvaluatePredicate(const FState& state, const FString& predicateName) const;
+
     UStateNode* GetRootNode() const {
         return rootNode;
     }
@@ -27,4 +31,6 @@ private:
 
     UPROPERTY()
     UStateNode* rootNode;
+
+    TMap<FString, TFunction<bool(const FState&)>> Predicates;
 };
