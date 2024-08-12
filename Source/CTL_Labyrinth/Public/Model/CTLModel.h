@@ -1,6 +1,7 @@
 #pragma once
 
 #include "StateTree/StateNode.h"
+#include "CTL_ModelChecking/CTLFormula.h"
 #include "CoreMinimal.h"
 #include "ModelStructures.h"
 #include "CTLModel.generated.h"
@@ -17,6 +18,8 @@ public:
 
     void AddTransition(const FState& from, const FState& to);
 
+    void AddFormula(UCTLFormula* Formula);
+
     UStateNode* GetRootNode() const {
         return rootNode;
     }
@@ -27,4 +30,8 @@ private:
 
     UPROPERTY()
     UStateNode* rootNode;
+
+    UPROPERTY()
+    TArray<UCTLFormula*> Formulas;
+
 };

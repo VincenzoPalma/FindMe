@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ModelStructures.h"
+#include "../ModelStructures.h"
 #include "StateNode.generated.h"
 
 UCLASS(Blueprintable)

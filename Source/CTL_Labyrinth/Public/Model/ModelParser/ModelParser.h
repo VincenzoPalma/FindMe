@@ -1,0 +1,23 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "../ModelStructures.h"
+#include "../CTL_ModelChecking/CTLFormula.h"
+#include "ModelParser.generated.h"
+
+UCLASS(Blueprintable)
+class CTL_LABYRINTH_API UModelParser : public UObject
+{
+    GENERATED_BODY()
+
+public:
+    UFUNCTION(BlueprintCallable, Category = "Model Parsing")
+    UCTLModel* LoadModelFromJson(const FString& FilePath);
+
+private:
+    void ParseStates(const TArray<TSharedPtr<FJsonValue>>& StatesArray, UCTLModel* Model);
+    void ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& TransitionsArray, UCTLModel* Model);
+    void ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasArray, UCTLModel* Model);
+    UCTLFormula* ParseSubFormula(const TSharedPtr<FJsonObject>& FormulaObject, UCTLModel* Model);
+    ECTLOperator GetCTLOperatorFromString(const FString& Type);
+};

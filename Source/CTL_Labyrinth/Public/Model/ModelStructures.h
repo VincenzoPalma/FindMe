@@ -13,6 +13,7 @@ struct FState
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
     TMap<FString, bool> Properties;
+
 };
 
 USTRUCT(BlueprintType)
