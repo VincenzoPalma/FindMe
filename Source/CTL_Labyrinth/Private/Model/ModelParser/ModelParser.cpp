@@ -7,9 +7,13 @@
 
 UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
 {
-
     FString JsonString;
-    FFileHelper::LoadFileToString(JsonString, *FilePath);
+
+    if (!FFileHelper::LoadFileToString(JsonString, *FilePath))
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file from path: %s"), *FilePath);
+        return nullptr;
+    }
 
     TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
     TSharedPtr<FJsonObject> JsonObject;
@@ -18,10 +22,15 @@ UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
 
     if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
     {
+
         const TArray<TSharedPtr<FJsonValue>>* StatesArray;
         if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
         {
             ParseStates(*StatesArray, Model);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
         }
 
         const TArray<TSharedPtr<FJsonValue>>* TransitionsArray;
@@ -29,16 +38,29 @@ UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
         {
             ParseTransitions(*TransitionsArray, Model);
         }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'transitions' array or it is invalid."));
+        }
 
         const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
         if (JsonObject->TryGetArrayField(TEXT("formulas"), FormulasArray))
         {
-            ParseFormulas(*FormulasArray, Model);
+            //ParseFormulas(*FormulasArray, Model);
         }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to deserialize JSON file from path: %s"), *FilePath);
     }
 
     return Model;
 }
+
 
 
 void UModelParser::ParseStates(const TArray<TSharedPtr<FJsonValue>>& StatesArray, UCTLModel* Model)
@@ -48,20 +70,50 @@ void UModelParser::ParseStates(const TArray<TSharedPtr<FJsonValue>>& StatesArray
         TSharedPtr<FJsonObject> StateObject = StateValue->AsObject();
         if (StateObject.IsValid())
         {
-            int32 Id = StateObject->GetNumberField(TEXT("id"));
-            TSharedPtr<FJsonObject> PropertiesObject = StateObject->GetObjectField(TEXT("properties"));
 
-            FState State;
-            State.Id = Id;
-            for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
+            if (StateObject->HasField(TEXT("id")))
             {
-                State.Properties.Add(Property.Key, Property.Value->AsBool());
-            }
+                int32 Id = StateObject->GetNumberField(TEXT("id"));
 
-            Model->AddState(State);
+                if (StateObject->HasField(TEXT("properties")))
+                {
+                    TSharedPtr<FJsonObject> PropertiesObject = StateObject->GetObjectField(TEXT("properties"));
+
+                    FState State;
+                    State.Id = Id;
+
+                    for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
+                    {
+                        if (Property.Value.IsValid())
+                        {
+                            bool PropertyValue = Property.Value->AsBool();
+                            State.Properties.Add(Property.Key, PropertyValue);
+                        }
+                        else
+                        {
+                            UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
+                        }
+                    }
+
+                    Model->AddState(State);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("State with ID %d is missing 'properties' field."), Id);
+                }
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("State object is missing 'id' field"));
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("State value is not a valid JSON object."));
         }
     }
 }
+
 
 void UModelParser::ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& TransitionsArray, UCTLModel* Model)
 {
@@ -78,7 +130,6 @@ void UModelParser::ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& Transi
 
             if (FromNodePtr && ToNodePtr)
             {
-                // Assicurati che FromNodePtr e ToNodePtr siano validi
                 UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
                 UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
 
@@ -90,108 +141,4 @@ void UModelParser::ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& Transi
             }
         }
     }
-}
-
-
-
-void UModelParser::ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasArray, UCTLModel* Model)
-{
-    for (const TSharedPtr<FJsonValue>& FormulaValue : FormulasArray)
-    {
-        TSharedPtr<FJsonObject> FormulaObject = FormulaValue->AsObject();
-
-        if (FormulaObject.IsValid())
-        {
-            FString Type = FormulaObject->GetStringField(TEXT("type"));
-            FString PredicateName;
-            FormulaObject->TryGetStringField(TEXT("predicate"), PredicateName);
-
-            UCTLFormula* ParsedFormula = nullptr;
-
-            if (Type == TEXT("AG") || Type == TEXT("EG") || Type == TEXT("AF") || Type == TEXT("EF"))
-            {
-                UUnaryFormula* UnaryFormula = NewObject<UUnaryFormula>();
-                ECTLOperator Operator = GetCTLOperatorFromString(Type);
-                UCTLFormula* SubFormula = ParseSubFormula(FormulaObject->GetObjectField(TEXT("subformula")), Model);
-                UnaryFormula->Initialize(Operator, SubFormula);
-                ParsedFormula = UnaryFormula;
-            }
-            else if (Type == TEXT("AND") || Type == TEXT("OR") || Type == TEXT("EU") || Type == TEXT("AU"))
-            {
-                UBinaryFormula* BinaryFormula = NewObject<UBinaryFormula>();
-                ECTLOperator Operator = GetCTLOperatorFromString(Type);
-                UCTLFormula* LeftFormula = ParseSubFormula(FormulaObject->GetObjectField(TEXT("left")), Model);
-                UCTLFormula* RightFormula = ParseSubFormula(FormulaObject->GetObjectField(TEXT("right")), Model);
-                BinaryFormula->Initialize(Operator, LeftFormula, RightFormula);
-                ParsedFormula = BinaryFormula;
-            }
-            else if (Type == TEXT("Atomic"))
-            {
-                UAtomicFormula* AtomicFormula = NewObject<UAtomicFormula>();
-                //TFunction<bool(const FState&)> Predicate = Model->GetPredicateByName(PredicateName);
-                //AtomicFormula->Initialize(Predicate);
-                ParsedFormula = AtomicFormula;
-            }
-
-            if (ParsedFormula)
-            {
-                Model->AddFormula(ParsedFormula);
-            }
-        }
-    }
-}
-
-UCTLFormula* UModelParser::ParseSubFormula(const TSharedPtr<FJsonObject>& FormulaObject, UCTLModel* Model)
-{
-    if (!FormulaObject.IsValid())
-    {
-        return nullptr;
-    }
-
-    FString Type = FormulaObject->GetStringField(TEXT("type"));
-    FString PredicateName;
-    FormulaObject->TryGetStringField(TEXT("predicate"), PredicateName);
-
-    UCTLFormula* ParsedFormula = nullptr;
-
-    if (Type == TEXT("AG") || Type == TEXT("EG") || Type == TEXT("AF") || Type == TEXT("EF"))
-    {
-        UUnaryFormula* UnaryFormula = NewObject<UUnaryFormula>();
-        ECTLOperator Operator = GetCTLOperatorFromString(Type);
-        UCTLFormula* SubFormula = ParseSubFormula(FormulaObject->GetObjectField(TEXT("subformula")), Model);
-        UnaryFormula->Initialize(Operator, SubFormula);
-        ParsedFormula = UnaryFormula;
-    }
-    else if (Type == TEXT("AND") || Type == TEXT("OR") || Type == TEXT("EU") || Type == TEXT("AU"))
-    {
-        UBinaryFormula* BinaryFormula = NewObject<UBinaryFormula>();
-        ECTLOperator Operator = GetCTLOperatorFromString(Type);
-        UCTLFormula* LeftFormula = ParseSubFormula(FormulaObject->GetObjectField(TEXT("left")), Model);
-        UCTLFormula* RightFormula = ParseSubFormula(FormulaObject->GetObjectField(TEXT("right")), Model);
-        BinaryFormula->Initialize(Operator, LeftFormula, RightFormula);
-        ParsedFormula = BinaryFormula;
-    }
-    else if (Type == TEXT("Atomic"))
-    {
-        UAtomicFormula* AtomicFormula = NewObject<UAtomicFormula>();
-        //TFunction<bool(const FState&)> Predicate = Model->GetPredicateByName(PredicateName);
-        //AtomicFormula->Initialize(Predicate);
-        ParsedFormula = AtomicFormula;
-    }
-
-    return ParsedFormula;
-}
-
-
-ECTLOperator UModelParser::GetCTLOperatorFromString(const FString& Type)
-{
-    if (Type == TEXT("AG")) return ECTLOperator::AG;
-    if (Type == TEXT("EG")) return ECTLOperator::EG;
-    if (Type == TEXT("AF")) return ECTLOperator::AF;
-    if (Type == TEXT("EF")) return ECTLOperator::EF;
-    if (Type == TEXT("AND")) return ECTLOperator::AND;
-    if (Type == TEXT("OR")) return ECTLOperator::OR;
-    if (Type == TEXT("EU")) return ECTLOperator::EU;
-    if (Type == TEXT("AU")) return ECTLOperator::AU;
-    return ECTLOperator::AND;
 }

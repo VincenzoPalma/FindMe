@@ -26,22 +26,18 @@ void UCTLModel::AddTransition(UStateNode* FromNode, UStateNode* ToNode)
     if (FromNode && ToNode)
     {
         FromNode->AddChild(ToNode);
-        UE_LOG(LogTemp, Log, TEXT("Transition added from State ID: %d to State ID: %d"), FromNode->GetState().Id, ToNode->GetState().Id);
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Failed to add transition. FromNode or ToNode is null."));
     }
 }
 
 
-void UCTLModel::AddFormula(UCTLFormula* Formula)
+void UCTLModel::AddFormula(int32 FormulaId, UCTLFormula* Formula)
 {
-    if (Formula)
+    if (Formula && !Formulas.Contains(FormulaId))
     {
-        Formulas.Add(Formula);
+        Formulas.Add(FormulaId, Formula);
     }
 }
+
 
 void UCTLModel::DebugPrintModel() const
 {
@@ -80,13 +76,13 @@ void UCTLModel::DebugPrintModel() const
         }
 
         // Print formulas
-        for (const UCTLFormula* Formula : Formulas)
+        /*for (const UCTLFormula* Formula : Formulas)
         {
             if (Formula)
             {
                 FString FormulaMessage = FString::Printf(TEXT("Formula: %s"), *Formula->GetClass()->GetName());
                 UE_LOG(LogTemp, Log, TEXT("%s"), *FormulaMessage);
             }
-        }
+        }*/
     }
 }

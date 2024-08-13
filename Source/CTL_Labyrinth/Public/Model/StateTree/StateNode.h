@@ -45,6 +45,7 @@ public:
     UFUNCTION(BlueprintSetter)
     void SetChildrenArray(const TArray<UStateNode*>& InChildren) { Children = InChildren; }
 
+
 private:
     UPROPERTY(BlueprintGetter = GetStateData, BlueprintSetter = SetStateData, Category = "StateNode")
     FState StateData;

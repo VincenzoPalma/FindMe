@@ -2,6 +2,7 @@
 
 #include "StateTree/StateNode.h"
 #include "CTL_ModelChecking/CTLFormula.h"
+#include "PredicateManager.h"
 #include "CoreMinimal.h"
 #include "ModelStructures.h"
 #include "CTLModel.generated.h"
@@ -16,7 +17,7 @@ public:
 
     void AddState(const FState& state);
     void AddTransition(UStateNode* FromNode, UStateNode* ToNode);
-    void AddFormula(UCTLFormula* Formula);
+    void AddFormula(int32 FormulaId, UCTLFormula* Formula);
 
     UFUNCTION(BlueprintCallable, Category = "Model")
     UStateNode* GetRootNode() const {
@@ -29,10 +30,15 @@ public:
     }
 
     UFUNCTION(BlueprintCallable, Category = "Model")
-    const TArray<UCTLFormula*>& GetFormulas() const { 
-        return Formulas; 
+    const TMap<int32, UCTLFormula*>& GetFormulas() const {
+        return Formulas;
     }
 
+    UFUNCTION(BlueprintCallable, Category = "Model")
+    const UPredicateManager* GetPredicateManager() const
+    {
+        return PredicateManager;
+    }
 
     UFUNCTION(BlueprintCallable, Category = "Debug")
     void DebugPrintModel() const;
@@ -45,5 +51,10 @@ private:
     UStateNode* rootNode;
 
     UPROPERTY()
-    TArray<UCTLFormula*> Formulas;
+
+    TMap<int32, UCTLFormula*> Formulas;
+
+    UPROPERTY()
+    UPredicateManager* PredicateManager;
+
 };
