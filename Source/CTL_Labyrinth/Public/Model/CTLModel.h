@@ -15,14 +15,27 @@ public:
     UCTLModel();
 
     void AddState(const FState& state);
-
-    void AddTransition(const FState& from, const FState& to);
-
+    void AddTransition(UStateNode* FromNode, UStateNode* ToNode);
     void AddFormula(UCTLFormula* Formula);
 
+    UFUNCTION(BlueprintCallable, Category = "Model")
     UStateNode* GetRootNode() const {
         return rootNode;
     }
+
+    UFUNCTION(BlueprintCallable, Category = "Model")
+    const TMap<int32, UStateNode*>& GetStateNodes() const { 
+        return stateNodes; 
+    }
+
+    UFUNCTION(BlueprintCallable, Category = "Model")
+    const TArray<UCTLFormula*>& GetFormulas() const { 
+        return Formulas; 
+    }
+
+
+    UFUNCTION(BlueprintCallable, Category = "Debug")
+    void DebugPrintModel() const;
 
 private:
     UPROPERTY()
@@ -33,5 +46,4 @@ private:
 
     UPROPERTY()
     TArray<UCTLFormula*> Formulas;
-
 };

@@ -7,6 +7,7 @@
 
 UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
 {
+
     FString JsonString;
     FFileHelper::LoadFileToString(JsonString, *FilePath);
 
@@ -72,11 +73,26 @@ void UModelParser::ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& Transi
             int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
             int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
 
-            FState FromState, ToState;
-            Model->AddTransition(FromState, ToState);
+            const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromId);
+            const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToId);
+
+            if (FromNodePtr && ToNodePtr)
+            {
+                // Assicurati che FromNodePtr e ToNodePtr siano validi
+                UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
+                UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
+
+                Model->AddTransition(FromNode, ToNode);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
+            }
         }
     }
 }
+
+
 
 void UModelParser::ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasArray, UCTLModel* Model)
 {
