@@ -15,7 +15,14 @@ class CTL_LABYRINTH_API UPredicateManager : public UObject
 public:
     void RegisterPredicate(const FString& PredicateName, PredicateFunction InPredicate);
 
+    TFunction<bool(const FState&)> GetPredicate(const FString& Name) const;
+
     bool EvaluatePredicate(const FString& PredicateName, const FState& State) const;
+
+    TMap<FString, TFunction<bool(const FState&)>> GetPredicates() const
+    {
+        return Predicates;
+    }
 
 private:
     TMap<FString, PredicateFunction> Predicates;

@@ -20,6 +20,9 @@ public:
     void AddFormula(int32 FormulaId, UCTLFormula* Formula);
 
     UFUNCTION(BlueprintCallable, Category = "Model")
+    UCTLFormula* GetFormula(int32 Id) const;
+
+    UFUNCTION(BlueprintCallable, Category = "Model")
     UStateNode* GetRootNode() const {
         return rootNode;
     }
@@ -35,13 +38,15 @@ public:
     }
 
     UFUNCTION(BlueprintCallable, Category = "Model")
-    const UPredicateManager* GetPredicateManager() const
+    UPredicateManager* GetPredicateManager() const
     {
         return PredicateManager;
     }
 
     UFUNCTION(BlueprintCallable, Category = "Debug")
     void DebugPrintModel() const;
+
+    virtual void PostInitProperties() override;
 
 private:
     UPROPERTY()

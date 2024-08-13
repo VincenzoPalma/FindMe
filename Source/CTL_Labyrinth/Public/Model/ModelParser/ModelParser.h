@@ -17,4 +17,6 @@ public:
 private:
     void ParseStates(const TArray<TSharedPtr<FJsonValue>>& StatesArray, UCTLModel* Model);
     void ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& TransitionsArray, UCTLModel* Model);
+    void ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasArray, UCTLModel* Model);
+    ECTLOperator StringToOperator(const FString& OperatorString);
 };

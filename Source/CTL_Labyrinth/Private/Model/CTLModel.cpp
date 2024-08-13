@@ -5,6 +5,14 @@ UCTLModel::UCTLModel()
 {
 }
 
+void UCTLModel::PostInitProperties()
+{
+    Super::PostInitProperties();
+
+    PredicateManager = NewObject<UPredicateManager>(this);
+
+}
+
 void UCTLModel::AddState(const FState& state)
 {
     if (!stateNodes.Contains(state.Id))
@@ -38,12 +46,23 @@ void UCTLModel::AddFormula(int32 FormulaId, UCTLFormula* Formula)
     }
 }
 
+UCTLFormula* UCTLModel::GetFormula(int32 Id) const
+{
+    const UCTLFormula* const* FoundFormula = Formulas.Find(Id);
+    if (FoundFormula)
+    {
+        return const_cast<UCTLFormula*>(*FoundFormula);
+    }
+    return nullptr;
+}
+
+
 
 void UCTLModel::DebugPrintModel() const
 {
     if (GEngine)
     {
-        // Print root
+        // Print root node
         if (rootNode)
         {
             FString RootNodeMessage = FString::Printf(TEXT("Root Node ID: %d"), rootNode->GetState().Id);
@@ -74,15 +93,29 @@ void UCTLModel::DebugPrintModel() const
                 UE_LOG(LogTemp, Log, TEXT("%s"), *ChildMessage);
             }
         }
-
         // Print formulas
-        /*for (const UCTLFormula* Formula : Formulas)
+        for (const auto& FormulaPair : GetFormulas())
         {
+
+            const UCTLFormula* Formula = FormulaPair.Value;
             if (Formula)
             {
-                FString FormulaMessage = FString::Printf(TEXT("Formula: %s"), *Formula->GetClass()->GetName());
+                FString FormulaMessage = FString::Printf(TEXT("Formula ID: %d, Type: %s"), FormulaPair.Key, *Formula->GetClass()->GetName());
                 UE_LOG(LogTemp, Log, TEXT("%s"), *FormulaMessage);
             }
-        }*/
+        }
+
+        // Print predicates
+        const UPredicateManager* PredManager = GetPredicateManager();
+        if (PredManager)
+        {
+            for (const auto& PredicatePair : PredManager->GetPredicates())
+            {
+
+                FString PredicateName = PredicatePair.Key;
+                FString PredicateMessage = FString::Printf(TEXT("Predicate: %s"), *PredicateName);
+                UE_LOG(LogTemp, Log, TEXT("%s"), *PredicateMessage);
+            }
+        }
     }
 }

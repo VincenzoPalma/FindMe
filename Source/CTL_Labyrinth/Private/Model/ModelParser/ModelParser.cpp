@@ -46,7 +46,7 @@ UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
         const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
         if (JsonObject->TryGetArrayField(TEXT("formulas"), FormulasArray))
         {
-            //ParseFormulas(*FormulasArray, Model);
+            ParseFormulas(*FormulasArray, Model);
         }
         else
         {
@@ -141,4 +141,119 @@ void UModelParser::ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& Transi
             }
         }
     }
+}
+
+void UModelParser::ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasArray, UCTLModel* Model)
+{
+    auto PredicateManager = Model->GetPredicateManager();
+
+    for (const TSharedPtr<FJsonValue>& FormulaValue : FormulasArray)
+    {
+        TSharedPtr<FJsonObject> FormulaObject = FormulaValue->AsObject();
+        if (FormulaObject.IsValid())
+        {
+            // Extract the type and ID of the formula
+            FString Type = FormulaObject->GetStringField(TEXT("type"));
+            int32 Id = FormulaObject->GetNumberField(TEXT("id"));
+
+            UCTLFormula* NewFormula = nullptr;
+
+            if (Type == TEXT("Atomic"))
+            {
+                // Extract the predicate name for the atomic formula
+                FString PredicateName = FormulaObject->GetStringField(TEXT("predicate"));
+
+                // Register the predicate if it is not already registered
+                if (!PredicateManager->GetPredicate(PredicateName))
+                {
+                    // Register the predicate with a lambda function that checks the state properties
+                    PredicateManager->RegisterPredicate(PredicateName, [PredicateName](const FState& State) -> bool {
+                        return State.Properties.Contains(PredicateName) && State.Properties[PredicateName];
+                        });
+                }
+
+                // Create a new atomic formula and initialize it
+                NewFormula = NewObject<UAtomicFormula>();
+                auto Predicate = PredicateManager->GetPredicate(PredicateName);
+                if (Predicate)
+                {
+                    UAtomicFormula* AtomicFormula = Cast<UAtomicFormula>(NewFormula);
+                    AtomicFormula->Initialize(Predicate);
+                    // Add the new formula to the model
+                    Model->AddFormula(Id, AtomicFormula);
+                }
+                else
+                {
+                    // Log a warning if the predicate was not found
+                    UE_LOG(LogTemp, Warning, TEXT("Predicate %s not found"), *PredicateName);
+                }
+            }
+            else if (Type == TEXT("Unary"))
+            {
+                // Extract the operator and subformula ID for the unary formula
+                FString OperatorString = FormulaObject->GetStringField(TEXT("operator"));
+                ECTLOperator Operator = StringToOperator(OperatorString);
+                int32 SubFormulaId = FormulaObject->GetNumberField(TEXT("subformula_id"));
+
+                // Create a new unary formula and initialize it
+                NewFormula = NewObject<UUnaryFormula>();
+                UCTLFormula* SubFormula = Model->GetFormula(SubFormulaId);
+                if (SubFormula)
+                {
+                    UUnaryFormula* UnaryFormula = Cast<UUnaryFormula>(NewFormula);
+                    UnaryFormula->Initialize(Operator, SubFormula);
+                    // Add the new formula to the model
+                    Model->AddFormula(Id, UnaryFormula);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("Subformula with ID %d not found"), SubFormulaId);
+                }
+            }
+            else if (Type == TEXT("Binary"))
+            {
+                // Extract the operator and IDs for the left and right formulas
+                FString OperatorString = FormulaObject->GetStringField(TEXT("operator"));
+                ECTLOperator Operator = StringToOperator(OperatorString);
+                int32 LeftId = FormulaObject->GetNumberField(TEXT("left_id"));
+                int32 RightId = FormulaObject->GetNumberField(TEXT("right_id"));
+
+                // Create a new binary formula and initialize it
+                NewFormula = NewObject<UBinaryFormula>();
+                UCTLFormula* LeftFormula = Model->GetFormula(LeftId);
+                UCTLFormula* RightFormula = Model->GetFormula(RightId);
+                if (LeftFormula && RightFormula)
+                {
+                    UBinaryFormula* BinaryFormula = Cast<UBinaryFormula>(NewFormula);
+                    BinaryFormula->Initialize(Operator, LeftFormula, RightFormula);
+                    // Add the new formula to the model
+                    Model->AddFormula(Id, BinaryFormula);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("Left or right formula with IDs %d or %d not found"), LeftId, RightId);
+                }
+            }
+        }
+    }
+}
+
+
+
+ECTLOperator UModelParser::StringToOperator(const FString& OperatorString)
+{
+    if (OperatorString == TEXT("AND")) return ECTLOperator::AND;
+    if (OperatorString == TEXT("OR")) return ECTLOperator::OR;
+    if (OperatorString == TEXT("NOT")) return ECTLOperator::NOT;
+    if (OperatorString == TEXT("EX")) return ECTLOperator::EX;
+    if (OperatorString == TEXT("AX")) return ECTLOperator::AX;
+    if (OperatorString == TEXT("EF")) return ECTLOperator::EF;
+    if (OperatorString == TEXT("AF")) return ECTLOperator::AF;
+    if (OperatorString == TEXT("EG")) return ECTLOperator::EG;
+    if (OperatorString == TEXT("AG")) return ECTLOperator::AG;
+    if (OperatorString == TEXT("EU")) return ECTLOperator::EU;
+    if (OperatorString == TEXT("AU")) return ECTLOperator::AU;
+
+    UE_LOG(LogTemp, Warning, TEXT("Unknown operator: %s"), *OperatorString);
+    return ECTLOperator::AND;
 }
