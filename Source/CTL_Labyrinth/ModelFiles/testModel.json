@@ -3,7 +3,7 @@
     {
       "id": 4,
       "properties": {
-        "isInitial": false,
+        "isInitial": true,
         "isVisited": true,
         "hasTreasure": false
       }

@@ -27,7 +27,9 @@ class CTL_LABYRINTH_API UCTLFormula : public UObject
 
 public:
     virtual ~UCTLFormula() = default;
-    virtual bool Evaluate(UStateNode* node) const PURE_VIRTUAL(UCTLFormula::Evaluate, return false;);
+
+    UFUNCTION(BlueprintCallable, Category = "CTLFormula")
+    virtual TArray<UStateNode*> Evaluate(UStateNode* node) const PURE_VIRTUAL(UCTLFormula::Evaluate, return TArray<UStateNode*>(););
 };
 
 UCLASS(Blueprintable)
@@ -37,7 +39,9 @@ class CTL_LABYRINTH_API UAtomicFormula : public UCTLFormula
 
 public:
     UAtomicFormula();
-    virtual bool Evaluate(UStateNode* node) const override;
+    virtual bool EvaluatePredicate(UStateNode* node) const;
+
+    virtual TArray<UStateNode*> Evaluate(UStateNode* node) const override;
 
     void Initialize(TFunction<bool(const FState&)> InPredicate);
 
@@ -52,8 +56,7 @@ class CTL_LABYRINTH_API UUnaryFormula : public UCTLFormula
 
 public:
     UUnaryFormula();
-    virtual bool Evaluate(UStateNode* node) const override;
-
+    virtual TArray<UStateNode*> Evaluate(UStateNode* node) const override;
     void Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula);
 
 private:
@@ -68,8 +71,7 @@ class CTL_LABYRINTH_API UBinaryFormula : public UCTLFormula
 
 public:
     UBinaryFormula();
-    virtual bool Evaluate(UStateNode* node) const override;
-
+    virtual TArray<UStateNode*> Evaluate(UStateNode* node) const override;
     void Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight);
 
 private:

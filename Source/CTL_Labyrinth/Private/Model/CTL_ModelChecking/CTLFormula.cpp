@@ -9,7 +9,7 @@ void UAtomicFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
     Predicate = InPredicate;
 }
 
-bool UAtomicFormula::Evaluate(UStateNode* stateNode) const
+bool UAtomicFormula::EvaluatePredicate(UStateNode* stateNode) const
 {
     if (stateNode)
     {
@@ -17,6 +17,19 @@ bool UAtomicFormula::Evaluate(UStateNode* stateNode) const
     }
     return false;
 }
+
+TArray<UStateNode*> UAtomicFormula::Evaluate(UStateNode* stateNode) const
+{
+    TArray<UStateNode*> satisfyingStates;
+
+    if (stateNode && EvaluatePredicate(stateNode))
+    {
+        satisfyingStates.Add(stateNode);
+    }
+
+    return satisfyingStates;
+}
+
 
 UUnaryFormula::UUnaryFormula()
 {
@@ -28,45 +41,75 @@ void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
     SubFormula = InSubFormula;
 }
 
-bool UUnaryFormula::Evaluate(UStateNode* stateNode) const
+//TODO
+TArray<UStateNode*> UUnaryFormula::Evaluate(UStateNode* stateNode) const
 {
+    TArray<UStateNode*> satisfyingStates;
+
     if (!stateNode || !SubFormula)
     {
-        return false;
+        return satisfyingStates;
     }
 
     switch (Op)
     {
     case ECTLOperator::NOT:
-        return !SubFormula->Evaluate(stateNode);
-    case ECTLOperator::EX:
-        return UStateTreeUtils::VerifyIfAnyChild(stateNode, [this](UStateNode* child) {
-            return SubFormula->Evaluate(child);
-            });
-    case ECTLOperator::AX:
-        return UStateTreeUtils::VerifyIfAllChildren(stateNode, [this](UStateNode* child) {
-            return SubFormula->Evaluate(child);
-            });
-    case ECTLOperator::EF:
-        return UStateTreeUtils::VerifyEFFormula(stateNode, [this](UStateNode* node) {
-            return SubFormula->Evaluate(node);
-            });
-    case ECTLOperator::AF:
-        return UStateTreeUtils::VerifyAFFormula(stateNode, [this](UStateNode* node) {
-            return SubFormula->Evaluate(node);
-            });
-    case ECTLOperator::EG:
-        return UStateTreeUtils::VerifyEGFormula(stateNode, [this](UStateNode* node) {
-            return SubFormula->Evaluate(node);
-            });
-    case ECTLOperator::AG:
-        return UStateTreeUtils::VerifyAGFormula(stateNode, [this](UStateNode* node) {
-            return SubFormula->Evaluate(node);
-            });
-    default:
-        return false;
+    {
+        // TODO
     }
+    break;
+
+    case ECTLOperator::EX:
+    {
+        TArray<UStateNode*> satisfyingNodes;
+        UStateTreeUtils::VerifyIfAnyChild(stateNode, [this](UStateNode* child) {
+            return SubFormula->Evaluate(child).Num() > 0;
+            });
+        satisfyingStates = satisfyingNodes;
+    }
+    break;
+
+    case ECTLOperator::AX:
+    {
+        TArray<UStateNode*> satisfyingNodes;
+        UStateTreeUtils::VerifyIfAllChildren(stateNode, [this](UStateNode* child) {
+            return SubFormula->Evaluate(child).Num() > 0;
+            });
+        satisfyingStates = satisfyingNodes;
+    }
+    break;
+
+    case ECTLOperator::EF:
+        satisfyingStates = UStateTreeUtils::VerifyEFFormula(stateNode, [this](UStateNode* node) {
+            return SubFormula->Evaluate(node).Num() > 0;
+            });
+        break;
+
+    case ECTLOperator::AF:
+        satisfyingStates = UStateTreeUtils::VerifyAFFormula(stateNode, [this](UStateNode* node) {
+            return SubFormula->Evaluate(node).Num() > 0;
+            });
+        break;
+
+    case ECTLOperator::EG:
+        satisfyingStates = UStateTreeUtils::VerifyEGFormula(stateNode, [this](UStateNode* node) {
+            return SubFormula->Evaluate(node).Num() > 0;
+            });
+        break;
+
+    case ECTLOperator::AG:
+        satisfyingStates = UStateTreeUtils::VerifyAGFormula(stateNode, [this](UStateNode* node) {
+            return SubFormula->Evaluate(node).Num() > 0;
+            });
+        break;
+
+    default:
+        break;
+    }
+
+    return satisfyingStates;
 }
+
 
 UBinaryFormula::UBinaryFormula()
 {
@@ -79,32 +122,68 @@ void UBinaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLForm
     Right = InRight;
 }
 
-bool UBinaryFormula::Evaluate(UStateNode* stateNode) const
+//TODO
+TArray<UStateNode*> UBinaryFormula::Evaluate(UStateNode* stateNode) const
 {
+    TArray<UStateNode*> satisfyingStates;
+
     if (!stateNode || !Left || !Right)
     {
-        return false;
+        return satisfyingStates;
     }
+
+    TArray<UStateNode*> leftStates = Left->Evaluate(stateNode);
+    TArray<UStateNode*> rightStates = Right->Evaluate(stateNode);
 
     switch (Op)
     {
     case ECTLOperator::AND:
-        return Left->Evaluate(stateNode) && Right->Evaluate(stateNode);
+        for (UStateNode* leftNode : leftStates)
+        {
+            if (rightStates.Contains(leftNode))
+            {
+                satisfyingStates.Add(leftNode);
+            }
+        }
+        break;
+
     case ECTLOperator::OR:
-        return Left->Evaluate(stateNode) || Right->Evaluate(stateNode);
+        satisfyingStates = leftStates;
+        for (UStateNode* rightNode : rightStates)
+        {
+            if (!satisfyingStates.Contains(rightNode))
+            {
+                satisfyingStates.Add(rightNode);
+            }
+        }
+        break;
+
     case ECTLOperator::EU:
-        return UStateTreeUtils::VerifyEUFormula(
+        /*TODO if (UStateTreeUtils::VerifyEUFormula(
             stateNode,
-            [this](UStateNode* node) { return Left->Evaluate(node); },
-            [this](UStateNode* node) { return Right->Evaluate(node); }
-        );
+            [this](UStateNode* node) { return Left->Evaluate(node).Num() > 0; },
+            [this](UStateNode* node) { return Right->Evaluate(node).Num() > 0; }
+        ))
+        {
+            satisfyingStates = leftStates;
+        }*/
+        break;
+
     case ECTLOperator::AU:
-        return UStateTreeUtils::VerifyAUFormula(
+        /*TODO if (UStateTreeUtils::VerifyAUFormula(
             stateNode,
-            [this](UStateNode* node) { return Left->Evaluate(node); },
-            [this](UStateNode* node) { return Right->Evaluate(node); }
-        );
+            [this](UStateNode* node) { return Left->Evaluate(node).Num() > 0; },
+            [this](UStateNode* node) { return Right->Evaluate(node).Num() > 0; }
+        ))
+        {
+            satisfyingStates = leftStates;
+        }*/
+        break;
+
     default:
-        return false;
+        break;
     }
+
+    return satisfyingStates;
 }
+

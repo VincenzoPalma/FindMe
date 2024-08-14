@@ -56,7 +56,6 @@ private:
     UStateNode* rootNode;
 
     UPROPERTY()
-
     TMap<int32, UCTLFormula*> Formulas;
 
     UPROPERTY()
