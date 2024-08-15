@@ -1,5 +1,6 @@
 #include "../Public/Model/CTL_ModelChecking/CTLFormula.h"
 
+
 UAtomicFormula::UAtomicFormula()
 {
 }
@@ -18,7 +19,7 @@ bool UAtomicFormula::EvaluatePredicate(UStateNode* stateNode) const
     return false;
 }
 
-TArray<UStateNode*> UAtomicFormula::Evaluate(UStateNode* stateNode) const
+TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode) const
 {
     TArray<UStateNode*> satisfyingStates;
 
@@ -41,67 +42,119 @@ void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
     SubFormula = InSubFormula;
 }
 
-//TODO
-TArray<UStateNode*> UUnaryFormula::Evaluate(UStateNode* stateNode) const
+TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode) const
 {
     TArray<UStateNode*> satisfyingStates;
 
-    if (!stateNode || !SubFormula)
+    // Check if model, stateNode, and SubFormula are valid
+    if (!model || !stateNode || !SubFormula)
     {
         return satisfyingStates;
     }
+
+    // Evaluate the sub-formula
+    TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, stateNode);
 
     switch (Op)
     {
     case ECTLOperator::NOT:
     {
-        // TODO
+        // Find all states not satisfying the sub-formula
+        for (const auto& StateNode : model->GetStateNodes())
+        {
+            if (!SubResults.Contains(StateNode.Value))
+            {
+                satisfyingStates.Add(StateNode.Value);
+            }
+        }
+        break;
     }
-    break;
 
     case ECTLOperator::EX:
     {
-        TArray<UStateNode*> satisfyingNodes;
-        UStateTreeUtils::VerifyIfAnyChild(stateNode, [this](UStateNode* child) {
-            return SubFormula->Evaluate(child).Num() > 0;
-            });
-        satisfyingStates = satisfyingNodes;
+        // Find all states from which there exists a successor satisfying the sub-formula
+        TArray<UStateNode*> PreImage = model->PreImageExistential(SubResults);
+        satisfyingStates = PreImage;
+        break;
     }
-    break;
 
     case ECTLOperator::AX:
     {
-        TArray<UStateNode*> satisfyingNodes;
-        UStateTreeUtils::VerifyIfAllChildren(stateNode, [this](UStateNode* child) {
-            return SubFormula->Evaluate(child).Num() > 0;
-            });
-        satisfyingStates = satisfyingNodes;
+        // Find all states from which all successors satisfy the sub-formula
+        TArray<UStateNode*> PreImage = model->PreImageUniversal(SubResults);
+        satisfyingStates = PreImage;
+        break;
     }
-    break;
 
     case ECTLOperator::EF:
-        satisfyingStates = UStateTreeUtils::VerifyEFFormula(stateNode, [this](UStateNode* node) {
-            return SubFormula->Evaluate(node).Num() > 0;
-            });
+    {
+        // Find all states from which there exists a path leading to a state satisfying the sub-formula
+        TArray<UStateNode*> ReachableStates;
+        TArray<UStateNode*> CurrentStates = SubResults;
+
+        while (!CurrentStates.IsEmpty())
+        {
+            ReachableStates.Append(CurrentStates);
+            CurrentStates = model->PreImageExistential(CurrentStates);
+            CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return SubResults.Contains(StateNode); });
+        }
+
+        satisfyingStates = ReachableStates;
         break;
+    }
 
     case ECTLOperator::AF:
-        satisfyingStates = UStateTreeUtils::VerifyAFFormula(stateNode, [this](UStateNode* node) {
-            return SubFormula->Evaluate(node).Num() > 0;
-            });
+    {
+        // Find all states from which every path leads to a state satisfying the sub-formula
+        TArray<UStateNode*> AllStates;
+        model->GetStateNodes().GenerateValueArray(AllStates);
+        TArray<UStateNode*> CurrentStates = SubResults;
+
+        while (!CurrentStates.IsEmpty())
+        {
+            AllStates = AllStates.FilterByPredicate([&](UStateNode* StateNode) { return CurrentStates.Contains(StateNode); });
+            CurrentStates = model->PreImageUniversal(AllStates);
+            CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return SubResults.Contains(StateNode); });
+        }
+
+        satisfyingStates = AllStates;
         break;
+    }
 
     case ECTLOperator::EG:
-        satisfyingStates = UStateTreeUtils::VerifyEGFormula(stateNode, [this](UStateNode* node) {
-            return SubFormula->Evaluate(node).Num() > 0;
-            });
+    {
+        // Find all states where every path eventually remains in states satisfying the sub-formula
+        TArray<UStateNode*> ReachableStates;
+        TArray<UStateNode*> CurrentStates = SubResults;
+
+        while (!CurrentStates.IsEmpty())
+        {
+            ReachableStates.Append(CurrentStates);
+            CurrentStates = model->PreImageUniversal(CurrentStates);
+            CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return SubResults.Contains(StateNode); });
+        }
+
+        satisfyingStates = ReachableStates;
         break;
+    }
 
     case ECTLOperator::AG:
-        satisfyingStates = UStateTreeUtils::VerifyAGFormula(stateNode, [this](UStateNode* node) {
-            return SubFormula->Evaluate(node).Num() > 0;
-            });
+    {
+        // Find all states where every path is entirely within states satisfying the sub-formula
+        TArray<UStateNode*> AllStates;
+        model->GetStateNodes().GenerateValueArray(AllStates);
+        TArray<UStateNode*> CurrentStates = SubResults;
+
+        while (!CurrentStates.IsEmpty())
+        {
+            AllStates = AllStates.FilterByPredicate([&](UStateNode* StateNode) { return CurrentStates.Contains(StateNode); });
+            CurrentStates = model->PreImageUniversal(AllStates);
+            CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return SubResults.Contains(StateNode); });
+        }
+
+        satisfyingStates = AllStates;
         break;
+    }
 
     default:
         break;
@@ -122,22 +175,25 @@ void UBinaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLForm
     Right = InRight;
 }
 
-//TODO
-TArray<UStateNode*> UBinaryFormula::Evaluate(UStateNode* stateNode) const
+TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode) const
 {
     TArray<UStateNode*> satisfyingStates;
 
+    // Check if stateNode, Left, or Right are null
     if (!stateNode || !Left || !Right)
     {
         return satisfyingStates;
     }
 
-    TArray<UStateNode*> leftStates = Left->Evaluate(stateNode);
-    TArray<UStateNode*> rightStates = Right->Evaluate(stateNode);
+    // Evaluate the left and right formulas
+    TArray<UStateNode*> leftStates = Left->Evaluate(model, stateNode);
+    TArray<UStateNode*> rightStates = Right->Evaluate(model, stateNode);
 
     switch (Op)
     {
     case ECTLOperator::AND:
+
+        // Find states satisfying both Left and Right formulas
         for (UStateNode* leftNode : leftStates)
         {
             if (rightStates.Contains(leftNode))
@@ -148,42 +204,63 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(UStateNode* stateNode) const
         break;
 
     case ECTLOperator::OR:
-        satisfyingStates = leftStates;
-        for (UStateNode* rightNode : rightStates)
+    {
+        // Find states satisfying either Left or Right formula
+        TSet<UStateNode*> uniqueStates;
+
+        for (UStateNode* node : leftStates)
         {
-            if (!satisfyingStates.Contains(rightNode))
-            {
-                satisfyingStates.Add(rightNode);
-            }
+            uniqueStates.Add(node);
         }
-        break;
 
-    case ECTLOperator::EU:
-        /*TODO if (UStateTreeUtils::VerifyEUFormula(
-            stateNode,
-            [this](UStateNode* node) { return Left->Evaluate(node).Num() > 0; },
-            [this](UStateNode* node) { return Right->Evaluate(node).Num() > 0; }
-        ))
+        for (UStateNode* node : rightStates)
         {
-            satisfyingStates = leftStates;
-        }*/
-        break;
+            uniqueStates.Add(node);
+        }
 
-    case ECTLOperator::AU:
-        /*TODO if (UStateTreeUtils::VerifyAUFormula(
-            stateNode,
-            [this](UStateNode* node) { return Left->Evaluate(node).Num() > 0; },
-            [this](UStateNode* node) { return Right->Evaluate(node).Num() > 0; }
-        ))
-        {
-            satisfyingStates = leftStates;
-        }*/
-        break;
-
-    default:
+        satisfyingStates = uniqueStates.Array();
         break;
     }
 
+    case ECTLOperator::EU:
+    {
+        // Existential Until: States from which we can eventually reach a state satisfying Right,
+        // while satisfying Left up to that point
+        TArray<UStateNode*> reachableStates;
+        TArray<UStateNode*> currentStates = rightStates;
+
+        while (!currentStates.IsEmpty())
+        {
+            reachableStates.Append(currentStates);
+            currentStates = model->PreImageExistential(currentStates);
+            currentStates = currentStates.FilterByPredicate([&](UStateNode* StateNode) { return leftStates.Contains(StateNode); });
+        }
+
+        satisfyingStates = reachableStates;
+        break;
+    }
+
+    case ECTLOperator::AU:
+    {
+        // Always Until: States from which every path remains in states satisfying Right,
+        // and eventually reaches a state satisfying Left
+        TArray<UStateNode*> allStates;
+        model->GetStateNodes().GenerateValueArray(allStates);
+        TArray<UStateNode*> currentStates = rightStates;
+
+        while (!currentStates.IsEmpty())
+        {
+            allStates = allStates.FilterByPredicate([&](UStateNode* StateNode) { return currentStates.Contains(StateNode); });
+            currentStates = model->PreImageUniversal(allStates);
+            currentStates = currentStates.FilterByPredicate([&](UStateNode* StateNode) { return leftStates.Contains(StateNode); });
+        }
+
+        satisfyingStates = allStates;
+        break;
+    }
+    default:
+        break;
+    }
     return satisfyingStates;
 }
 

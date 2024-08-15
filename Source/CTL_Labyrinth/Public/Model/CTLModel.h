@@ -1,7 +1,6 @@
 #pragma once
 
 #include "StateTree/StateNode.h"
-#include "CTL_ModelChecking/CTLFormula.h"
 #include "PredicateManager.h"
 #include "CoreMinimal.h"
 #include "ModelStructures.h"
@@ -46,7 +45,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Debug")
     void DebugPrintModel() const;
 
+
     virtual void PostInitProperties() override;
+
+    TArray<UStateNode*> PreImageUniversal(const TArray<UStateNode*>& states) const;
+
+    TArray<UStateNode*> PreImageExistential(const TArray<UStateNode*>& states) const;
 
 private:
     UPROPERTY()

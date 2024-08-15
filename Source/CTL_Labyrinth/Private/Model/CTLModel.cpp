@@ -1,4 +1,5 @@
 #include "../Public/Model/CTLModel.h"
+#include "Model/CTL_ModelChecking/CTLFormula.h"
 
 UCTLModel::UCTLModel()
     : rootNode(nullptr)
@@ -56,6 +57,63 @@ UCTLFormula* UCTLModel::GetFormula(int32 Id) const
     return nullptr;
 }
 
+TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& states) const
+{
+    TArray<UStateNode*> PreImage;
+
+    const TMap<int32, UStateNode*>& StateNodes = GetStateNodes();
+
+    for (const auto& StateNodeEntry : StateNodes)
+    {
+        UStateNode* StateNode = StateNodeEntry.Value;
+
+        bool HasSuccessorInQ = false;
+        for (UStateNode* Successor : StateNode->GetChildren())
+        {
+            if (states.Contains(Successor))
+            {
+                HasSuccessorInQ = true;
+                break;
+            }
+        }
+
+        if (HasSuccessorInQ)
+        {
+            PreImage.Add(StateNode);
+        }
+    }
+
+    return PreImage;
+}
+
+TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& states) const
+{
+    TArray<UStateNode*> PreImage;
+
+    const TMap<int32, UStateNode*>& StateNodes = GetStateNodes();
+
+    for (const auto& StateNodeEntry : StateNodes)
+    {
+        UStateNode* StateNode = StateNodeEntry.Value;
+
+        bool AllSuccessorsInQ = true;
+        for (UStateNode* Successor : StateNode->GetChildren())
+        {
+            if (!states.Contains(Successor))
+            {
+                AllSuccessorsInQ = false;
+                break;
+            }
+        }
+
+        if (AllSuccessorsInQ)
+        {
+            PreImage.Add(StateNode);
+        }
+    }
+
+    return PreImage;
+}
 
 
 void UCTLModel::DebugPrintModel() const
