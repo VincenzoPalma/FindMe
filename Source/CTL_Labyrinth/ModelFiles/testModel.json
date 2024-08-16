@@ -4,22 +4,22 @@
       "id": 4,
       "properties": {
         "isInitial": true,
-        "isVisited": true,
+        "isVisited": false,
         "hasTreasure": false
       }
     },
     {
       "id": 5,
       "properties": {
-        "isInitial": false,
-        "isVisited": true,
+        "isInitial": true,
+        "isVisited": false,
         "hasTreasure": true
       }
     },
     {
       "id": 6,
       "properties": {
-        "isInitial": false,
+        "isInitial": true,
         "isVisited": true,
         "hasTreasure": true
       }
@@ -27,7 +27,7 @@
     {
       "id": 7,
       "properties": {
-        "isInitial": true,
+        "isInitial": false,
         "isVisited": false,
         "hasTreasure": false
       }
@@ -76,7 +76,7 @@
     },
     {
       "type": "Binary",
-      "operator": "AND",
+      "operator": "EU",
       "left_id": 1,
       "right_id": 2,
       "id": 5
