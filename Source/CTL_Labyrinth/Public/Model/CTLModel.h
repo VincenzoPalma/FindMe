@@ -42,15 +42,18 @@ public:
         return PredicateManager;
     }
 
+    UFUNCTION(BlueprintCallable, Category = "Model")
+    TArray<UStateNode*> GetReachableNodes(UStateNode* StartNode) const;
+
     UFUNCTION(BlueprintCallable, Category = "Debug")
     void DebugPrintModel() const;
 
 
     virtual void PostInitProperties() override;
 
-    TArray<UStateNode*> PreImageUniversal(const TArray<UStateNode*>& states) const;
+    TArray<UStateNode*> PreImageUniversal(const TArray<UStateNode*>& states, UStateNode* StartNode) const;
 
-    TArray<UStateNode*> PreImageExistential(const TArray<UStateNode*>& states) const;
+    TArray<UStateNode*> PreImageExistential(const TArray<UStateNode*>& states, UStateNode* StartNode) const;
 
 private:
     UPROPERTY()

@@ -20,14 +20,14 @@
       "id": 6,
       "properties": {
         "isInitial": false,
-        "isVisited": false,
+        "isVisited": true,
         "hasTreasure": true
       }
     },
     {
       "id": 7,
       "properties": {
-        "isInitial": false,
+        "isInitial": true,
         "isVisited": false,
         "hasTreasure": false
       }
@@ -47,8 +47,8 @@
       "to": 7
     },
     {
-      "from": 7,
-      "to": 4
+      "from": 4,
+      "to": 7
     }
   ],
   "formulas": [
@@ -70,7 +70,7 @@
     },
     {
       "type": "Unary",
-      "operator": "AX",
+      "operator": "EG",
       "subformula_id": 2,
       "id": 4
     },

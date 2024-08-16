@@ -23,9 +23,54 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
 {
     TArray<UStateNode*> satisfyingStates;
 
-    if (stateNode && EvaluatePredicate(stateNode))
+    if (!model)
     {
-        satisfyingStates.Add(stateNode);
+        UE_LOG(LogTemp, Error, TEXT("Invalid model passed to Evaluate"));
+        return satisfyingStates;
+    }
+
+    // If stateNode is null, verifies all states in the model
+    if (!stateNode)
+    {
+        const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
+        for (const auto& StateNodeEntry : allStateNodes)
+        {
+            UStateNode* node = StateNodeEntry.Value;
+            if (EvaluatePredicate(node))
+            {
+                satisfyingStates.Add(node);
+            }
+        }
+    }
+    else
+    {
+        // Verifies the predicate on the passed stateNode and all reachable nodes
+        TArray<UStateNode*> nodesToCheck;
+        nodesToCheck.Add(stateNode);
+
+        TSet<UStateNode*> visitedNodes;
+
+        while (nodesToCheck.Num() > 0)
+        {
+            UStateNode* currentNode = nodesToCheck.Pop(false);
+            if (!visitedNodes.Contains(currentNode))
+            {
+                visitedNodes.Add(currentNode);
+
+                // Check the predicate on the current node
+                if (EvaluatePredicate(currentNode))
+                {
+                    satisfyingStates.Add(currentNode);
+                }
+
+                // Add all children (successors) to the list of nodes to check
+                const TArray<UStateNode*>& children = currentNode->GetChildren();
+                for (UStateNode* childNode : children)
+                {
+                    nodesToCheck.Add(childNode);
+                }
+            }
+        }
     }
 
     return satisfyingStates;
@@ -47,7 +92,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     TArray<UStateNode*> satisfyingStates;
 
     // Check if model, stateNode, and SubFormula are valid
-    if (!model || !stateNode || !SubFormula)
+    if (!model || !SubFormula)
     {
         return satisfyingStates;
     }
@@ -60,11 +105,11 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     case ECTLOperator::NOT:
     {
         // Find all states not satisfying the sub-formula
-        for (const auto& StateNode : model->GetStateNodes())
+        for (const auto& StateNode : model->GetReachableNodes(stateNode))
         {
-            if (!SubResults.Contains(StateNode.Value))
+            if (!SubResults.Contains(StateNode))
             {
-                satisfyingStates.Add(StateNode.Value);
+                satisfyingStates.Add(StateNode);
             }
         }
         break;
@@ -73,7 +118,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     case ECTLOperator::EX:
     {
         // Find all states from which there exists a successor satisfying the sub-formula
-        TArray<UStateNode*> PreImage = model->PreImageExistential(SubResults);
+        TArray<UStateNode*> PreImage = model->PreImageExistential(SubResults, stateNode);
         satisfyingStates = PreImage;
         break;
     }
@@ -81,7 +126,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     case ECTLOperator::AX:
     {
         // Find all states from which all successors satisfy the sub-formula
-        TArray<UStateNode*> PreImage = model->PreImageUniversal(SubResults);
+        TArray<UStateNode*> PreImage = model->PreImageUniversal(SubResults, stateNode);
         satisfyingStates = PreImage;
         break;
     }
@@ -95,7 +140,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         while (!CurrentStates.IsEmpty())
         {
             ReachableStates.Append(CurrentStates);
-            CurrentStates = model->PreImageExistential(CurrentStates);
+            CurrentStates = model->PreImageExistential(CurrentStates, stateNode);
             CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return SubResults.Contains(StateNode); });
         }
 
@@ -113,7 +158,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         while (!CurrentStates.IsEmpty())
         {
             AllStates = AllStates.FilterByPredicate([&](UStateNode* StateNode) { return CurrentStates.Contains(StateNode); });
-            CurrentStates = model->PreImageUniversal(AllStates);
+            CurrentStates = model->PreImageUniversal(AllStates, stateNode);
             CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return SubResults.Contains(StateNode); });
         }
 
@@ -130,7 +175,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         while (!CurrentStates.IsEmpty())
         {
             ReachableStates.Append(CurrentStates);
-            CurrentStates = model->PreImageUniversal(CurrentStates);
+            CurrentStates = model->PreImageUniversal(CurrentStates, stateNode);
             CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return SubResults.Contains(StateNode); });
         }
 
@@ -148,7 +193,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         while (!CurrentStates.IsEmpty())
         {
             AllStates = AllStates.FilterByPredicate([&](UStateNode* StateNode) { return CurrentStates.Contains(StateNode); });
-            CurrentStates = model->PreImageUniversal(AllStates);
+            CurrentStates = model->PreImageUniversal(AllStates, stateNode);
             CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return SubResults.Contains(StateNode); });
         }
 
@@ -232,7 +277,7 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
         while (!currentStates.IsEmpty())
         {
             reachableStates.Append(currentStates);
-            currentStates = model->PreImageExistential(currentStates);
+            currentStates = model->PreImageExistential(currentStates, stateNode);
             currentStates = currentStates.FilterByPredicate([&](UStateNode* StateNode) { return leftStates.Contains(StateNode); });
         }
 
@@ -251,7 +296,7 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
         while (!currentStates.IsEmpty())
         {
             allStates = allStates.FilterByPredicate([&](UStateNode* StateNode) { return currentStates.Contains(StateNode); });
-            currentStates = model->PreImageUniversal(allStates);
+            currentStates = model->PreImageUniversal(allStates, stateNode);
             currentStates = currentStates.FilterByPredicate([&](UStateNode* StateNode) { return leftStates.Contains(StateNode); });
         }
 

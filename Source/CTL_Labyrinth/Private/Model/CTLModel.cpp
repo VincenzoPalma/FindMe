@@ -57,16 +57,20 @@ UCTLFormula* UCTLModel::GetFormula(int32 Id) const
     return nullptr;
 }
 
-TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& states) const
+TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& states, UStateNode* StartNode) const
 {
     TArray<UStateNode*> PreImage;
 
-    const TMap<int32, UStateNode*>& StateNodes = GetStateNodes();
-
-    for (const auto& StateNodeEntry : StateNodes)
+    if (!StartNode)
     {
-        UStateNode* StateNode = StateNodeEntry.Value;
+        UE_LOG(LogTemp, Error, TEXT("Invalid StartNode passed to PreImageExistential"));
+        return PreImage;
+    }
 
+    TArray<UStateNode*> ReachableStates = GetReachableNodes(StartNode);
+
+    for (UStateNode* StateNode : ReachableStates)
+    {
         bool HasSuccessorInQ = false;
         for (UStateNode* Successor : StateNode->GetChildren())
         {
@@ -86,16 +90,21 @@ TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& st
     return PreImage;
 }
 
-TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& states) const
+
+TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& states, UStateNode* StartNode) const
 {
     TArray<UStateNode*> PreImage;
 
-    const TMap<int32, UStateNode*>& StateNodes = GetStateNodes();
-
-    for (const auto& StateNodeEntry : StateNodes)
+    if (!StartNode)
     {
-        UStateNode* StateNode = StateNodeEntry.Value;
+        UE_LOG(LogTemp, Error, TEXT("Invalid StartNode passed to PreImageUniversal"));
+        return PreImage;
+    }
 
+    TArray<UStateNode*> ReachableStates = GetReachableNodes(StartNode);
+
+    for (UStateNode* StateNode : ReachableStates)
+    {
         bool AllSuccessorsInQ = true;
         for (UStateNode* Successor : StateNode->GetChildren())
         {
@@ -115,6 +124,46 @@ TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& stat
     return PreImage;
 }
 
+
+TArray<UStateNode*> UCTLModel::GetReachableNodes(UStateNode* StartNode) const
+{
+    TArray<UStateNode*> ReachableNodes;
+
+    if (!StartNode)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("StartNode is null."));
+        return ReachableNodes;
+    }
+
+    TQueue<UStateNode*> Queue;
+    Queue.Enqueue(StartNode);
+
+    TSet<UStateNode*> Visited;
+
+    while (!Queue.IsEmpty())
+    {
+        UStateNode* CurrentNode;
+        Queue.Dequeue(CurrentNode);
+
+        if (Visited.Contains(CurrentNode))
+        {
+            continue;
+        }
+
+        Visited.Add(CurrentNode);
+        ReachableNodes.Add(CurrentNode);
+
+        for (UStateNode* Successor : CurrentNode->GetChildren())
+        {
+            if (!Visited.Contains(Successor))
+            {
+                Queue.Enqueue(Successor);
+            }
+        }
+    }
+
+    return ReachableNodes;
+}
 
 void UCTLModel::DebugPrintModel() const
 {
