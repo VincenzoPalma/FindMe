@@ -31,6 +31,7 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "CTLFormula")
     virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node) const PURE_VIRTUAL(UCTLFormula::Evaluate, return TArray<UStateNode*>(););
+
 };
 
 UCLASS(Blueprintable)

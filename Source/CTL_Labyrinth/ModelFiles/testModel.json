@@ -1,99 +1,173 @@
 {
   "states": [
     {
+      "id": 1,
+      "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": true
+      }
+    },
+    {
+      "id": 2,
+      "properties": {
+        "isActive": false,
+        "isGoal": false,
+        "hasKey": false
+      }
+    },
+    {
+      "id": 3,
+      "properties": {
+        "isActive": true,
+        "isGoal": true,
+        "hasKey": false
+      }
+    },
+    {
       "id": 4,
       "properties": {
-        "isInitial": true,
-        "isVisited": false,
-        "hasTreasure": false
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": true
       }
     },
     {
       "id": 5,
       "properties": {
-        "isInitial": true,
-        "isVisited": false,
-        "hasTreasure": true
+        "isActive": false,
+        "isGoal": false,
+        "hasKey": true
       }
     },
     {
       "id": 6,
       "properties": {
-        "isInitial": true,
-        "isVisited": true,
-        "hasTreasure": true
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": false
       }
     },
     {
       "id": 7,
       "properties": {
-        "isInitial": false,
-        "isVisited": false,
-        "hasTreasure": false
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": false
+      }
+    },
+    {
+      "id": 8,
+      "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": true
+      }
+    },
+    {
+      "id": 9,
+      "properties": {
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": false
       }
     }
   ],
   "transitions": [
     {
-      "from": 4,
-      "to": 5
-    },
-    {
-      "from": 5,
-      "to": 6
-    },
-    {
-      "from": 6,
-      "to": 7
+      "from": 1,
+      "to": 4
     },
     {
       "from": 4,
-      "to": 7
+      "to": 8
     }
   ],
   "formulas": [
     {
       "type": "Atomic",
-      "predicate": "isInitial",
+      "predicate": "isActive",
       "id": 1
     },
     {
       "type": "Atomic",
-      "predicate": "isVisited",
+      "predicate": "isGoal",
       "id": 2
+    },
+    {
+      "type": "Atomic",
+      "predicate": "hasKey",
+      "id": 3
     },
     {
       "type": "Unary",
       "operator": "NOT",
       "subformula_id": 1,
-      "id": 3
-    },
-    {
-      "type": "Unary",
-      "operator": "EG",
-      "subformula_id": 2,
       "id": 4
     },
     {
       "type": "Binary",
-      "operator": "EU",
-      "left_id": 1,
-      "right_id": 2,
+      "operator": "AND",
+      "left_id": 2,
+      "right_id": 4,
       "id": 5
     },
     {
       "type": "Binary",
       "operator": "OR",
-      "left_id": 3,
-      "right_id": 4,
+      "left_id": 1,
+      "right_id": 2,
       "id": 6
+    },
+    {
+      "type": "Unary",
+      "operator": "AF",
+      "subformula_id": 2,
+      "id": 7
+    },
+    {
+      "type": "Unary",
+      "operator": "EF",
+      "subformula_id": 3,
+      "id": 8
+    },
+    {
+      "type": "Unary",
+      "operator": "AG",
+      "subformula_id": 2,
+      "id": 9
+    },
+    {
+      "type": "Unary",
+      "operator": "EG",
+      "subformula_id": 3,
+      "id": 10
+    },
+    {
+      "type": "Binary",
+      "operator": "AU",
+      "left_id": 1,
+      "right_id": 2,
+      "id": 11
     },
     {
       "type": "Binary",
       "operator": "EU",
-      "left_id": 1,
-      "right_id": 5,
-      "id": 7
+      "left_id": 2,
+      "right_id": 3,
+      "id": 12
+    },
+    {
+      "type": "Unary",
+      "operator": "AX",
+      "subformula_id": 2,
+      "id": 13
+    },
+    {
+      "type": "Unary",
+      "operator": "EX",
+      "subformula_id": 3,
+      "id": 14
     }
   ]
 }

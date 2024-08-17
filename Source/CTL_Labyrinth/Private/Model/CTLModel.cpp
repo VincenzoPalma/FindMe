@@ -106,12 +106,21 @@ TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& stat
     for (UStateNode* StateNode : ReachableStates)
     {
         bool AllSuccessorsInQ = true;
-        for (UStateNode* Successor : StateNode->GetChildren())
+        TArray<UStateNode*> Successors = StateNode->GetChildren();
+
+        if (Successors.Num() == 0)
         {
-            if (!states.Contains(Successor))
+            AllSuccessorsInQ = false;
+        }
+        else
+        {
+            for (UStateNode* Successor : Successors)
             {
-                AllSuccessorsInQ = false;
-                break;
+                if (!states.Contains(Successor))
+                {
+                    AllSuccessorsInQ = false;
+                    break;
+                }
             }
         }
 
@@ -123,6 +132,7 @@ TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& stat
 
     return PreImage;
 }
+
 
 
 TArray<UStateNode*> UCTLModel::GetReachableNodes(UStateNode* StartNode) const
