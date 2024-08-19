@@ -187,29 +187,28 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     case ECTLOperator::EG:
     {
-        TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
-        TSet<UStateNode*> Q_prime(AllStates);
-        TSet<UStateNode*> SatisfyingStatesSet(SubResults);
-        TSet<UStateNode*> Q_double_prime;
         //TODO
-        while (true)
-        {
-            TArray<UStateNode*> PreImage = model->PreImageExistential(Q_prime.Array(), stateNode);
+        TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
+        TArray<UStateNode*> TempResults;
 
-            for (UStateNode* StateNode : PreImage)
-            {
-                if (SatisfyingStatesSet.Contains(StateNode))
-                {
-                    Q_double_prime.Add(StateNode);
+        while (TempResults != SubResults) {
+            TempResults = SubResults;
+            SubResults.Empty();
+
+            TArray<UStateNode*> PreImage = model->PreImageExistential(TempResults, stateNode);
+
+            for (UStateNode* State : TempResults) {
+                if (PreImage.Contains(State)) {
+                    SubResults.Add(State);
                 }
             }
-
-            Q_double_prime = Q_double_prime.Intersect(Q_prime);
-
-            Q_prime = Q_double_prime;
+            for (UStateNode* State : TempResults) {
+                UE_LOG(LogTemp, Log, TEXT("Temp Elemento %d"), State->GetState().Id);
+            }
+            for (UStateNode* State : SubResults) {
+                UE_LOG(LogTemp, Log, TEXT("Sub Elemento %d"), State->GetState().Id);
+            }
         }
-
-        satisfyingStatesArray = Q_prime.Array();
 
         break;
     }

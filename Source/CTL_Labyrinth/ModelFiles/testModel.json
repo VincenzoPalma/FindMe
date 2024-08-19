@@ -53,7 +53,7 @@
       "properties": {
         "isActive": false,
         "isGoal": true,
-        "hasKey": false
+        "hasKey": true
       }
     },
     {
@@ -81,6 +81,10 @@
     {
       "from": 4,
       "to": 8
+    },
+    {
+      "from": 8,
+      "to": 7
     }
   ],
   "formulas": [
