@@ -116,6 +116,9 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
                 satisfyingStatesSet.Add(StateNode);
             }
         }
+
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
         break;
     }
 
@@ -127,6 +130,9 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         {
             satisfyingStatesSet.Add(Node);
         }
+
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
         break;
     }
 
@@ -138,6 +144,9 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         {
             satisfyingStatesSet.Add(Node);
         }
+
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
         break;
     }
 
@@ -159,14 +168,14 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
             CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return !VisitedStates.Contains(StateNode); });
         }
 
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
         break;
     }
 
     case ECTLOperator::AF:
     {
-        //TODO
-        TArray<UStateNode*> AllStates;
-        model->GetStateNodes().GenerateValueArray(AllStates);
+        TArray<UStateNode*> ReachableStates;
         TArray<UStateNode*> CurrentStates = SubResults;
         TSet<UStateNode*> VisitedStates;
 
@@ -178,9 +187,11 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
                 VisitedStates.Add(StateNode);
             }
 
-            CurrentStates = model->PreImageUniversal(AllStates, stateNode);
+            CurrentStates = model->PreImageUniversal(CurrentStates, stateNode);
             CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return !VisitedStates.Contains(StateNode); });
         }
+
+        satisfyingStatesArray = satisfyingStatesSet.Array();
 
         break;
     }
@@ -188,22 +199,25 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     case ECTLOperator::EG:
     {
         //TODO
+        // Find all states where a path exists that is entirely within states satisfying the sub-formula
         TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
-        TArray<UStateNode*> TempResults;
 
-        while (TempResults != SubResults) {
-            TempResults = SubResults;
-            SubResults.Empty();
-
-            TArray<UStateNode*> PreImage = model->PreImageExistential(TempResults, stateNode);
-
-            for (UStateNode* State : TempResults) {
-                if (PreImage.Contains(State)) {
-                    SubResults.Add(State);
-                }
+        while (!StatesUtils::IsSubSet(AllStates, SubResults))
+        {
+            AllStates = SubResults;
+            for (UStateNode* node : SubResults)
+            {
+                UE_LOG(LogTemp, Error, TEXT("Sub1 %d"), node->GetState().Id);
             }
-           
+            TArray<UStateNode*> preImage = model->PreImageExistential(AllStates, stateNode);
+            SubResults = StatesUtils::StatesIntersection(preImage, AllStates);
+            for (UStateNode* node : SubResults)
+            {
+                UE_LOG(LogTemp, Error, TEXT("Sub2 %d"), node->GetState().Id);
+            }
         }
+
+        satisfyingStatesArray = AllStates;
 
         break;
     }
@@ -238,7 +252,6 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         break;
     }
 
-    satisfyingStatesArray = satisfyingStatesSet.Array();
     return satisfyingStatesArray;
 }
 
@@ -309,7 +322,6 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
 
     case ECTLOperator::EU:
     {
-        //TODO
         // Existential Until: States from which we can eventually reach a state satisfying Right,
         // while satisfying Left up to that point
         while (!StatesUtils::IsSubSet(rightStates, satisfyingStatesArray)) {
@@ -323,7 +335,6 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
 
     case ECTLOperator::AU:
     {
-        //TODO
         // Always Until: States from which every path remains in states satisfying Right,
         // and eventually reaches a state satisfying Left
         while (!StatesUtils::IsSubSet(rightStates, satisfyingStatesArray)) {

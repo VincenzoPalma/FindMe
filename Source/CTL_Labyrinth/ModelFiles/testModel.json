@@ -5,7 +5,7 @@
       "properties": {
         "isActive": true,
         "isGoal": true,
-        "hasKey": false
+        "hasKey": true
       }
     },
     {
@@ -13,7 +13,7 @@
       "properties": {
         "isActive": false,
         "isGoal": true,
-        "hasKey": false
+        "hasKey": true
       }
     },
     {
@@ -21,7 +21,7 @@
       "properties": {
         "isActive": true,
         "isGoal": true,
-        "hasKey": false
+        "hasKey": true
       }
     },
     {
@@ -37,7 +37,7 @@
       "properties": {
         "isActive": false,
         "isGoal": false,
-        "hasKey": true
+        "hasKey": false
       }
     },
     {
@@ -89,10 +89,6 @@
     {
       "from": 1,
       "to": 5
-    },
-    {
-      "from": 5,
-      "to": 6
     }
   ],
   "formulas": [
@@ -134,7 +130,7 @@
     {
       "type": "Unary",
       "operator": "AF",
-      "subformula_id": 2,
+      "subformula_id": 3,
       "id": 7
     },
     {
