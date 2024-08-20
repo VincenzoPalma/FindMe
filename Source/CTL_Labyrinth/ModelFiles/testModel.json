@@ -4,15 +4,15 @@
       "id": 1,
       "properties": {
         "isActive": true,
-        "isGoal": false,
-        "hasKey": true
+        "isGoal": true,
+        "hasKey": false
       }
     },
     {
       "id": 2,
       "properties": {
         "isActive": false,
-        "isGoal": false,
+        "isGoal": true,
         "hasKey": false
       }
     },
@@ -76,15 +76,23 @@
   "transitions": [
     {
       "from": 1,
+      "to": 2
+    },
+    {
+      "from": 2,
+      "to": 3
+    },
+    {
+      "from": 3,
       "to": 4
     },
     {
-      "from": 4,
-      "to": 8
+      "from": 1,
+      "to": 5
     },
     {
-      "from": 8,
-      "to": 7
+      "from": 5,
+      "to": 6
     }
   ],
   "formulas": [
@@ -150,8 +158,8 @@
     {
       "type": "Binary",
       "operator": "AU",
-      "left_id": 1,
-      "right_id": 2,
+      "left_id": 2,
+      "right_id": 3,
       "id": 11
     },
     {

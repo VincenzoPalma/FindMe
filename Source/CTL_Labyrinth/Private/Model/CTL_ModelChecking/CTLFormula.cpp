@@ -202,12 +202,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
                     SubResults.Add(State);
                 }
             }
-            for (UStateNode* State : TempResults) {
-                UE_LOG(LogTemp, Log, TEXT("Temp Elemento %d"), State->GetState().Id);
-            }
-            for (UStateNode* State : SubResults) {
-                UE_LOG(LogTemp, Log, TEXT("Sub Elemento %d"), State->GetState().Id);
-            }
+           
         }
 
         break;
@@ -290,6 +285,8 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
                 satisfyingStatesSet.Add(leftNode);
             }
         }
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
         break;
     }
 
@@ -305,6 +302,8 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
         {
             satisfyingStatesSet.Add(node);
         }
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
         break;
     }
 
@@ -313,21 +312,12 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
         //TODO
         // Existential Until: States from which we can eventually reach a state satisfying Right,
         // while satisfying Left up to that point
-        TArray<UStateNode*> reachableStates;
-        TArray<UStateNode*> currentStates = rightStates;
-
-        while (!currentStates.IsEmpty())
-        {
-            reachableStates.Append(currentStates);
-            currentStates = model->PreImageExistential(currentStates, stateNode);
-            currentStates = currentStates.FilterByPredicate([&](UStateNode* StateNode) { return leftStates.Contains(StateNode); });
+        while (!StatesUtils::IsSubSet(rightStates, satisfyingStatesArray)) {
+            satisfyingStatesArray = StatesUtils::StatesUnion(satisfyingStatesArray, rightStates);
+            TArray<UStateNode*> preImage = model->PreImageExistential(satisfyingStatesArray, stateNode);
+            rightStates = StatesUtils::StatesIntersection(preImage, leftStates);
         }
-
-        // Add all reachable states to the set
-        for (UStateNode* state : reachableStates)
-        {
-            satisfyingStatesSet.Add(state);
-        }
+     
         break;
     }
 
@@ -336,22 +326,12 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
         //TODO
         // Always Until: States from which every path remains in states satisfying Right,
         // and eventually reaches a state satisfying Left
-        TArray<UStateNode*> allStates;
-        model->GetStateNodes().GenerateValueArray(allStates);
-        TArray<UStateNode*> currentStates = rightStates;
-
-        while (!currentStates.IsEmpty())
-        {
-            allStates = allStates.FilterByPredicate([&](UStateNode* StateNode) { return currentStates.Contains(StateNode); });
-            currentStates = model->PreImageUniversal(allStates, stateNode);
-            currentStates = currentStates.FilterByPredicate([&](UStateNode* StateNode) { return leftStates.Contains(StateNode); });
+        while (!StatesUtils::IsSubSet(rightStates, satisfyingStatesArray)) {
+            satisfyingStatesArray = StatesUtils::StatesUnion(satisfyingStatesArray, rightStates);
+            TArray<UStateNode*> preImage = model->PreImageUniversal(satisfyingStatesArray, stateNode);
+            rightStates = StatesUtils::StatesIntersection(preImage, leftStates);
         }
 
-        // Add all remaining states to the set
-        for (UStateNode* state : allStates)
-        {
-            satisfyingStatesSet.Add(state);
-        }
         break;
     }
 
@@ -359,6 +339,5 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
         break;
     }
 
-    satisfyingStatesArray = satisfyingStatesSet.Array();
     return satisfyingStatesArray;
 }

@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Model/CTLModel.h"
+#include "StatesUtils.h"
 #include "../StateTree/StateNode.h"
 #include "CTLFormula.generated.h"
 
