@@ -17,8 +17,6 @@ public:
 
     TFunction<bool(const FState&)> GetPredicate(const FString& Name) const;
 
-    bool EvaluatePredicate(const FString& PredicateName, const FState& State) const;
-
     TMap<FString, TFunction<bool(const FState&)>> GetPredicates() const
     {
         return Predicates;
