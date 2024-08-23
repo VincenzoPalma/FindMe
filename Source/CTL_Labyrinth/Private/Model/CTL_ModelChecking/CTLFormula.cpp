@@ -201,21 +201,25 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         //TODO
         // Find all states where a path exists that is entirely within states satisfying the sub-formula
         TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
-
-        while (!StatesUtils::IsSubSet(AllStates, SubResults))
+        for (UStateNode* node : SubResults)
         {
-            AllStates = SubResults;
+            UE_LOG(LogTemp, Error, TEXT("STATI CHE SODDISFANO LA SUBFORMULA: %d"), node->GetState().Id);
+        }
+        AllStates = SubResults;
+        do
+        {
             for (UStateNode* node : SubResults)
             {
-                UE_LOG(LogTemp, Error, TEXT("Sub1 %d"), node->GetState().Id);
+                UE_LOG(LogTemp, Error, TEXT("Q1: %d"), node->GetState().Id);
             }
             TArray<UStateNode*> preImage = model->PreImageExistential(AllStates, stateNode);
             SubResults = StatesUtils::StatesIntersection(preImage, AllStates);
             for (UStateNode* node : SubResults)
             {
-                UE_LOG(LogTemp, Error, TEXT("Sub2 %d"), node->GetState().Id);
+                UE_LOG(LogTemp, Error, TEXT("Q2 %d"), node->GetState().Id);
             }
-        }
+            AllStates = SubResults;
+        } while (!StatesUtils::IsSubSet(AllStates, SubResults));
 
         satisfyingStatesArray = AllStates;
 
