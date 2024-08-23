@@ -21,7 +21,7 @@
       "properties": {
         "isActive": true,
         "isGoal": true,
-        "hasKey": false
+        "hasKey": true
       }
     },
     {
@@ -87,8 +87,8 @@
       "to": 4
     },
     {
-      "from": 4,
-      "to": 1
+      "from": 1,
+      "to": 5
     }
   ],
   "formulas": [
@@ -142,7 +142,7 @@
     {
       "type": "Unary",
       "operator": "AG",
-      "subformula_id": 2,
+      "subformula_id": 3,
       "id": 9
     },
     {
