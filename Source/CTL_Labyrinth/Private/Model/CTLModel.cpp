@@ -30,11 +30,11 @@ void UCTLModel::AddState(const FState& state)
     }
 }
 
-void UCTLModel::AddTransition(UStateNode* FromNode, UStateNode* ToNode)
+void UCTLModel::AddTransition(FString& action, UStateNode* FromNode, UStateNode* ToNode)
 {
     if (FromNode && ToNode)
     {
-        FromNode->AddChild(ToNode);
+        FromNode->AddChild(action, ToNode);
     }
 }
 
@@ -204,9 +204,12 @@ void UCTLModel::DebugPrintModel() const
             }
 
             // Print child nodes
-            for (const UStateNode* ChildNode : StateNode->GetChildren())
+            for (const auto& Pair : StateNode->GetChildrenMap())
             {
-                FString ChildMessage = FString::Printf(TEXT("  Child State ID: %d"), ChildNode->GetState().Id);
+                const FString& Action = Pair.Key;               
+                const UStateNode* ChildNode = Pair.Value;      
+
+                FString ChildMessage = FString::Printf(TEXT("  Child State ID: %d, Action: %s"), ChildNode->GetState().Id, *Action);
                 UE_LOG(LogTemp, Log, TEXT("%s"), *ChildMessage);
             }
         }

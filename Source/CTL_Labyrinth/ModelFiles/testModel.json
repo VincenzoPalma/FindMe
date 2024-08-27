@@ -76,19 +76,23 @@
   "transitions": [
     {
       "from": 1,
-      "to": 2
+      "to": 2,
+      "action": "action1"
     },
     {
       "from": 2,
-      "to": 3
+      "to": 3,
+      "action": "action2"
     },
     {
       "from": 3,
-      "to": 4
+      "to": 4,
+      "action": "action1"
     },
     {
       "from": 1,
-      "to": 5
+      "to": 5,
+      "action": "action2"
     }
   ],
   "formulas": [

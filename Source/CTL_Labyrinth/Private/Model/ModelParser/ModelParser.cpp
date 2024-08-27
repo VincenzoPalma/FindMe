@@ -124,6 +124,7 @@ void UModelParser::ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& Transi
         {
             int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
             int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
+            FString Action = TransitionObject->GetStringField(TEXT("action"));
 
             const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromId);
             const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToId);
@@ -133,7 +134,7 @@ void UModelParser::ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& Transi
                 UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
                 UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
 
-                Model->AddTransition(FromNode, ToNode);
+                Model->AddTransition(Action, FromNode, ToNode);
             }
             else
             {

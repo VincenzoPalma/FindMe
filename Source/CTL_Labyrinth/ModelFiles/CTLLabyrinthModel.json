@@ -1,0 +1,468 @@
+{
+  "states": [
+    {
+      "id": 1,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": true,
+        "NPC2Alive": true,
+        "NPC1Escaped": false,
+        "NPC2Escaped": false
+      }
+    },
+    {
+      "id": 2,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": true,
+        "NPC2Alive": true,
+        "NPC1Escaped": false,
+        "NPC2Escaped": true
+      }
+    },
+    {
+      "id": 3,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": true,
+        "NPC2Alive": true,
+        "NPC1Escaped": true,
+        "NPC2Escaped": false
+      }
+    },
+    {
+      "id": 4,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": true,
+        "NPC2Alive": true,
+        "NPC1Escaped": true,
+        "NPC2Escaped": true
+      }
+    },
+    {
+      "id": 5,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": true,
+        "NPC2Alive": false,
+        "NPC1Escaped": false,
+        "NPC2Escaped": false
+      }
+    },
+    {
+      "id": 6,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": true,
+        "NPC2Alive": false,
+        "NPC1Escaped": true,
+        "NPC2Escaped": false
+      }
+    },
+    {
+      "id": 7,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": false,
+        "NPC2Alive": true,
+        "NPC1Escaped": false,
+        "NPC2Escaped": false
+      }
+    },
+    {
+      "id": 8,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": false,
+        "NPC2Alive": true,
+        "NPC1Escaped": false,
+        "NPC2Escaped": true
+      }
+    },
+    {
+      "id": 9,
+      "properties": {
+        "NPC1Visible": false,
+        "NPC2Visible": false,
+        "NPC1NearHunter": false,
+        "NPC2NearHunter": false,
+        "NPC1Alive": false,
+        "NPC2Alive": false,
+        "NPC1Escaped": false,
+        "NPC2Escaped": false
+      }
+    },
+    {
+        "id": 10,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": false,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 11,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": false,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": true,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 12,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": false,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": false,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 13,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": false,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 14,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": false,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": true
+        }
+      },
+      {
+        "id": 15,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": false,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": false,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 16,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": false,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 17,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": true,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 18,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": true,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": true,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 19,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": true,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": false,
+          "NPC1Alive": false,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 20,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": true,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 21,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": true,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": true,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 22,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": true,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": false,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 23,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": true,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 24,
+        "properties": {
+          "NPC1Visible": false,
+          "NPC2Visible": true,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 25,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": false,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": true
+        }
+      },
+      {
+        "id": 26,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": false,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": false,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 27,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": false,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 28,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": false,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": true,
+          "NPC2Escaped": true
+        }
+      },
+      {
+        "id": 29,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": false,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 30,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": false,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": true
+        }
+      },
+      {
+        "id": 31,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": false,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": false,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 32,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": false,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 33,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": true,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": false,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 34,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": true,
+          "NPC1NearHunter": false,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      },
+      {
+        "id": 35,
+        "properties": {
+          "NPC1Visible": true,
+          "NPC2Visible": true,
+          "NPC1NearHunter": true,
+          "NPC2NearHunter": true,
+          "NPC1Alive": true,
+          "NPC2Alive": true,
+          "NPC1Escaped": false,
+          "NPC2Escaped": false
+        }
+      }
+  ],
+  "transitions": [
+    {
+      "from": 1,
+      "to": 2
+    }
+  ],
+  "formulas": [
+
+  ]
+}
