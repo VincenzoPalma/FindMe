@@ -35,6 +35,7 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
         const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
         for (const auto& StateNodeEntry : allStateNodes)
         {
+
             UStateNode* node = StateNodeEntry.Value;
             if (EvaluatePredicate(node))
             {
@@ -50,25 +51,10 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
 
         TSet<UStateNode*> visitedNodes;
 
-        while (nodesToCheck.Num() > 0)
-        {
-            UStateNode* currentNode = nodesToCheck.Pop(false);
-            if (!visitedNodes.Contains(currentNode))
+        for (UStateNode* currentNode: model->GetReachableNodes(stateNode)){
+            if (EvaluatePredicate(currentNode))
             {
-                visitedNodes.Add(currentNode);
-
-                // Check the predicate on the current node
-                if (EvaluatePredicate(currentNode))
-                {
-                    satisfyingStates.Add(currentNode);
-                }
-
-                // Add all children (successors) to the list of nodes to check
-                const TArray<UStateNode*>& children = currentNode->GetChildren();
-                for (UStateNode* childNode : children)
-                {
-                    nodesToCheck.Add(childNode);
-                }
+                satisfyingStates.Add(currentNode);
             }
         }
     }
@@ -152,7 +138,6 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     case ECTLOperator::EF:
     {
-        TArray<UStateNode*> ReachableStates;
         TArray<UStateNode*> CurrentStates = SubResults;
         TSet<UStateNode*> VisitedStates;
 
@@ -175,7 +160,6 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     case ECTLOperator::AF:
     {
-        TArray<UStateNode*> ReachableStates;
         TArray<UStateNode*> CurrentStates = SubResults;
         TSet<UStateNode*> VisitedStates;
 
@@ -186,7 +170,6 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
                 satisfyingStatesSet.Add(StateNode);
                 VisitedStates.Add(StateNode);
             }
-
             CurrentStates = model->PreImageUniversal(CurrentStates, stateNode);
             CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return !VisitedStates.Contains(StateNode); });
         }

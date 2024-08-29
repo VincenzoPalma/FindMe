@@ -12,7 +12,7 @@
       "id": 2,
       "properties": {
         "isActive": false,
-        "isGoal": true,
+        "isGoal": false,
         "hasKey": true
       }
     },
@@ -36,8 +36,8 @@
       "id": 5,
       "properties": {
         "isActive": false,
-        "isGoal": false,
-        "hasKey": false
+        "isGoal": true,
+        "hasKey": true
       }
     },
     {
@@ -92,7 +92,12 @@
     {
       "from": 1,
       "to": 5,
-      "action": "action2"
+      "action": "action5"
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "action": "action5"
     }
   ],
   "formulas": [
@@ -178,7 +183,7 @@
     {
       "type": "Unary",
       "operator": "EX",
-      "subformula_id": 3,
+      "subformula_id": 2,
       "id": 14
     }
   ]
