@@ -21,7 +21,7 @@
       "properties": {
         "isActive": true,
         "isGoal": true,
-        "hasKey": true
+        "hasKey": false
       }
     },
     {
@@ -45,7 +45,7 @@
       "properties": {
         "isActive": true,
         "isGoal": false,
-        "hasKey": false
+        "hasKey": true
       }
     },
     {

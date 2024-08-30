@@ -1,4 +1,4 @@
-#include "../Public/Model/CTL_ModelChecking/CTLFormula.h"
+﻿#include "../Public/Model/CTL_ModelChecking/CTLFormula.h"
 
 
 UAtomicFormula::UAtomicFormula()
@@ -220,6 +220,39 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     default:
         break;
     }
+
+    //Alternative version without fixed point method
+    /*
+        case ECTLOperator::AG:
+    {
+        TArray<UStateNode*> ReachableStates = model->GetReachableNodes(stateNode);
+        TArray<UStateNode*> SatisfyingStates;
+
+        for (UStateNode* State : ReachableStates)
+        {
+            bool holds = true;
+            TArray<UStateNode*> StateReachableStates = model->GetReachableNodes(State);
+
+            for (UStateNode* SubState : StateReachableStates)
+            {
+                if (!SubResults.Contains(SubState))
+                {
+                    holds = false;
+                    break;
+                }
+            }
+
+            if (holds)
+            {
+                SatisfyingStates.Add(State);
+            }
+        }
+
+        satisfyingStatesArray = SatisfyingStates;
+
+        break;
+    }
+    */
 
     return satisfyingStatesArray;
 }
