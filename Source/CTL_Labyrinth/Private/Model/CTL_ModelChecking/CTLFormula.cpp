@@ -181,17 +181,14 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     case ECTLOperator::EG:
     {
-        //TODO
         // Find all states where a path exists that is entirely within states satisfying the sub-formula
         TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
-        AllStates = SubResults;
 
-        do
+        while (!StatesUtils::IsSubSet(AllStates, SubResults))
         {
-            TArray<UStateNode*> preImage = model->PreImageExistential(AllStates, stateNode);
-            SubResults = StatesUtils::StatesIntersection(preImage, AllStates);
             AllStates = SubResults;
-        } while (!StatesUtils::IsSubSet(AllStates, SubResults));
+            SubResults = model->PreImageExistential(AllStates, stateNode);
+        }
 
         satisfyingStatesArray = AllStates;
 
@@ -200,17 +197,13 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     case ECTLOperator::AG:
     {
-        //TODO
         // Find all states where every path is entirely within states satisfying the sub-formula
         TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
-        AllStates = SubResults;
-
-        do
+        while (!StatesUtils::IsSubSet(AllStates, SubResults))
         {
-            TArray<UStateNode*> preImage = model->PreImageUniversal(AllStates, stateNode);
-            SubResults = StatesUtils::StatesIntersection(preImage, AllStates);
             AllStates = SubResults;
-        } while (!StatesUtils::IsSubSet(AllStates, SubResults));
+            SubResults = model->PreImageUniversal(AllStates, stateNode);
+        }
 
         satisfyingStatesArray = AllStates;
 
@@ -220,39 +213,6 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     default:
         break;
     }
-
-    //Alternative version without fixed point method
-    /*
-        case ECTLOperator::AG:
-    {
-        TArray<UStateNode*> ReachableStates = model->GetReachableNodes(stateNode);
-        TArray<UStateNode*> SatisfyingStates;
-
-        for (UStateNode* State : ReachableStates)
-        {
-            bool holds = true;
-            TArray<UStateNode*> StateReachableStates = model->GetReachableNodes(State);
-
-            for (UStateNode* SubState : StateReachableStates)
-            {
-                if (!SubResults.Contains(SubState))
-                {
-                    holds = false;
-                    break;
-                }
-            }
-
-            if (holds)
-            {
-                SatisfyingStates.Add(State);
-            }
-        }
-
-        satisfyingStatesArray = SatisfyingStates;
-
-        break;
-    }
-    */
 
     return satisfyingStatesArray;
 }

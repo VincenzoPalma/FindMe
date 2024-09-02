@@ -5,15 +5,19 @@
       "properties": {
         "isActive": true,
         "isGoal": true,
-        "hasKey": true
+        "hasKey": false,
+        "isLocked": false,
+        "isVisible": true
       }
     },
     {
       "id": 2,
       "properties": {
         "isActive": false,
-        "isGoal": false,
-        "hasKey": true
+        "isGoal": true,
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": false
       }
     },
     {
@@ -21,7 +25,9 @@
       "properties": {
         "isActive": true,
         "isGoal": true,
-        "hasKey": false
+        "hasKey": false,
+        "isLocked": false,
+        "isVisible": true
       }
     },
     {
@@ -29,47 +35,269 @@
       "properties": {
         "isActive": false,
         "isGoal": true,
-        "hasKey": true
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": true
       }
     },
     {
       "id": 5,
       "properties": {
-        "isActive": false,
+        "isActive": true,
         "isGoal": true,
-        "hasKey": true
+        "hasKey": false,
+        "isLocked": false,
+        "isVisible": false
       }
     },
     {
       "id": 6,
       "properties": {
-        "isActive": true,
-        "isGoal": false,
-        "hasKey": true
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": true
       }
     },
     {
       "id": 7,
       "properties": {
-        "isActive": false,
+        "isActive": true,
         "isGoal": true,
-        "hasKey": true
+        "hasKey": true,
+        "isLocked": false,
+        "isVisible": true
       }
     },
     {
       "id": 8,
       "properties": {
-        "isActive": true,
-        "isGoal": false,
-        "hasKey": true
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": false,
+        "isLocked": false,
+        "isVisible": false
       }
     },
     {
       "id": 9,
       "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 10,
+      "properties": {
         "isActive": false,
         "isGoal": true,
-        "hasKey": false
+        "hasKey": true,
+        "isLocked": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 11,
+      "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": false,
+        "isLocked": true,
+        "isVisible": false
+      }
+    },
+    {
+      "id": 12,
+      "properties": {
+        "isActive": false,
+        "isGoal": false,
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 13,
+      "properties": {
+        "isActive": true,
+        "isGoal": true,
+        "hasKey": true,
+        "isLocked": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 14,
+      "properties": {
+        "isActive": false,
+        "isGoal": false,
+        "hasKey": false,
+        "isLocked": true,
+        "isVisible": false
+      }
+    },
+    {
+      "id": 15,
+      "properties": {
+        "isActive": true,
+        "isGoal": true,
+        "hasKey": false,
+        "isLocked": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 16,
+      "properties": {
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": false
+      }
+    },
+    {
+      "id": 17,
+      "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 18,
+      "properties": {
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": false,
+        "isLocked": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 19,
+      "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": true,
+        "isLocked": false,
+        "isVisible": false
+      }
+    },
+    {
+      "id": 20,
+      "properties": {
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 21,
+      "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": false,
+        "isLocked": true,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 22,
+      "properties": {
+        "isActive": false,
+        "isGoal": false,
+        "hasKey": true,
+        "isLocked": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 23,
+      "properties": {
+        "isActive": true,
+        "isGoal": true,
+        "hasKey": true,
+        "isLocked": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 24,
+      "properties": {
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": false,
+        "isLocked": true,
+        "isVisible": false
+      }
+    },
+    {
+      "id": 25,
+      "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": false,
+        "isLocked": true,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 26,
+      "properties": {
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": true,
+        "isLocked": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 27,
+      "properties": {
+        "isActive": true,
+        "isGoal": false,
+        "hasKey": true,
+        "isLocked": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 28,
+      "properties": {
+        "isActive": false,
+        "isGoal": true,
+        "hasKey": false,
+        "isLocked": true,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 29,
+      "properties": {
+        "isActive": true,
+        "isGoal": true,
+        "hasKey": false,
+        "isLocked": true,
+        "isVisible": false
+      }
+    },
+    {
+      "id": 30,
+      "properties": {
+        "isActive": false,
+        "isGoal": false,
+        "hasKey": true,
+        "isLocked": true,
+        "isVisible": true
       }
     }
   ],
@@ -77,27 +305,137 @@
     {
       "from": 1,
       "to": 2,
-      "action": "action1"
+      "action": "unlockDoor"
     },
     {
       "from": 2,
       "to": 3,
-      "action": "action2"
+      "action": "collectKey"
     },
     {
       "from": 3,
       "to": 4,
-      "action": "action1"
+      "action": "activate"
     },
     {
-      "from": 1,
+      "from": 4,
       "to": 5,
-      "action": "action5"
+      "action": "openGate"
     },
     {
       "from": 5,
       "to": 6,
-      "action": "action5"
+      "action": "moveToNextLevel"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "action": "findExit"
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "action": "unlockChest"
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "action": "useItem"
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "action": "collectTreasure"
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "action": "completeQuest"
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "action": "openDoor"
+    },
+    {
+      "from": 15,
+      "to": 16,
+      "action": "findSecret"
+    },
+    {
+      "from": 16,
+      "to": 17,
+      "action": "solveRiddle"
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "action": "defeatMinion"
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "action": "unlockFinalRoom"
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "action": "findKey"
+    },
+    {
+      "from": 20,
+      "to": 21,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "action": "claimVictory"
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "action": "discoverSecret"
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "action": "unlockMystery"
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "action": "exploreHiddenArea"
+    },
+    {
+      "from": 25,
+      "to": 26,
+      "action": "revealClues"
+    },
+    {
+      "from": 26,
+      "to": 27,
+      "action": "solveFinalPuzzle"
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "action": "findExitDoor"
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "action": "completeFinalQuest"
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "action": "achieveVictory"
     }
   ],
   "formulas": [
@@ -117,74 +455,78 @@
       "id": 3
     },
     {
+      "type": "Atomic",
+      "predicate": "isLocked",
+      "id": 4
+    },
+    {
+      "type": "Atomic",
+      "predicate": "isVisible",
+      "id": 5
+    },
+    {
       "type": "Unary",
       "operator": "NOT",
       "subformula_id": 1,
-      "id": 4
+      "id": 6
+    },
+    {
+      "type": "Unary",
+      "operator": "NOT",
+      "subformula_id": 4,
+      "id": 7
     },
     {
       "type": "Binary",
       "operator": "AND",
       "left_id": 2,
-      "right_id": 4,
-      "id": 5
+      "right_id": 6,
+      "id": 8
     },
     {
       "type": "Binary",
       "operator": "OR",
-      "left_id": 1,
-      "right_id": 2,
-      "id": 6
-    },
-    {
-      "type": "Unary",
-      "operator": "AF",
-      "subformula_id": 3,
-      "id": 7
-    },
-    {
-      "type": "Unary",
-      "operator": "EF",
-      "subformula_id": 3,
-      "id": 8
-    },
-    {
-      "type": "Unary",
-      "operator": "AG",
-      "subformula_id": 3,
+      "left_id": 3,
+      "right_id": 7,
       "id": 9
     },
     {
       "type": "Unary",
-      "operator": "EG",
-      "subformula_id": 3,
+      "operator": "AF",
+      "subformula_id": 4,
       "id": 10
     },
     {
-      "type": "Binary",
-      "operator": "AU",
-      "left_id": 2,
-      "right_id": 3,
+      "type": "Unary",
+      "operator": "EF",
+      "subformula_id": 5,
       "id": 11
     },
     {
-      "type": "Binary",
-      "operator": "EU",
-      "left_id": 2,
-      "right_id": 3,
+      "type": "Unary",
+      "operator": "AG",
+      "subformula_id": 2,
       "id": 12
     },
     {
       "type": "Unary",
-      "operator": "AX",
+      "operator": "EG",
       "subformula_id": 2,
       "id": 13
     },
     {
-      "type": "Unary",
-      "operator": "EX",
-      "subformula_id": 2,
+      "type": "Binary",
+      "operator": "AU",
+      "left_id": 5,
+      "right_id": 6,
       "id": 14
+    },
+    {
+      "type": "Binary",
+      "operator": "EU",
+      "left_id": 6,
+      "right_id": 7,
+      "id": 15
     }
   ]
 }
