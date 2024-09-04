@@ -1,0 +1,1954 @@
+{
+  "states": [
+    {
+      "id": 1,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 2,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 3,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 4,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 5,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 6,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 7,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 8,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 9,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 10,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 11,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 12,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 13,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 14,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 15,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 16,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 17,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 18,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 19,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 20,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 21,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 22,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 23,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 24,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 25,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 26,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 27,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 28,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 29,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 30,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 31,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 32,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 33,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 34,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 35,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 36,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 37,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 38,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 39,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 40,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 41,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 42,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 43,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 44,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 45,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 46,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 47,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 48,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 49,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 50,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 51,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 52,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 53,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 54,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 55,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 56,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 57,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 58,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 59,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 60,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 61,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 62,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 63,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 64,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 65,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 66,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 67,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 68,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 69,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 70,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 71,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 72,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 73,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 74,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 75,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 76,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 77,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 78,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 79,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 80,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 81,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 82,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 83,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 84,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 85,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 86,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 87,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 88,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 89,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 90,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 91,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 92,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 93,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 94,
+      "properties": {
+        "isOpen": false,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 95,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 96,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 97,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 98,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true,
+        "isLocked": true
+      }
+    },
+    {
+      "id": 99,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": false,
+        "isLocked": false
+      }
+    },
+    {
+      "id": 100,
+      "properties": {
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
+        "isVisible": true,
+        "isLocked": false
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": 1,
+      "to": 2,
+      "action": "openDoor"
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 2,
+      "to": 4,
+      "action": "findKey"
+    },
+    {
+      "from": 3,
+      "to": 5,
+      "action": "activate"
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 4,
+      "to": 6,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 5,
+      "to": 7,
+      "action": "reachGoal"
+    },
+    {
+      "from": 5,
+      "to": 8,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "action": "revealGoal"
+    },
+    {
+      "from": 6,
+      "to": 9,
+      "action": "findExit"
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 7,
+      "to": 10,
+      "action": "unlockChest"
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "action": "completeQuest"
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 10,
+      "to": 1,
+      "action": "restartGame"
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "action": "openDoor"
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "action": "openDoor"
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 12,
+      "to": 14,
+      "action": "findKey"
+    },
+    {
+      "from": 13,
+      "to": 15,
+      "action": "activate"
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 14,
+      "to": 16,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 15,
+      "to": 17,
+      "action": "reachGoal"
+    },
+    {
+      "from": 15,
+      "to": 18,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 16,
+      "to": 17,
+      "action": "revealGoal"
+    },
+    {
+      "from": 16,
+      "to": 19,
+      "action": "findExit"
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 17,
+      "to": 20,
+      "action": "unlockChest"
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "action": "completeQuest"
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 20,
+      "to": 11,
+      "action": "restartGame"
+    },
+    {
+      "from": 20,
+      "to": 21,
+      "action": "openDoor"
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "action": "openDoor"
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 22,
+      "to": 24,
+      "action": "findKey"
+    },
+    {
+      "from": 23,
+      "to": 25,
+      "action": "activate"
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 24,
+      "to": 26,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 25,
+      "to": 27,
+      "action": "reachGoal"
+    },
+    {
+      "from": 25,
+      "to": 28,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 26,
+      "to": 27,
+      "action": "revealGoal"
+    },
+    {
+      "from": 26,
+      "to": 29,
+      "action": "findExit"
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 27,
+      "to": 30,
+      "action": "unlockChest"
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "action": "completeQuest"
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 30,
+      "to": 21,
+      "action": "restartGame"
+    },
+    {
+      "from": 30,
+      "to": 31,
+      "action": "openDoor"
+    },
+    {
+      "from": 31,
+      "to": 32,
+      "action": "openDoor"
+    },
+    {
+      "from": 32,
+      "to": 33,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 32,
+      "to": 34,
+      "action": "findKey"
+    },
+    {
+      "from": 33,
+      "to": 35,
+      "action": "activate"
+    },
+    {
+      "from": 34,
+      "to": 35,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 34,
+      "to": 36,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 35,
+      "to": 37,
+      "action": "reachGoal"
+    },
+    {
+      "from": 35,
+      "to": 38,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 36,
+      "to": 37,
+      "action": "revealGoal"
+    },
+    {
+      "from": 36,
+      "to": 39,
+      "action": "findExit"
+    },
+    {
+      "from": 37,
+      "to": 38,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 37,
+      "to": 40,
+      "action": "unlockChest"
+    },
+    {
+      "from": 38,
+      "to": 39,
+      "action": "completeQuest"
+    },
+    {
+      "from": 39,
+      "to": 40,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 40,
+      "to": 31,
+      "action": "restartGame"
+    },
+    {
+      "from": 40,
+      "to": 41,
+      "action": "openDoor"
+    },
+    {
+      "from": 41,
+      "to": 42,
+      "action": "openDoor"
+    },
+    {
+      "from": 42,
+      "to": 43,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 42,
+      "to": 44,
+      "action": "findKey"
+    },
+    {
+      "from": 43,
+      "to": 45,
+      "action": "activate"
+    },
+    {
+      "from": 44,
+      "to": 45,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 44,
+      "to": 46,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 45,
+      "to": 47,
+      "action": "reachGoal"
+    },
+    {
+      "from": 45,
+      "to": 48,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 46,
+      "to": 47,
+      "action": "revealGoal"
+    },
+    {
+      "from": 46,
+      "to": 49,
+      "action": "findExit"
+    },
+    {
+      "from": 47,
+      "to": 48,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 47,
+      "to": 50,
+      "action": "unlockChest"
+    },
+    {
+      "from": 48,
+      "to": 49,
+      "action": "completeQuest"
+    },
+    {
+      "from": 49,
+      "to": 50,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 50,
+      "to": 41,
+      "action": "restartGame"
+    },
+    {
+      "from": 50,
+      "to": 51,
+      "action": "openDoor"
+    },
+    {
+      "from": 51,
+      "to": 52,
+      "action": "openDoor"
+    },
+    {
+      "from": 52,
+      "to": 53,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 52,
+      "to": 54,
+      "action": "findKey"
+    },
+    {
+      "from": 53,
+      "to": 55,
+      "action": "activate"
+    },
+    {
+      "from": 54,
+      "to": 55,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 54,
+      "to": 56,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 55,
+      "to": 57,
+      "action": "reachGoal"
+    },
+    {
+      "from": 55,
+      "to": 58,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 56,
+      "to": 57,
+      "action": "revealGoal"
+    },
+    {
+      "from": 56,
+      "to": 59,
+      "action": "findExit"
+    },
+    {
+      "from": 57,
+      "to": 58,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 57,
+      "to": 60,
+      "action": "unlockChest"
+    },
+    {
+      "from": 58,
+      "to": 59,
+      "action": "completeQuest"
+    },
+    {
+      "from": 59,
+      "to": 60,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 60,
+      "to": 51,
+      "action": "restartGame"
+    },
+    {
+      "from": 60,
+      "to": 61,
+      "action": "openDoor"
+    },
+    {
+      "from": 61,
+      "to": 62,
+      "action": "openDoor"
+    },
+    {
+      "from": 62,
+      "to": 63,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 62,
+      "to": 64,
+      "action": "findKey"
+    },
+    {
+      "from": 63,
+      "to": 65,
+      "action": "activate"
+    },
+    {
+      "from": 64,
+      "to": 65,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 64,
+      "to": 66,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 65,
+      "to": 67,
+      "action": "reachGoal"
+    },
+    {
+      "from": 65,
+      "to": 68,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 66,
+      "to": 67,
+      "action": "revealGoal"
+    },
+    {
+      "from": 66,
+      "to": 69,
+      "action": "findExit"
+    },
+    {
+      "from": 67,
+      "to": 68,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 67,
+      "to": 70,
+      "action": "unlockChest"
+    },
+    {
+      "from": 68,
+      "to": 69,
+      "action": "completeQuest"
+    },
+    {
+      "from": 69,
+      "to": 70,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 70,
+      "to": 61,
+      "action": "restartGame"
+    },
+    {
+      "from": 70,
+      "to": 71,
+      "action": "openDoor"
+    },
+    {
+      "from": 71,
+      "to": 72,
+      "action": "openDoor"
+    },
+    {
+      "from": 72,
+      "to": 73,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 72,
+      "to": 74,
+      "action": "findKey"
+    },
+    {
+      "from": 73,
+      "to": 75,
+      "action": "activate"
+    },
+    {
+      "from": 74,
+      "to": 75,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 74,
+      "to": 76,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 75,
+      "to": 77,
+      "action": "reachGoal"
+    },
+    {
+      "from": 75,
+      "to": 78,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 76,
+      "to": 77,
+      "action": "revealGoal"
+    },
+    {
+      "from": 76,
+      "to": 79,
+      "action": "findExit"
+    },
+    {
+      "from": 77,
+      "to": 78,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 77,
+      "to": 80,
+      "action": "unlockChest"
+    },
+    {
+      "from": 78,
+      "to": 79,
+      "action": "completeQuest"
+    },
+    {
+      "from": 79,
+      "to": 80,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 80,
+      "to": 71,
+      "action": "restartGame"
+    },
+    {
+      "from": 80,
+      "to": 81,
+      "action": "openDoor"
+    },
+    {
+      "from": 81,
+      "to": 82,
+      "action": "openDoor"
+    },
+    {
+      "from": 82,
+      "to": 83,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 82,
+      "to": 84,
+      "action": "findKey"
+    },
+    {
+      "from": 83,
+      "to": 85,
+      "action": "activate"
+    },
+    {
+      "from": 84,
+      "to": 85,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 84,
+      "to": 86,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 85,
+      "to": 87,
+      "action": "reachGoal"
+    },
+    {
+      "from": 85,
+      "to": 88,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 86,
+      "to": 87,
+      "action": "revealGoal"
+    },
+    {
+      "from": 86,
+      "to": 89,
+      "action": "findExit"
+    },
+    {
+      "from": 87,
+      "to": 88,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 87,
+      "to": 90,
+      "action": "unlockChest"
+    },
+    {
+      "from": 88,
+      "to": 89,
+      "action": "completeQuest"
+    },
+    {
+      "from": 89,
+      "to": 90,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 90,
+      "to": 81,
+      "action": "restartGame"
+    },
+    {
+      "from": 90,
+      "to": 91,
+      "action": "openDoor"
+    },
+    {
+      "from": 91,
+      "to": 92,
+      "action": "openDoor"
+    },
+    {
+      "from": 92,
+      "to": 93,
+      "action": "collectWeapon"
+    },
+    {
+      "from": 92,
+      "to": 94,
+      "action": "findKey"
+    },
+    {
+      "from": 93,
+      "to": 95,
+      "action": "activate"
+    },
+    {
+      "from": 94,
+      "to": 95,
+      "action": "enterSecretRoom"
+    },
+    {
+      "from": 94,
+      "to": 96,
+      "action": "defeatGuard"
+    },
+    {
+      "from": 95,
+      "to": 97,
+      "action": "reachGoal"
+    },
+    {
+      "from": 95,
+      "to": 98,
+      "action": "hideWeapon"
+    },
+    {
+      "from": 96,
+      "to": 97,
+      "action": "revealGoal"
+    },
+    {
+      "from": 96,
+      "to": 99,
+      "action": "findExit"
+    },
+    {
+      "from": 97,
+      "to": 98,
+      "action": "escapeGuard"
+    },
+    {
+      "from": 97,
+      "to": 100,
+      "action": "unlockChest"
+    },
+    {
+      "from": 98,
+      "to": 99,
+      "action": "completeQuest"
+    },
+    {
+      "from": 99,
+      "to": 100,
+      "action": "finalChallenge"
+    },
+    {
+      "from": 100,
+      "to": 91,
+      "action": "restartGame"
+    }
+  ],
+  "formulas": [
+    {
+      "type": "Atomic",
+      "predicate": "isOpen",
+      "id": 1
+    },
+    {
+      "type": "Atomic",
+      "predicate": "isGoal",
+      "id": 2
+    },
+    {
+      "type": "Atomic",
+      "predicate": "hasWeapon",
+      "id": 3
+    },
+    {
+      "type": "Atomic",
+      "predicate": "isLocked",
+      "id": 4
+    },
+    {
+      "type": "Atomic",
+      "predicate": "isVisible",
+      "id": 5
+    },
+    {
+      "type": "Atomic",
+      "predicate": "isGuarded",
+      "id": 9
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 1,
+      "right_id": 2,
+      "id": 6
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 3,
+      "right_id": 4,
+      "id": 7
+    },
+    {
+      "type": "Binary",
+      "operator": "AU",
+      "left_id": 6,
+      "right_id": 7,
+      "id": 8
+    }
+  ]
+}

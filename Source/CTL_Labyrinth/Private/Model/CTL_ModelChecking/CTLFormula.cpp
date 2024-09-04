@@ -199,6 +199,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     {
         // Find all states where every path is entirely within states satisfying the sub-formula
         TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
+
         while (!StatesUtils::IsSubSet(AllStates, SubResults))
         {
             AllStates = SubResults;

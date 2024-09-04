@@ -4,6 +4,7 @@
 #include "PredicateManager.h"
 #include "CoreMinimal.h"
 #include "ModelStructures.h"
+#include "HAL/PlatformTime.h"
 #include "CTLModel.generated.h"
 
 UCLASS(Blueprintable)
