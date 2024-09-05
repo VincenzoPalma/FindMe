@@ -180,7 +180,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         while (!StatesUtils::IsSubSet(AllStates, SubResults))
         {
             AllStates = SubResults;
-            SubResults = model->PreImageExistential(AllStates, stateNode);
+            SubResults = StatesUtils::StatesIntersection(model->PreImageExistential(AllStates, stateNode), SubResults);
         }
 
         satisfyingStatesArray = AllStates;
@@ -196,7 +196,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         while (!StatesUtils::IsSubSet(AllStates, SubResults))
         {
             AllStates = SubResults;
-            SubResults = model->PreImageUniversal(AllStates, stateNode);
+            SubResults = StatesUtils::StatesIntersection(model->PreImageUniversal(AllStates, stateNode), SubResults);
         }
 
         satisfyingStatesArray = AllStates;

@@ -71,6 +71,7 @@ TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& st
 
     for (UStateNode* StateNode : ReachableStates)
     {
+
         bool HasSuccessorInQ = false;
         for (UStateNode* Successor : StateNode->GetChildren())
         {

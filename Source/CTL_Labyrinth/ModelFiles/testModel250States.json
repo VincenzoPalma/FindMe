@@ -5536,7 +5536,7 @@
     },
     {
       "type": "Atomic",
-      "predicate": "isLocked",
+      "predicate": "isGuarded",
       "id": 4
     },
     {
@@ -5545,21 +5545,15 @@
       "id": 5
     },
     {
-      "type": "Atomic",
-      "predicate": "isGuarded",
-      "id": 9
-    },
-    {
-      "type": "Binary",
-      "operator": "AND",
-      "left_id": 1,
-      "right_id": 2,
+      "type": "Unary",
+      "operator": "NOT",
+      "subformula_id": 4,
       "id": 6
     },
     {
       "type": "Binary",
       "operator": "AND",
-      "left_id": 4,
+      "left_id": 2,
       "right_id": 3,
       "id": 7
     },
@@ -5567,28 +5561,71 @@
       "type": "Binary",
       "operator": "AND",
       "left_id": 7,
-      "right_id": 4,
+      "right_id": 6,
+      "id": 8
+    },
+    {
+      "type": "Unary",
+      "operator": "EF",
+      "subformula_id": 8,
+      "id": 9
+    },
+    {
+      "type": "Unary",
+      "operator": "AX",
+      "subformula_id": 9,
       "id": 10
     },
     {
       "type": "Binary",
       "operator": "AND",
-      "left_id": 10,
-      "right_id": 5,
+      "left_id": 1,
+      "right_id": 10,
       "id": 11
     },
     {
-      "type": "Binary",
-      "operator": "AND",
-      "left_id": 11,
-      "right_id": 9,
+      "type": "Unary",
+      "operator": "EX",
+      "subformula_id": 11,
       "id": 12
     },
     {
       "type": "Unary",
       "operator": "AF",
-      "subformula_id": 7,
-      "id": 8
+      "subformula_id": 6,
+      "id": 13
+    },
+    {
+      "type": "Unary",
+      "operator": "AX",
+      "subformula_id": 13,
+      "id": 14
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 5,
+      "right_id": 14,
+      "id": 15
+    },
+    {
+      "type": "Unary",
+      "operator": "EG",
+      "subformula_id": 15,
+      "id": 16
+    },
+    {
+      "type": "Unary",
+      "operator": "AG",
+      "subformula_id": 16,
+      "id": 17
+    },
+    {
+      "type": "Binary",
+      "operator": "AU",
+      "left_id": 12,
+      "right_id": 17,
+      "id": 18
     }
   ]
 }

@@ -1,224 +1,256 @@
 {
-    "states": [
-      {
-        "id": 1,
-        "properties": {
-          "isOpen": true,
-          "isGoal": true,
-          "hasWeapon": true,
-          "isGuarded": false,
-          "isVisible": true
-        }
-      },
-      {
-        "id": 2,
-        "properties": {
-          "isOpen": true,
-          "isGoal": true,
-          "hasWeapon": true,
-          "isGuarded": false,
-          "isVisible": true
-        }
-      },
-      {
-        "id": 3,
-        "properties": {
-          "isOpen": true,
-          "isGoal": false,
-          "hasWeapon": false,
-          "isGuarded": false,
-          "isVisible": true
-        }
-      },
-      {
-        "id": 4,
-        "properties": {
-          "isOpen": true,
-          "isGoal": true,
-          "hasWeapon": true,
-          "isGuarded": false,
-          "isVisible": true
-        }
-      },
-      {
-        "id": 5,
-        "properties": {
-          "isOpen": true,
-          "isGoal": false,
-          "hasWeapon": false,
-          "isGuarded": false,
-          "isVisible": false
-        }
-      },
-      {
-        "id": 6,
-        "properties": {
-          "isOpen": true,
-          "isGoal": true,
-          "hasWeapon": true,
-          "isGuarded": false,
-          "isVisible": true
-        }
-      },
-      {
-        "id": 7,
-        "properties": {
-          "isOpen": true,
-          "isGoal": true,
-          "hasWeapon": true,
-          "isGuarded": false,
-          "isVisible": true
-        }
-      },
-      {
-        "id": 8,
-        "properties": {
-          "isOpen": true,
-          "isGoal": true,
-          "hasWeapon": true,
-          "isGuarded": false,
-          "isVisible": true
-        }
-      },
-      {
-        "id": 9,
-        "properties": {
-          "isOpen": true,
-          "isGoal": true,
-          "hasWeapon": true,
-          "isGuarded": false,
-          "isVisible": true
-        }
-      },
-      {
-        "id": 10,
-        "properties": {
-          "isOpen": true,
-          "isGoal": true,
-          "hasWeapon": true,
-          "isGuarded": false,
-          "isVisible": true
-        }
+  "states": [
+    {
+      "id": 1,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true
       }
-    ],
-    "transitions": [
-      {
-        "from": 1,
-        "to": 2,
-        "action": "openDoor"
-      },
-      {
-        "from": 2,
-        "to": 3,
-        "action": "collectWeapon"
-      },
-      {
-        "from": 2,
-        "to": 4,
-        "action": "findKey"
-      },
-      {
-        "from": 3,
-        "to": 5,
-        "action": "activate"
-      },
-      {
-        "from": 4,
-        "to": 5,
-        "action": "enterSecretRoom"
-      },
-      {
-        "from": 4,
-        "to": 6,
-        "action": "defeatGuard"
-      },
-      {
-        "from": 5,
-        "to": 7,
-        "action": "reachGoal"
-      },
-      {
-        "from": 5,
-        "to": 8,
-        "action": "hideWeapon"
-      },
-      {
-        "from": 6,
-        "to": 7,
-        "action": "revealGoal"
-      },
-      {
-        "from": 6,
-        "to": 9,
-        "action": "findExit"
-      },
-      {
-        "from": 7,
-        "to": 8,
-        "action": "escapeGuard"
-      },
-      {
-        "from": 7,
-        "to": 10,
-        "action": "unlockChest"
-      },
-      {
-        "from": 8,
-        "to": 9,
-        "action": "completeQuest"
-      },
-      {
-        "from": 9,
-        "to": 10,
-        "action": "finalChallenge"
+    },
+    {
+      "id": 2,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true
       }
-    ],
-        "formulas": [
-          {
-            "type": "Atomic",
-            "predicate": "isOpen",
-            "id": 1
-          },
-          {
-            "type": "Atomic",
-            "predicate": "isGoal",
-            "id": 2
-          },
-          {
-            "type": "Atomic",
-            "predicate": "hasWeapon",
-            "id": 3
-          },
-          {
-            "type": "Atomic",
-            "predicate": "isLocked",
-            "id": 4
-          },
-          {
-            "type": "Atomic",
-            "predicate": "isVisible",
-            "id": 5
-          },
-          {
-            "type": "Binary",
-            "operator": "AND",
-            "left_id": 1,
-            "right_id": 2,
-            "id": 6
-          },
-          {
-            "type": "Binary",
-            "operator": "AND",
-            "left_id": 3,
-            "right_id": 6,
-            "id": 7
-          },
-          {
-            "type": "Unary",
-            "operator": "AF",
-            "subformula_id": 7,
-            "id": 8
-          }
-        ]
+    },
+    {
+      "id": 3,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": true
       }
-      
+    },
+    {
+      "id": 4,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 5,
+      "properties": {
+        "isOpen": true,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": false,
+        "isVisible": false
+      }
+    },
+    {
+      "id": 6,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 7,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 8,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 9,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true
+      }
+    },
+    {
+      "id": 10,
+      "properties": {
+        "isOpen": true,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": false,
+        "isVisible": true
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": 1,
+      "to": 9,
+      "action": "closeDoor"
+    },
+    {
+      "from": 9,
+      "to": 2,
+      "action": "closeDo"
+    },
+    {
+      "from": 2,
+      "to": 10,
+      "action": "closeDo"
+    },
+    {
+      "from": 1,
+      "to": 3,
+      "action": "closeDo"
+    },
+    {
+      "from": 10,
+      "to": 1,
+      "action": "closeDoor"
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "action": "closeDoor"
+    },
+    {
+      "from": 3,
+      "to": 5,
+      "action": "closeDo"
+    },
+    {
+      "from": 9,
+      "to": 5,
+      "action": "closeDoor"
+    }
+  ],
+  "formulas": [
+    {
+      "type": "Atomic",
+      "predicate": "isOpen",
+      "id": 1
+    },
+    {
+      "type": "Atomic",
+      "predicate": "isGoal",
+      "id": 2
+    },
+    {
+      "type": "Atomic",
+      "predicate": "hasWeapon",
+      "id": 3
+    },
+    {
+      "type": "Atomic",
+      "predicate": "isGuarded",
+      "id": 4
+    },
+    {
+      "type": "Atomic",
+      "predicate": "isVisible",
+      "id": 5
+    },
+    {
+      "type": "Unary",
+      "operator": "NOT",
+      "subformula_id": 4,
+      "id": 6
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 2,
+      "right_id": 3,
+      "id": 7
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 7,
+      "right_id": 6,
+      "id": 8
+    },
+    {
+      "type": "Unary",
+      "operator": "EF",
+      "subformula_id": 8,
+      "id": 9
+    },
+    {
+      "type": "Unary",
+      "operator": "AX",
+      "subformula_id": 9,
+      "id": 10
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 1,
+      "right_id": 10,
+      "id": 11
+    },
+    {
+      "type": "Unary",
+      "operator": "EX",
+      "subformula_id": 11,
+      "id": 12
+    },
+    {
+      "type": "Unary",
+      "operator": "AF",
+      "subformula_id": 6,
+      "id": 13
+    },
+    {
+      "type": "Unary",
+      "operator": "AX",
+      "subformula_id": 13,
+      "id": 14
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 5,
+      "right_id": 14,
+      "id": 15
+    },
+    {
+      "type": "Unary",
+      "operator": "EG",
+      "subformula_id": 15,
+      "id": 16
+    },
+    {
+      "type": "Unary",
+      "operator": "AG",
+      "subformula_id": 16,
+      "id": 17
+    },
+    {
+      "type": "Binary",
+      "operator": "AU",
+      "left_id": 12,
+      "right_id": 17,
+      "id": 18
+    }
+  ]
+}
