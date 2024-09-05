@@ -1940,14 +1940,13 @@
       "type": "Binary",
       "operator": "AND",
       "left_id": 3,
-      "right_id": 4,
+      "right_id": 6,
       "id": 7
     },
     {
-      "type": "Binary",
-      "operator": "AU",
-      "left_id": 6,
-      "right_id": 7,
+      "type": "Unary",
+      "operator": "AF",
+      "subformula_id": 7,
       "id": 8
     }
   ]

@@ -138,43 +138,36 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     case ECTLOperator::EF:
     {
-        TArray<UStateNode*> CurrentStates = SubResults;
-        TSet<UStateNode*> VisitedStates;
+        // Find all states where a path exists that contains at least a state satisfying the sub-formula
 
-        while (!CurrentStates.IsEmpty())
+        TArray<UStateNode*> CurrentStates;
+
+        do
         {
-            for (UStateNode* StateNode : CurrentStates)
-            {
-                satisfyingStatesSet.Add(StateNode);
-                VisitedStates.Add(StateNode);
-            }
+            CurrentStates = SubResults;
+            TArray<UStateNode*> preImage = model->PreImageExistential(CurrentStates, stateNode);
+            SubResults = StatesUtils::StatesUnion(SubResults, preImage);
+        } while (!StatesUtils::IsSubSet(SubResults, CurrentStates));
 
-            CurrentStates = model->PreImageExistential(CurrentStates, stateNode);
-            CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return !VisitedStates.Contains(StateNode); });
-        }
-
-        satisfyingStatesArray = satisfyingStatesSet.Array();
+        satisfyingStatesArray = SubResults;
 
         break;
     }
 
     case ECTLOperator::AF:
     {
-        TArray<UStateNode*> CurrentStates = SubResults;
-        TSet<UStateNode*> VisitedStates;
+        // Find all states where every path contains at least a state satisfying the sub-formula
 
-        while (!CurrentStates.IsEmpty())
+        TArray<UStateNode*> CurrentStates;
+
+        do
         {
-            for (UStateNode* StateNode : CurrentStates)
-            {
-                satisfyingStatesSet.Add(StateNode);
-                VisitedStates.Add(StateNode);
-            }
-            CurrentStates = model->PreImageUniversal(CurrentStates, stateNode);
-            CurrentStates = CurrentStates.FilterByPredicate([&](UStateNode* StateNode) { return !VisitedStates.Contains(StateNode); });
-        }
+            CurrentStates = SubResults;
+            TArray<UStateNode*> preImage = model->PreImageUniversal(CurrentStates, stateNode);
+            SubResults = StatesUtils::StatesUnion(SubResults, preImage);
+        } while (!StatesUtils::IsSubSet(SubResults, CurrentStates));
 
-        satisfyingStatesArray = satisfyingStatesSet.Array();
+        satisfyingStatesArray = SubResults;
 
         break;
     }

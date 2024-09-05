@@ -5585,10 +5585,9 @@
       "id": 12
     },
     {
-      "type": "Binary",
-      "operator": "EU",
-      "left_id": 6,
-      "right_id": 7,
+      "type": "Unary",
+      "operator": "AF",
+      "subformula_id": 7,
       "id": 8
     }
   ]

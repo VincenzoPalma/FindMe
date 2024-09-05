@@ -215,7 +215,7 @@
           },
           {
             "type": "Unary",
-            "operator": "EG",
+            "operator": "AF",
             "subformula_id": 7,
             "id": 8
           }
