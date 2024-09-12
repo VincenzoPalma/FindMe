@@ -3,9 +3,9 @@
     {
       "id": 1,
       "properties": {
-        "isOpen": true,
+        "isOpen": false,
         "isGoal": true,
-        "hasWeapon": true,
+        "hasWeapon": false,
         "isGuarded": false,
         "isVisible": true
       }
@@ -13,31 +13,31 @@
     {
       "id": 2,
       "properties": {
-        "isOpen": true,
+        "isOpen": false,
         "isGoal": true,
-        "hasWeapon": true,
+        "hasWeapon": false,
         "isGuarded": false,
-        "isVisible": true
+        "isVisible": false
       }
     },
     {
       "id": 3,
       "properties": {
-        "isOpen": true,
-        "isGoal": false,
-        "hasWeapon": false,
-        "isGuarded": false,
+        "isOpen": false,
+        "isGoal": true,
+        "hasWeapon": true,
+        "isGuarded": true,
         "isVisible": true
       }
     },
     {
       "id": 4,
       "properties": {
-        "isOpen": true,
+        "isOpen": false,
         "isGoal": true,
         "hasWeapon": true,
-        "isGuarded": false,
-        "isVisible": true
+        "isGuarded": true,
+        "isVisible": false
       }
     },
     {
@@ -47,26 +47,26 @@
         "isGoal": false,
         "hasWeapon": false,
         "isGuarded": false,
-        "isVisible": false
+        "isVisible": true
       }
     },
     {
       "id": 6,
       "properties": {
         "isOpen": true,
-        "isGoal": true,
-        "hasWeapon": true,
+        "isGoal": false,
+        "hasWeapon": false,
         "isGuarded": false,
-        "isVisible": true
+        "isVisible": false
       }
     },
     {
       "id": 7,
       "properties": {
         "isOpen": true,
-        "isGoal": true,
-        "hasWeapon": true,
-        "isGuarded": false,
+        "isGoal": false,
+        "hasWeapon": false,
+        "isGuarded": true,
         "isVisible": true
       }
     },
@@ -74,9 +74,9 @@
       "id": 8,
       "properties": {
         "isOpen": true,
-        "isGoal": true,
+        "isGoal": false,
         "hasWeapon": true,
-        "isGuarded": false,
+        "isGuarded": true,
         "isVisible": true
       }
     },
@@ -84,10 +84,10 @@
       "id": 9,
       "properties": {
         "isOpen": true,
-        "isGoal": true,
+        "isGoal": false,
         "hasWeapon": true,
-        "isGuarded": false,
-        "isVisible": true
+        "isGuarded": true,
+        "isVisible": false
       }
     },
     {
@@ -104,23 +104,23 @@
   "transitions": [
     {
       "from": 1,
-      "to": 9,
-      "action": "closeDoor"
-    },
-    {
-      "from": 9,
       "to": 2,
-      "action": "closeDo"
+      "action": "action1"
     },
     {
       "from": 2,
-      "to": 10,
-      "action": "closeDo"
+      "to": 3,
+      "action": "action1"
     },
     {
-      "from": 1,
+      "from": 3,
+      "to": 4,
+      "action": "action1"
+    },
+    {
+      "from": 4,
       "to": 3,
-      "action": "closeDo"
+      "action": "action1"
     },
     {
       "from": 10,
@@ -135,7 +135,7 @@
     {
       "from": 3,
       "to": 5,
-      "action": "closeDo"
+      "action": "closeDoor"
     },
     {
       "from": 9,
@@ -247,9 +247,23 @@
     },
     {
       "type": "Binary",
-      "operator": "AU",
-      "left_id": 12,
-      "right_id": 17,
+      "operator": "AND",
+      "left_id": 1,
+      "right_id": 4,
+      "id": 19
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 19,
+      "right_id": 5,
+      "id": 20
+    },
+    {
+      "type": "Binary",
+      "operator": "EU",
+      "left_id": 8,
+      "right_id": 20,
       "id": 18
     }
   ]

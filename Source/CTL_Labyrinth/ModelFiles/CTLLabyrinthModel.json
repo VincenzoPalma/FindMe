@@ -1281,7 +1281,7 @@
     },
     {
       "from": 33,
-      "to": 25,
+      "to": 36,
       "action": "NPC2GetsNotVisible"
     },
     {
@@ -1460,32 +1460,6 @@
       "type": "Atomic",
       "predicate": "NPC1Alive",
       "id": 3
-    },
-    {
-      "type": "Binary",
-      "operator": "AND",
-      "left_id": 1,
-      "right_id": 2,
-      "id": 4
-    },
-    {
-      "type": "Binary",
-      "operator": "AND",
-      "left_id": 4,
-      "right_id": 3,
-      "id": 5
-    },
-    {
-      "type": "Unary",
-      "operator": "NOT",
-      "subformula_id": 5,
-      "id": 6
-    },
-    {
-      "type": "Unary",
-      "operator": "AG",
-      "subformula_id": 6,
-      "id": 7
     }
   ]
 }
