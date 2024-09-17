@@ -1431,6 +1431,18 @@
       "operator": "EX",
       "subformula_id": 27,
       "id": 28
+    },
+    {
+      "type": "Unary",
+      "operator": "NOT",
+      "subformula_id": 7,
+      "id": 29
+    },
+    {
+      "type": "Unary",
+      "operator": "EX",
+      "subformula_id": 29,
+      "id": 30
     }
   ]
 }
