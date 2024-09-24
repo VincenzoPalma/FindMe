@@ -1321,8 +1321,8 @@
     {
       "type": "Binary",
       "operator": "OR",
-      "left_id": 22,
-      "right_id": 23,
+      "left_id": 23,
+      "right_id": 24,
       "id": 25
     },
     {
