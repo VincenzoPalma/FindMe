@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Model/CTLModel.h"
 #include "StatesUtils.h"
 #include "../StateTree/StateNode.h"
 #include "CTLFormula.generated.h"
@@ -22,6 +21,8 @@ enum class ECTLOperator : uint8 {
     AU
 };
 
+class UCTLModel;
+
 UCLASS(Blueprintable)
 class CTL_LABYRINTH_API UCTLFormula : public UObject
 {
@@ -31,8 +32,7 @@ public:
     virtual ~UCTLFormula() = default;
 
     UFUNCTION(BlueprintCallable, Category = "CTLFormula")
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node) const PURE_VIRTUAL(UCTLFormula::Evaluate, return TArray<UStateNode*>(););
-
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, UPARAM(ref) TMap<int32, int32>& statesScores) const PURE_VIRTUAL(UCTLFormula::Evaluate, return TArray<UStateNode*>(););
 };
 
 UCLASS(Blueprintable)
@@ -44,7 +44,7 @@ public:
     UAtomicFormula();
     virtual bool EvaluatePredicate(UStateNode* node) const;
 
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, UPARAM(ref) TMap<int32, int32>& statesScores) const override;
 
     void Initialize(TFunction<bool(const FState&)> InPredicate);
 
@@ -59,7 +59,7 @@ class CTL_LABYRINTH_API UUnaryFormula : public UCTLFormula
 
 public:
     UUnaryFormula();
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, UPARAM(ref) TMap<int32, int32>& statesScores) const override;
     void Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula);
 
 private:
@@ -74,7 +74,7 @@ class CTL_LABYRINTH_API UBinaryFormula : public UCTLFormula
 
 public:
     UBinaryFormula();
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, UPARAM(ref) TMap<int32, int32>& statesScores) const override;
     void Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight);
 
 private:

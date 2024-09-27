@@ -1,5 +1,5 @@
 ﻿#include "../Public/Model/CTL_ModelChecking/CTLFormula.h"
-
+#include "Model/CTLModel.h"
 
 UAtomicFormula::UAtomicFormula()
 {
@@ -19,7 +19,7 @@ bool UAtomicFormula::EvaluatePredicate(UStateNode* stateNode) const
     return false;
 }
 
-TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode) const
+TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
 {
     TArray<UStateNode*> satisfyingStates;
 
@@ -39,6 +39,7 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
             UStateNode* node = StateNodeEntry.Value;
             if (EvaluatePredicate(node))
             {
+                statesScores.FindOrAdd(node->GetState().Id)++;
                 satisfyingStates.Add(node);
             }
         }
@@ -54,6 +55,7 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
         for (UStateNode* currentNode: model->GetReachableNodes(stateNode)){
             if (EvaluatePredicate(currentNode))
             {
+                statesScores.FindOrAdd(currentNode->GetState().Id)++;
                 satisfyingStates.Add(currentNode);
             }
         }
@@ -73,7 +75,7 @@ void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
     SubFormula = InSubFormula;
 }
 
-TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode) const
+TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
 {
     // Temporary array to collect results
     TArray<UStateNode*> satisfyingStatesArray;
@@ -88,7 +90,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     }
 
     // Evaluate the sub-formula
-    TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, stateNode);
+    TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, stateNode, statesScores);
 
     switch (Op)
     {
@@ -102,7 +104,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
                 satisfyingStatesSet.Add(StateNode);
             }
         }
-
+        
         satisfyingStatesArray = satisfyingStatesSet.Array();
 
         break;
@@ -208,6 +210,11 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         break;
     }
 
+    for (UStateNode* Node : satisfyingStatesArray)
+    {
+        statesScores.FindOrAdd(Node->GetState().Id)++;
+    }
+
     return satisfyingStatesArray;
 }
 
@@ -224,7 +231,7 @@ void UBinaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLForm
     Right = InRight;
 }
 
-TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode) const
+TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
 {
     // Temporary array to collect results
     TArray<UStateNode*> satisfyingStatesArray;
@@ -239,8 +246,8 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
     }
 
     // Evaluate the left and right formulas
-    TArray<UStateNode*> leftStates = Left->Evaluate(model, stateNode);
-    TArray<UStateNode*> rightStates = Right->Evaluate(model, stateNode);
+    TArray<UStateNode*> leftStates = Left->Evaluate(model, stateNode, statesScores);
+    TArray<UStateNode*> rightStates = Right->Evaluate(model, stateNode, statesScores);
 
     switch (Op)
     {
@@ -304,6 +311,11 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
 
     default:
         break;
+    }
+
+    for (UStateNode* Node : satisfyingStatesArray)
+    {
+        statesScores.FindOrAdd(Node->GetState().Id)++;
     }
 
     return satisfyingStatesArray;

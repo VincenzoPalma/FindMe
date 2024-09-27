@@ -91,7 +91,6 @@ TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& st
     return PreImage;
 }
 
-
 TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& states, UStateNode* StartNode) const
 {
     TArray<UStateNode*> PreImage;
@@ -239,4 +238,20 @@ void UCTLModel::DebugPrintModel() const
             }
         }
     }
+}
+
+TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* formula) const
+{
+    TMap<int32, int32> statesScores;
+    TArray<UStateNode*> satisfyingStatesArray = formula->Evaluate(this, node, statesScores);
+
+    for (const TPair<int32, int32>& Elem : statesScores)
+    {
+        int32 Key = Elem.Key;
+        int32 Value = Elem.Value;
+
+        UE_LOG(LogTemp, Log, TEXT("Key: %d, Value: %d"), Key, Value);
+    }
+
+    return satisfyingStatesArray;
 }
