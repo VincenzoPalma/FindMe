@@ -245,6 +245,7 @@ TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* fo
     TMap<int32, int32> statesScores;
     TArray<UStateNode*> satisfyingStatesArray = formula->Evaluate(this, node, statesScores);
 
+    //debug
     for (const TPair<int32, int32>& Elem : statesScores)
     {
         int32 Key = Elem.Key;
