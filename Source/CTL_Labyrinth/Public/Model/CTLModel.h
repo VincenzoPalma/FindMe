@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "ModelStructures.h"
 #include "HAL/PlatformTime.h"
+#include "Math/UnrealMathUtility.h"
 #include "CTLModel.generated.h"
 
 UCLASS(Blueprintable)

@@ -320,3 +320,25 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
 
     return satisfyingStatesArray;
 }
+
+int32 UCTLFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UAtomicFormula::CountSubformulas() const
+{
+    return 1;
+}
+
+int32 UUnaryFormula::CountSubformulas() const
+{
+    return 1 + (SubFormula ? SubFormula->CountSubformulas() : 0);
+}
+
+int32 UBinaryFormula::CountSubformulas() const
+{
+    int32 leftCount = Left ? Left->CountSubformulas() : 0;
+    int32 rightCount = Right ? Right->CountSubformulas() : 0;
+    return 1 + leftCount + rightCount;
+}

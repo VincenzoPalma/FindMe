@@ -33,6 +33,8 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "CTLFormula")
     virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, UPARAM(ref) TMap<int32, int32>& statesScores) const PURE_VIRTUAL(UCTLFormula::Evaluate, return TArray<UStateNode*>(););
+
+    virtual int32 CountSubformulas() const;
 };
 
 UCLASS(Blueprintable)
@@ -48,6 +50,7 @@ public:
 
     void Initialize(TFunction<bool(const FState&)> InPredicate);
 
+    virtual int32 CountSubformulas() const;
 private:
     TFunction<bool(const FState&)> Predicate;
 };
@@ -61,7 +64,7 @@ public:
     UUnaryFormula();
     virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, UPARAM(ref) TMap<int32, int32>& statesScores) const override;
     void Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula);
-
+    virtual int32 CountSubformulas() const;
 private:
     ECTLOperator Op;
     UCTLFormula* SubFormula;
@@ -76,7 +79,7 @@ public:
     UBinaryFormula();
     virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, UPARAM(ref) TMap<int32, int32>& statesScores) const override;
     void Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight);
-
+    virtual int32 CountSubformulas() const;
 private:
     ECTLOperator Op;
     UCTLFormula* Left;
