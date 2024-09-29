@@ -30,9 +30,10 @@ TArray<UStateNode*> AStar::ExecuteAStar(const UCTLModel* model, UStateNode* star
 	UE_LOG(LogTemp, Log, TEXT("Score e set impostati"));
 
 	while (!openSet.IsEmpty()) {
-		UE_LOG(LogTemp, Log, TEXT("Inizio Ciclo Esterno"));
 		UStateNode* currentNode = openSet[0];
 		openSet.RemoveAt(0);
+
+		UE_LOG(LogTemp, Log, TEXT("Inizio Ciclo Esterno, ID: %d"), currentNode->GetState().Id);
 
 		if (satisfyingStatesArray.Contains(currentNode)) {
 			UE_LOG(LogTemp, Log, TEXT("TROVATO"));
@@ -43,15 +44,16 @@ TArray<UStateNode*> AStar::ExecuteAStar(const UCTLModel* model, UStateNode* star
 		closedSet.Add(currentNode);
 
 		for (UStateNode* node : currentNode->GetChildren()) {
-			UE_LOG(LogTemp, Log, TEXT("Inizio ciclo interno"));
 			int nodeId = node->GetState().Id;
+
+			UE_LOG(LogTemp, Log, TEXT("Inizio ciclo interno, ID: %d"), nodeId);
 
 			if (closedSet.Contains(node)) {
 				continue;
 			}
 			int tentative_gScore = *gScores.Find(currentNode->GetState().Id) + 1; //1 in questo caso, ma in generale è il peso dell'arco per arrivare a node
 			UE_LOG(LogTemp, Log, TEXT("INIZIO CONTROLLO"));
-			if (tentative_gScore < *gScores.Find(nodeId)) {
+			if (tentative_gScore < *gScores.Find(nodeId)) {//problema qui alla seconda iterazione (secondo figlio)
 				UE_LOG(LogTemp, Log, TEXT("DENTRO 1"));
 				UpdateGScores(gScores, nodeId, tentative_gScore);
 				UpdateFScores(fScores, nodeId, gScores, statesScores);
