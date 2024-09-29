@@ -15,7 +15,7 @@
       "properties": {
         "isOpen": false,
         "isGoal": true,
-        "hasWeapon": false,
+        "hasWeapon": true,
         "isGuarded": false,
         "isVisible": false
       }
@@ -108,39 +108,19 @@
       "action": "action1"
     },
     {
+      "from": 1,
+      "to": 5,
+      "action": "action2"
+    },
+    {
       "from": 2,
       "to": 3,
       "action": "action1"
     },
     {
-      "from": 3,
-      "to": 4,
-      "action": "action1"
-    },
-    {
-      "from": 4,
-      "to": 3,
-      "action": "action1"
-    },
-    {
-      "from": 10,
-      "to": 1,
-      "action": "closeDoor"
-    },
-    {
-      "from": 2,
-      "to": 3,
-      "action": "closeDoor"
-    },
-    {
-      "from": 3,
-      "to": 5,
-      "action": "closeDoor"
-    },
-    {
-      "from": 9,
-      "to": 5,
-      "action": "closeDoor"
+      "from": 1,
+      "to": 10,
+      "action": "action3"
     }
   ],
   "formulas": [
@@ -265,6 +245,20 @@
       "left_id": 8,
       "right_id": 20,
       "id": 18
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 2,
+      "right_id": 3,
+      "id": 21
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 4,
+      "right_id": 21,
+      "id": 22
     }
   ]
 }

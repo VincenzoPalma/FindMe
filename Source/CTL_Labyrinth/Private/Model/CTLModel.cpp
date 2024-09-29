@@ -252,7 +252,7 @@ TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* fo
         int32 Key = Elem.Key;
         int32 Value = Elem.Value;
         statesScores.Remove(Key);
-        statesScores.Add(Key, subFormulasNum- Value);
+        statesScores.Add(Key, subFormulasNum - Value);
     }
 
     //debug
@@ -261,6 +261,12 @@ TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* fo
         int32 Key = Elem.Key;
         int32 Value = Elem.Value;
         UE_LOG(LogTemp, Log, TEXT("Key: %d, Value: %d"), Key, Value);
+    }
+
+    TArray<UStateNode*> result = AStar::ExecuteAStar(this, node, satisfyingStatesArray, statesScores);
+    for (const UStateNode* node : result)
+    {
+        UE_LOG(LogTemp, Log, TEXT("Node id: %d"), node->GetState().Id);
     }
     return satisfyingStatesArray;
 }

@@ -12,10 +12,10 @@ public:
 	AStar();
 	~AStar();
 
-	TArray<UStateNode*> ExecuteAStar(const UCTLModel* model, UStateNode* startingNode, TArray<UStateNode*> satisfyingStatesArray, TMap<int32, int32> statesScores);
-	TArray <UStateNode*> AddToOpenSet(TArray <UStateNode*> openSet, UStateNode* node, TMap<int32, int32> statesScores);
-	int g(UStateNode* node);
-	void UpdateGScores(TMap<int32, int32>& gScores, int nodeId, int newValue);
-	void UpdateFScores(TMap<int32, int32>& fScores, int nodeId, TMap<int32, int32>& gScores, TMap<int32, int32>& statesScores);
-	TArray<UStateNode*> ReconstructPath(UStateNode* currentNode, const TMap<int32, UStateNode*>& cameFrom);
+	static TArray<UStateNode*> ExecuteAStar(const UCTLModel* model, UStateNode* startingNode, TArray<UStateNode*> satisfyingStatesArray, TMap<int32, int32> statesScores);
+	static void AddToOpenSet(TArray <UStateNode*>& openSet, UStateNode* node, TMap<int32, int32> fScores);
+	static TArray<UStateNode*> ReconstructPath(UStateNode* currentNode, const TMap<int32, UStateNode*>& cameFrom);
+	static void InitializeScores(const TMap<int32, int32>& statesScores, TMap<int32, int32>& gScore, TMap<int32, int32>& fScore);
+	static void UpdateGScores(TMap<int32, int32>& gScores, int nodeId, int newValue);
+	static void UpdateFScores(TMap<int32, int32>& fScores, int nodeId, TMap<int32, int32>& gScores, TMap<int32, int32>& statesScores);
 };
