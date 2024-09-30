@@ -592,8 +592,8 @@
       "id": 50,
       "properties": {
         "isOpen": true,
-        "isGoal": false,
-        "hasWeapon": false,
+        "isGoal": true,
+        "hasWeapon": true,
         "isGuarded": false,
         "isVisible": false,
         "isLocked": true,
@@ -1417,6 +1417,20 @@
       "left_id": 22,
       "right_id": 23,
       "id": 24
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 1,
+      "right_id": 2,
+      "id": 25
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 3,
+      "right_id": 25,
+      "id": 26
     }
   ]
 }

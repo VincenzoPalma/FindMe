@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Model/StateTree/StateNode.h"
 #include "Model/CTLModel.h"
+#include "Model/ModelParser/ModelParser.h"
 #include "Containers/Queue.h"
 #include "Containers/Set.h"
 
@@ -12,7 +13,7 @@ public:
 	AStar();
 	~AStar();
 
-	static TArray<UStateNode*> ExecuteAStar(const UCTLModel* model, UStateNode* startingNode, TArray<UStateNode*> satisfyingStatesArray, TMap<int32, int32> statesScores);
+	static TArray<UStateNode*> ExecuteAStar(UCTLModel* model, UStateNode* startingNode, TMap<int32, int32> statesScores, UCTLFormula* formula);
 	static void AddToOpenSet(TArray <UStateNode*>& openSet, UStateNode* node, TMap<int32, int32> fScores);
 	static TArray<UStateNode*> ReconstructPath(UStateNode* currentNode, const TMap<int32, UStateNode*>& cameFrom);
 	static void InitializeScores(const TMap<int32, int32>& statesScores, TMap<int32, int32>& gScore, TMap<int32, int32>& fScore);

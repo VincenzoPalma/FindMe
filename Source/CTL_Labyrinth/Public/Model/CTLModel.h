@@ -3,6 +3,7 @@
 #include "StateTree/StateNode.h"
 #include "PredicateManager.h"
 #include "Model/CTL_ModelChecking/CTLFormula.h"
+#include "Model/ModelParser/ModelParser.h"
 #include "CoreMinimal.h"
 #include "ModelStructures.h"
 #include "HAL/PlatformTime.h"
@@ -59,8 +60,9 @@ public:
     TArray<UStateNode*> PreImageExistential(const TArray<UStateNode*>& states, UStateNode* StartNode) const;
 
     UFUNCTION(BlueprintCallable, Category = "Model")
-    TArray<UStateNode*> EvaluateFormula(UStateNode* node, UCTLFormula* formula) const;
+    TArray<UStateNode*> EvaluateFormula(UStateNode* node, UCTLFormula* formula);
 
+    void UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<int32, int32>& statesScores);
 private:
     UPROPERTY()
     TMap<int32, UStateNode*> stateNodes;

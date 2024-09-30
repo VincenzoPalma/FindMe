@@ -240,20 +240,19 @@ void UCTLModel::DebugPrintModel() const
     }
 }
 
-TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* formula) const
+TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* formula)
 {
-    TMap<int32, int32> statesScores;
-    TArray<UStateNode*> satisfyingStatesArray = formula->Evaluate(this, node, statesScores);
-    
     int subFormulasNum = formula->CountSubformulas();
 
-    for (const TPair<int32, int32>& Elem : statesScores)
+    //Initialize statesScores map
+    TMap<int32, int32> statesScores;
+    statesScores.Add(node->GetState().Id, subFormulasNum);
+    for (const UStateNode* node : GetReachableNodes(node)) //node->GetChildren()
     {
-        int32 Key = Elem.Key;
-        int32 Value = Elem.Value;
-        statesScores.Remove(Key);
-        statesScores.Add(Key, subFormulasNum - Value);
+        statesScores.Add(node->GetState().Id, subFormulasNum);
     }
+    //Evaluate the formula and update the stateScores map
+    TArray<UStateNode*> satisfyingStatesArray = formula->Evaluate(this, node, statesScores);
 
     //debug
     for (const TPair<int32, int32>& Elem : statesScores)
@@ -263,10 +262,22 @@ TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* fo
         UE_LOG(LogTemp, Log, TEXT("Key: %d, Value: %d"), Key, Value);
     }
 
-    TArray<UStateNode*> result = AStar::ExecuteAStar(this, node, satisfyingStatesArray, statesScores);
-    for (const UStateNode* node : result)
+    TArray<UStateNode*> result = AStar::ExecuteAStar(this, node, statesScores, formula);
+    for (const UStateNode* currentNode : result)
     {
-        UE_LOG(LogTemp, Log, TEXT("Node id: %d"), node->GetState().Id);
+        UE_LOG(LogTemp, Log, TEXT("Node id: %d"), currentNode->GetState().Id);
     }
     return satisfyingStatesArray;
+}
+
+void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<int32, int32>& statesScores)
+{
+    UModelParser::UpdateModelFromNode("C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Source\\CTL_Labyrinth\\ModelFiles\\testModel10States.json", this, node);
+
+    int subFormulasNum = formula->CountSubformulas();
+    for (const UStateNode* node : GetReachableNodes(node)) //node->GetChildren()
+    {
+        statesScores.Add(node->GetState().Id, subFormulasNum);
+    }
+    formula->Evaluate(this, node, statesScores);
 }

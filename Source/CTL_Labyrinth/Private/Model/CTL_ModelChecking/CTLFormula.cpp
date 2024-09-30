@@ -39,7 +39,7 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
             UStateNode* node = StateNodeEntry.Value;
             if (EvaluatePredicate(node))
             {
-                statesScores.FindOrAdd(node->GetState().Id)++;
+                statesScores.FindOrAdd(node->GetState().Id)--;
                 satisfyingStates.Add(node);
             }
         }
@@ -47,15 +47,10 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
     else
     {
         // Verifies the predicate on the passed stateNode and all reachable nodes
-        TArray<UStateNode*> nodesToCheck;
-        nodesToCheck.Add(stateNode);
-
-        TSet<UStateNode*> visitedNodes;
-
         for (UStateNode* currentNode: model->GetReachableNodes(stateNode)){
             if (EvaluatePredicate(currentNode))
             {
-                statesScores.FindOrAdd(currentNode->GetState().Id)++;
+                statesScores.FindOrAdd(currentNode->GetState().Id)--;
                 satisfyingStates.Add(currentNode);
             }
         }
@@ -212,7 +207,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     for (UStateNode* Node : satisfyingStatesArray)
     {
-        statesScores.FindOrAdd(Node->GetState().Id)++;
+        statesScores.FindOrAdd(Node->GetState().Id)--;
     }
 
     return satisfyingStatesArray;
@@ -315,7 +310,7 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
 
     for (UStateNode* Node : satisfyingStatesArray)
     {
-        statesScores.FindOrAdd(Node->GetState().Id)++;
+        statesScores.FindOrAdd(Node->GetState().Id)--;
     }
 
     return satisfyingStatesArray;

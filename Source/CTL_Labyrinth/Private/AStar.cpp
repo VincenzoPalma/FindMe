@@ -8,9 +8,8 @@ AStar::~AStar()
 {
 }
 
-TArray<UStateNode*> AStar::ExecuteAStar(const UCTLModel* model, UStateNode* startingNode, TArray<UStateNode*> satisfyingStatesArray, TMap<int32, int32> statesScores)
+TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNode, TMap<int32, int32> statesScores, UCTLFormula* formula)
 {
-	UE_LOG(LogTemp, Log, TEXT("INIZIO"));
 	TArray<UStateNode*> finalPath;
 	TMap<int32, UStateNode*> cameFrom;
 
@@ -19,30 +18,37 @@ TArray<UStateNode*> AStar::ExecuteAStar(const UCTLModel* model, UStateNode* star
 	TMap<int32, int32> fScores;
 	InitializeScores(statesScores, gScores, fScores);
 	int startingNodeId = startingNode->GetState().Id;
-	gScores.Add(startingNodeId, 0);
-	fScores.Add(startingNodeId, *statesScores.Find(startingNodeId));
+	UpdateGScores(gScores, startingNodeId, 0);
+	UpdateFScores(fScores, startingNodeId, gScores, statesScores);
 
 	TArray<UStateNode*> openSet;
 	AddToOpenSet(openSet, startingNode, fScores);
 
 	TSet<UStateNode*> closedSet;
-
-	UE_LOG(LogTemp, Log, TEXT("Score e set impostati"));
-
 	while (!openSet.IsEmpty()) {
 		UStateNode* currentNode = openSet[0];
 		openSet.RemoveAt(0);
 
 		UE_LOG(LogTemp, Log, TEXT("Inizio Ciclo Esterno, ID: %d"), currentNode->GetState().Id);
 
-		if (satisfyingStatesArray.Contains(currentNode)) {
+		if (*statesScores.Find(currentNode->GetState().Id) == 0) {
 			UE_LOG(LogTemp, Log, TEXT("TROVATO"));
 			finalPath = ReconstructPath(currentNode, cameFrom);
 			return finalPath;
 		}
 
+		if (currentNode->GetChildren().IsEmpty())
+		{
+			UE_LOG(LogTemp, Log, TEXT("ENTRO"));
+			statesScores.Empty();
+			model->UpdateModel(currentNode, formula, statesScores);
+			InitializeScores(statesScores, gScores, fScores);
+			model->DebugPrintModel();
+		}
+
 		closedSet.Add(currentNode);
 
+		
 		for (UStateNode* node : currentNode->GetChildren()) {
 			int nodeId = node->GetState().Id;
 
@@ -51,9 +57,10 @@ TArray<UStateNode*> AStar::ExecuteAStar(const UCTLModel* model, UStateNode* star
 			if (closedSet.Contains(node)) {
 				continue;
 			}
-			int tentative_gScore = *gScores.Find(currentNode->GetState().Id) + 1; //1 in questo caso, ma in generale è il peso dell'arco per arrivare a node
+
+			int tentative_gScore = *gScores.Find(currentNode->GetState().Id) + 1; //1 in this case. The weight of the edge generally.
 			UE_LOG(LogTemp, Log, TEXT("INIZIO CONTROLLO"));
-			if (tentative_gScore < *gScores.Find(nodeId)) {//problema qui alla seconda iterazione (secondo figlio)
+			if (tentative_gScore < *gScores.Find(nodeId)) {
 				UE_LOG(LogTemp, Log, TEXT("DENTRO 1"));
 				UpdateGScores(gScores, nodeId, tentative_gScore);
 				UpdateFScores(fScores, nodeId, gScores, statesScores);
@@ -61,16 +68,13 @@ TArray<UStateNode*> AStar::ExecuteAStar(const UCTLModel* model, UStateNode* star
 
 				if (!openSet.Contains(node))
 				{
-					UE_LOG(LogTemp, Log, TEXT("DENTRO 2"));
-					AddToOpenSet(openSet, node, statesScores);
+					AddToOpenSet(openSet, node, fScores);
 				}
 			}
-			UE_LOG(LogTemp, Log, TEXT("FINE CONTROLLO"));
 			UE_LOG(LogTemp, Log, TEXT("Fine ciclo interno"));
 		}
 		UE_LOG(LogTemp, Log, TEXT("Fine Ciclo Esterno"));
 	}
-	UE_LOG(LogTemp, Log, TEXT("FINE"));
 	return finalPath; //empty array
 }
 
@@ -102,11 +106,13 @@ void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<in
 
 void AStar::UpdateGScores(TMap<int32, int32>& gScores, int nodeId, int newValue)
 {
+	gScores.Remove(nodeId);
 	gScores.Add(nodeId, newValue);
 }
 
 void AStar::UpdateFScores(TMap<int32, int32>& fScores, int nodeId, TMap<int32, int32>& gScores, TMap<int32, int32>& statesScores)
 {
+	fScores.Remove(nodeId);
 	fScores.Add(nodeId, *gScores.Find(nodeId) + *statesScores.Find(nodeId));
 }
 
@@ -131,7 +137,11 @@ void AStar::InitializeScores(const TMap<int32, int32>& statesScores, TMap<int32,
 	{
 		int32 key = entry.Key;
 
-		gScore.Add(key, MAX_int32);
-		fScore.Add(key, MAX_int32);
+		if (!gScore.Contains(key)) {
+			gScore.Add(key, MAX_int32);
+		}
+		if (!fScore.Contains(key)) {
+			fScore.Add(key, MAX_int32);
+		}
 	}
 }

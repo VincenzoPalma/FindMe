@@ -14,7 +14,7 @@
       "id": 2,
       "properties": {
         "isOpen": false,
-        "isGoal": true,
+        "isGoal": false,
         "hasWeapon": true,
         "isGuarded": false,
         "isVisible": false
@@ -25,7 +25,7 @@
       "properties": {
         "isOpen": false,
         "isGoal": true,
-        "hasWeapon": true,
+        "hasWeapon": false,
         "isGuarded": true,
         "isVisible": true
       }
@@ -64,8 +64,8 @@
       "id": 7,
       "properties": {
         "isOpen": true,
-        "isGoal": false,
-        "hasWeapon": false,
+        "isGoal": true,
+        "hasWeapon": true,
         "isGuarded": true,
         "isVisible": true
       }
@@ -94,7 +94,7 @@
       "id": 10,
       "properties": {
         "isOpen": true,
-        "isGoal": true,
+        "isGoal": false,
         "hasWeapon": true,
         "isGuarded": false,
         "isVisible": true
@@ -113,8 +113,38 @@
       "action": "action2"
     },
     {
+      "from": 1,
+      "to": 3,
+      "action": "action4"
+    },
+    {
       "from": 2,
       "to": 3,
+      "action": "action4"
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "action": "action4"
+    },
+    {
+      "from": 4,
+      "to": 10,
+      "action": "action4"
+    },
+    {
+      "from": 10,
+      "to": 7,
+      "action": "action4"
+    },
+    {
+      "from": 7,
+      "to": 4,
+      "action": "action4"
+    },
+    {
+      "from": 4,
+      "to": 8,
       "action": "action1"
     },
     {
@@ -249,14 +279,14 @@
     {
       "type": "Binary",
       "operator": "AND",
-      "left_id": 2,
-      "right_id": 3,
+      "left_id": 1,
+      "right_id": 2,
       "id": 21
     },
     {
       "type": "Binary",
       "operator": "AND",
-      "left_id": 4,
+      "left_id": 3,
       "right_id": 21,
       "id": 22
     }
