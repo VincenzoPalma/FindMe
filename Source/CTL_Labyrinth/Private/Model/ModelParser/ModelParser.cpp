@@ -191,23 +191,21 @@ void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model
     TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
     TSharedPtr<FJsonObject> JsonObject;
     int32 StartingStateId = node->GetState().Id;
-
     if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
     {
         const TArray<TSharedPtr<FJsonValue>>* StatesArray;
         if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
         {
+
             const TArray<TSharedPtr<FJsonValue>>* TransitionsArray;
             if (JsonObject->TryGetArrayField(TEXT("transitions"), TransitionsArray))
             {
 
                 for (const TSharedPtr<FJsonValue>& TransitionValue : *TransitionsArray)
                 {
-
                     const TSharedPtr<FJsonObject> TransitionObject = TransitionValue->AsObject();
                     if (TransitionObject->GetIntegerField(TEXT("from")) == StartingStateId)
                     {
-
                         int32 TargetId = TransitionObject->GetIntegerField(TEXT("to"));
                         ParseStateById(*StatesArray, TargetId, model);
 
@@ -216,7 +214,6 @@ void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model
                         FString Action = TransitionObject->GetStringField(TEXT("action"));
                         const UStateNode* const* FromNodePtr = model->GetStateNodes().Find(FromId);
                         const UStateNode* const* ToNodePtr = model->GetStateNodes().Find(ToId);
-
                         if (FromNodePtr && ToNodePtr)
                         {
                             UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);

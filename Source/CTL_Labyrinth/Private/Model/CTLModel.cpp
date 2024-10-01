@@ -263,17 +263,22 @@ TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* fo
     }
 
     TArray<UStateNode*> result = AStar::ExecuteAStar(this, node, statesScores, formula);
-    for (const UStateNode* currentNode : result)
+    if (result.IsEmpty())
     {
-        UE_LOG(LogTemp, Log, TEXT("Node id: %d"), currentNode->GetState().Id);
+        UE_LOG(LogTemp, Log, TEXT("Nessun percorso trovato."));
+    }
+    else {
+        for (const UStateNode* currentNode : result)
+        {
+            UE_LOG(LogTemp, Log, TEXT("Node id: %d"), currentNode->GetState().Id);
+        }
     }
     return satisfyingStatesArray;
 }
 
 void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<int32, int32>& statesScores)
 {
-    UModelParser::UpdateModelFromNode("C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Source\\CTL_Labyrinth\\ModelFiles\\testModel10States.json", this, node);
-
+    UModelParser::UpdateModelFromNode("C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Source\\CTL_Labyrinth\\ModelFiles\\CTLLabyrinthModelNew.json", this, node);
     int subFormulasNum = formula->CountSubformulas();
     for (const UStateNode* node : GetReachableNodes(node)) //node->GetChildren()
     {

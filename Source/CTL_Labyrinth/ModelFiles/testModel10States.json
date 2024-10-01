@@ -65,7 +65,7 @@
       "properties": {
         "isOpen": true,
         "isGoal": true,
-        "hasWeapon": true,
+        "hasWeapon": false,
         "isGuarded": true,
         "isVisible": true
       }
@@ -151,6 +151,16 @@
       "from": 1,
       "to": 10,
       "action": "action3"
+    },
+    {
+      "from": 1,
+      "to": 6,
+      "action": "action5"
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "action": "action5"
     }
   ],
   "formulas": [

@@ -32,18 +32,14 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 		UE_LOG(LogTemp, Log, TEXT("Inizio Ciclo Esterno, ID: %d"), currentNode->GetState().Id);
 
 		if (*statesScores.Find(currentNode->GetState().Id) == 0) {
-			UE_LOG(LogTemp, Log, TEXT("TROVATO"));
 			finalPath = ReconstructPath(currentNode, cameFrom);
 			return finalPath;
 		}
-
 		if (currentNode->GetChildren().IsEmpty())
 		{
-			UE_LOG(LogTemp, Log, TEXT("ENTRO"));
-			statesScores.Empty();
+			//statesScores.Empty();
 			model->UpdateModel(currentNode, formula, statesScores);
 			InitializeScores(statesScores, gScores, fScores);
-			model->DebugPrintModel();
 		}
 
 		closedSet.Add(currentNode);
@@ -59,9 +55,7 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 			}
 
 			int tentative_gScore = *gScores.Find(currentNode->GetState().Id) + 1; //1 in this case. The weight of the edge generally.
-			UE_LOG(LogTemp, Log, TEXT("INIZIO CONTROLLO"));
 			if (tentative_gScore < *gScores.Find(nodeId)) {
-				UE_LOG(LogTemp, Log, TEXT("DENTRO 1"));
 				UpdateGScores(gScores, nodeId, tentative_gScore);
 				UpdateFScores(fScores, nodeId, gScores, statesScores);
 				cameFrom.Add(nodeId, currentNode);
