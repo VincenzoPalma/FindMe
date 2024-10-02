@@ -8,68 +8,84 @@ AStar::~AStar()
 {
 }
 
-TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNode, TMap<int32, int32> statesScores, UCTLFormula* formula)
+TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula)
 {
+	//Structures for the path, if found
 	TArray<UStateNode*> finalPath;
 	TMap<int32, UStateNode*> cameFrom;
 
+	//Initialization and evaluation of the score for the starting state
+	int subFormulasNum = formula->CountSubformulas();
+	TMap<int32, int32> statesScores;
+	statesScores.Add(startingNode->GetState().Id, subFormulasNum);
+	formula->Evaluate(model, startingNode, statesScores);
 
+	//Initialization of the g and f values for the starting state
 	TMap<int32, int32> gScores;
 	TMap<int32, int32> fScores;
-	InitializeScores(statesScores, gScores, fScores);
 	int startingNodeId = startingNode->GetState().Id;
 	UpdateGScores(gScores, startingNodeId, 0);
 	UpdateFScores(fScores, startingNodeId, gScores, statesScores);
 
+	//Initialization of the priority queue
 	TArray<UStateNode*> openSet;
 	AddToOpenSet(openSet, startingNode, fScores);
 
 	TSet<UStateNode*> closedSet;
+
+	//Main loop
 	while (!openSet.IsEmpty()) {
+		//The state in position 0 will always be the best choice
 		UStateNode* currentNode = openSet[0];
 		openSet.RemoveAt(0);
 
 		UE_LOG(LogTemp, Log, TEXT("Inizio Ciclo Esterno, ID: %d"), currentNode->GetState().Id);
 
+		//If the current state satifies the entire formula, then it is a target state
 		if (*statesScores.Find(currentNode->GetState().Id) == 0) {
 			finalPath = ReconstructPath(currentNode, cameFrom);
 			return finalPath;
 		}
+
+		//Get the adjacent states, updating the model and initializing their scores
 		if (currentNode->GetChildren().IsEmpty())
 		{
-			//statesScores.Empty();
 			model->UpdateModel(currentNode, formula, statesScores);
 			InitializeScores(statesScores, gScores, fScores);
 		}
 
+		//Add state to closed set so that it will not be visited in the future
 		closedSet.Add(currentNode);
 
 		
+		//Loop for each adjacent state of the current state
 		for (UStateNode* node : currentNode->GetChildren()) {
 			int nodeId = node->GetState().Id;
 
 			UE_LOG(LogTemp, Log, TEXT("Inizio ciclo interno, ID: %d"), nodeId);
 
+			//Skip it if it was already visited
 			if (closedSet.Contains(node)) {
 				continue;
 			}
 
+			//Calculate a possible new g score
 			int tentative_gScore = *gScores.Find(currentNode->GetState().Id) + 1; //1 in this case. The weight of the edge generally.
+			//Update the scores and add the state to the cameFrom map, used to build the resulting path
 			if (tentative_gScore < *gScores.Find(nodeId)) {
 				UpdateGScores(gScores, nodeId, tentative_gScore);
 				UpdateFScores(fScores, nodeId, gScores, statesScores);
 				cameFrom.Add(nodeId, currentNode);
 
+				//Add it to the priority queue
 				if (!openSet.Contains(node))
 				{
 					AddToOpenSet(openSet, node, fScores);
 				}
 			}
-			UE_LOG(LogTemp, Log, TEXT("Fine ciclo interno"));
 		}
-		UE_LOG(LogTemp, Log, TEXT("Fine Ciclo Esterno"));
 	}
-	return finalPath; //empty array
+	return finalPath; //Empty array if no path was found
 }
 
 void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<int32, int32> fScores)

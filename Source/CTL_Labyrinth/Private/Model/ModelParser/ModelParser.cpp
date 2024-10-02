@@ -63,8 +63,8 @@ UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
     return Model;
 }
 
-//Parses a partial model, made by the initial state and it's adjacent states, from a JSON file
-UCTLModel* UModelParser::LoadPartialModelFromJson(const FString& FilePath)
+//Parses a partial model, made by the state with the given id and it's adjacent states, from a JSON file
+UCTLModel* UModelParser::LoadPartialModelFromJson(const FString& FilePath, int StartingStateId)
 {
     FString JsonString;
 
@@ -79,7 +79,6 @@ UCTLModel* UModelParser::LoadPartialModelFromJson(const FString& FilePath)
 
     UCTLModel* Model = NewObject<UCTLModel>();
 
-    int32 StartingStateId = 0;
 
     if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
     {
@@ -87,10 +86,8 @@ UCTLModel* UModelParser::LoadPartialModelFromJson(const FString& FilePath)
         if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
         {
             
-            const TSharedPtr<FJsonObject> StateObject = (*StatesArray)[0]->AsObject();
+            const TSharedPtr<FJsonObject> StateObject = (*StatesArray)[StartingStateId - 1]->AsObject();
                
-            StartingStateId = StateObject->GetNumberField(TEXT("id"));
-
             if (StateObject->HasField(TEXT("properties")))
             {
                 TSharedPtr<FJsonObject> PropertiesObject = StateObject->GetObjectField(TEXT("properties"));
@@ -286,6 +283,77 @@ void UModelParser::ParseStateById(const TArray<TSharedPtr<FJsonValue>>& StatesAr
             break;
         }
     }
+}
+
+UCTLModel* UModelParser::ParseStartingState(const FString& FilePath, int StartingStateId)
+{
+    FString JsonString;
+
+    if (!FFileHelper::LoadFileToString(JsonString, *FilePath))
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file from path: %s"), *FilePath);
+        return nullptr;
+    }
+
+    TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
+    TSharedPtr<FJsonObject> JsonObject;
+
+    UCTLModel* Model = NewObject<UCTLModel>();
+
+
+    if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
+    {
+        const TArray<TSharedPtr<FJsonValue>>* StatesArray;
+        if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
+        {
+
+            const TSharedPtr<FJsonObject> StateObject = (*StatesArray)[StartingStateId - 1]->AsObject();
+
+            if (StateObject->HasField(TEXT("properties")))
+            {
+                TSharedPtr<FJsonObject> PropertiesObject = StateObject->GetObjectField(TEXT("properties"));
+
+                FState State;
+                State.Id = StartingStateId;
+
+                for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
+                {
+                    if (Property.Value.IsValid())
+                    {
+                        bool PropertyValue = Property.Value->AsBool();
+                        State.Properties.Add(Property.Key, PropertyValue);
+                    }
+                    else
+                    {
+                        UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
+                    }
+                }
+
+                Model->AddState(State);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("State with ID %d is missing 'properties' field."), StartingStateId);
+            }
+
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
+        }
+
+        const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
+        if (JsonObject->TryGetArrayField(TEXT("formulas"), FormulasArray))
+        {
+            ParseFormulas(*FormulasArray, Model);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
+        }
+    }
+
+    return Model;
 }
 
 

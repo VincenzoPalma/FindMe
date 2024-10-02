@@ -14,7 +14,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Model Parsing")
     static UCTLModel* LoadModelFromJson(const FString& FilePath);
     UFUNCTION(BlueprintCallable, Category = "Model Parsing")
-    static UCTLModel* LoadPartialModelFromJson(const FString& FilePath);
+    static UCTLModel* ParseStartingState(const FString& FilePath, int StartingStateId);
+    UFUNCTION(BlueprintCallable, Category = "Model Parsing")
+    static UCTLModel* LoadPartialModelFromJson(const FString& FilePath, int StartingStateId);
     static void UpdateModelFromNode(const FString& FilePath, UCTLModel* model, UStateNode* node);
 
 private:
