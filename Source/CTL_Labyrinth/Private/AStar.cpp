@@ -41,17 +41,24 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 
 		UE_LOG(LogTemp, Log, TEXT("Inizio Ciclo Esterno, ID: %d"), currentNode->GetState().Id);
 
-		//If the current state satifies the entire formula, then it is a target state
-		if (*statesScores.Find(currentNode->GetState().Id) == 0) {
-			finalPath = ReconstructPath(currentNode, cameFrom);
-			return finalPath;
-		}
-
 		//Get the adjacent states, updating the model and initializing their scores
 		if (currentNode->GetChildren().IsEmpty())
 		{
 			model->UpdateModel(currentNode, formula, statesScores);
 			InitializeScores(statesScores, gScores, fScores);
+		}
+
+		for (const TPair<int32, int32>& Elem : statesScores)
+		{
+			int32 Key = Elem.Key;
+			int32 Value = Elem.Value;
+			UE_LOG(LogTemp, Log, TEXT("Key: %d, Value: %d"), Key, Value);
+		}
+
+		//If the current state satifies the entire formula, then it is a target state
+		if (*statesScores.Find(currentNode->GetState().Id) == 0) {
+			finalPath = ReconstructPath(currentNode, cameFrom);
+			return finalPath;
 		}
 
 		//Add state to closed set so that it will not be visited in the future

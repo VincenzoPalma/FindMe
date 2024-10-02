@@ -101,7 +101,6 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         }
         
         satisfyingStatesArray = satisfyingStatesSet.Array();
-
         break;
     }
 
@@ -328,7 +327,12 @@ int32 UAtomicFormula::CountSubformulas() const
 
 int32 UUnaryFormula::CountSubformulas() const
 {
-    return 1 + (SubFormula ? SubFormula->CountSubformulas() : 0);
+    if (Op == ECTLOperator::NOT) {
+        return 0 + (SubFormula ? SubFormula->CountSubformulas() : 0);
+    }
+    else {
+        return 1 + (SubFormula ? SubFormula->CountSubformulas() : 0);
+    }
 }
 
 int32 UBinaryFormula::CountSubformulas() const

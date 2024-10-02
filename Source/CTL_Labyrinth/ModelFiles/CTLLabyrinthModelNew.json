@@ -1252,7 +1252,7 @@
     },
     {
       "type": "Unary",
-      "operator": "EG",
+      "operator": "AG",
       "subformula_id": 11,
       "id": 12
     },
