@@ -55,14 +55,16 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 			UE_LOG(LogTemp, Log, TEXT("Key: %d, Value: %d"), Key, Value);
 		}
 
-		//If the current state satifies the entire formula, then it is a target state
-		if (*statesScores.Find(currentNode->GetState().Id) == 0) {
-			finalPath = ReconstructPath(currentNode, cameFrom);
-			return finalPath;
-		}
-
 		//Add state to closed set so that it will not be visited in the future
 		closedSet.Add(currentNode);
+
+		//If the current state satifies the entire formula, then it is a target state
+		for (UStateNode* node : closedSet) {
+			if (*statesScores.Find(node->GetState().Id) == 0) {
+				finalPath = ReconstructPath(currentNode, cameFrom);
+				return finalPath;
+			}
+		}
 
 		
 		//Loop for each adjacent state of the current state

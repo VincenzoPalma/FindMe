@@ -1340,7 +1340,7 @@
     {
       "type": "Unary",
       "operator": "EX",
-      "subformula_id": 27,
+      "subformula_id": 3,
       "id": 28
     },
     {
@@ -1368,6 +1368,12 @@
       "left_id": 3,
       "right_id": 31,
       "id": 32
+    },
+    {
+      "type": "Unary",
+      "operator": "EX",
+      "subformula_id": 32,
+      "id": 33
     }
   ]
 }
