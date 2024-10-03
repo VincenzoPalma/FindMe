@@ -1340,7 +1340,7 @@
     {
       "type": "Unary",
       "operator": "EX",
-      "subformula_id": 3,
+      "subformula_id": 27,
       "id": 28
     },
     {
@@ -1356,22 +1356,21 @@
       "id": 30
     },
     {
-      "type": "Binary",
-      "operator": "AND",
-      "left_id": 1,
-      "right_id": 2,
+      "type": "Unary",
+      "operator": "NOT",
+      "subformula_id": 3,
       "id": 31
     },
     {
       "type": "Binary",
       "operator": "AND",
-      "left_id": 3,
-      "right_id": 31,
+      "left_id": 31,
+      "right_id": 1,
       "id": 32
     },
     {
       "type": "Unary",
-      "operator": "EX",
+      "operator": "AX",
       "subformula_id": 32,
       "id": 33
     }

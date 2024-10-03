@@ -39,20 +39,11 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 		UStateNode* currentNode = openSet[0];
 		openSet.RemoveAt(0);
 
-		UE_LOG(LogTemp, Log, TEXT("Inizio Ciclo Esterno, ID: %d"), currentNode->GetState().Id);
-
 		//Get the adjacent states, updating the model and initializing their scores
 		if (currentNode->GetChildren().IsEmpty())
 		{
 			model->UpdateModel(currentNode, formula, statesScores);
 			InitializeScores(statesScores, gScores, fScores);
-		}
-
-		for (const TPair<int32, int32>& Elem : statesScores)
-		{
-			int32 Key = Elem.Key;
-			int32 Value = Elem.Value;
-			UE_LOG(LogTemp, Log, TEXT("Key: %d, Value: %d"), Key, Value);
 		}
 
 		//Add state to closed set so that it will not be visited in the future
@@ -70,8 +61,6 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 		//Loop for each adjacent state of the current state
 		for (UStateNode* node : currentNode->GetChildren()) {
 			int nodeId = node->GetState().Id;
-
-			UE_LOG(LogTemp, Log, TEXT("Inizio ciclo interno, ID: %d"), nodeId);
 
 			//Skip it if it was already visited
 			if (closedSet.Contains(node)) {

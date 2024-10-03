@@ -21,6 +21,7 @@ bool UAtomicFormula::EvaluatePredicate(UStateNode* stateNode) const
 
 TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
 {
+
     TArray<UStateNode*> satisfyingStates;
 
     if (!model)
@@ -39,7 +40,6 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
             UStateNode* node = StateNodeEntry.Value;
             if (EvaluatePredicate(node))
             {
-                //statesScores.FindOrAdd(node->GetState().Id)--;
                 satisfyingStates.Add(node);
             }
         }
@@ -50,7 +50,6 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
         for (UStateNode* currentNode: model->GetReachableNodes(stateNode)){
             if (EvaluatePredicate(currentNode))
             {
-                //statesScores.FindOrAdd(currentNode->GetState().Id)--;
                 satisfyingStates.Add(currentNode);
             }
         }
@@ -101,10 +100,6 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         }
         
         satisfyingStatesArray = satisfyingStatesSet.Array();
-        for (UStateNode* Node : satisfyingStatesArray)
-        {
-            statesScores.FindOrAdd(Node->GetState().Id)--;
-        }
 
         return satisfyingStatesArray;
 
@@ -213,7 +208,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     for (UStateNode* Node : satisfyingStatesArray)
     {
-        statesScores.FindOrAdd(Node->GetState().Id) = statesScores.FindOrAdd(Node->GetState().Id) - 2;
+        statesScores.Add(Node->GetState().Id) = statesScores.FindOrAdd(Node->GetState().Id) - 1;
     }
 
     return satisfyingStatesArray;
@@ -316,7 +311,7 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
 
     for (UStateNode* Node : satisfyingStatesArray)
     {
-        statesScores.FindOrAdd(Node->GetState().Id) = statesScores.FindOrAdd(Node->GetState().Id) - 2;
+        statesScores.Add(Node->GetState().Id) = statesScores.FindOrAdd(Node->GetState().Id) - 1;
     }
 
     return satisfyingStatesArray;
@@ -329,13 +324,14 @@ int32 UCTLFormula::CountSubformulas() const
 
 int32 UAtomicFormula::CountSubformulas() const
 {
-    return 1;
+    return 0;
 }
 
 int32 UUnaryFormula::CountSubformulas() const
 {
-    if (Op == ECTLOperator::NOT) {
-        return 0 + (SubFormula ? SubFormula->CountSubformulas() : 0);
+    if (Op == ECTLOperator::NOT)
+    {
+        return (SubFormula ? SubFormula->CountSubformulas() : 0);
     }
     else {
         return 1 + (SubFormula ? SubFormula->CountSubformulas() : 0);
