@@ -248,7 +248,7 @@ TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* fo
 
 void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<int32, int32>& statesScores)
 {
-    UModelParser::UpdateModelFromNode("C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Source\\CTL_Labyrinth\\ModelFiles\\testModel250States.json", this, node);
+    UModelParser::UpdateModelFromNode("C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Source\\CTL_Labyrinth\\ModelFiles\\CTLLabyrinthModelNew.json", this, node);
     int subFormulasNum = formula->CountSubformulas();
     for (const UStateNode* node : GetReachableNodes(node))
     {

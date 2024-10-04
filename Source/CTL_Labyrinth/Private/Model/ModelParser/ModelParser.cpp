@@ -8,56 +8,45 @@
 //Parses the whole model from a JSON file
 UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
 {
-
-    FString JsonString;
-
-    if (!FFileHelper::LoadFileToString(JsonString, *FilePath))
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file from path: %s"), *FilePath);
-        return nullptr;
-    }
-
-    TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
-    TSharedPtr<FJsonObject> JsonObject;
-
     UCTLModel* Model = NewObject<UCTLModel>();
+    UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
 
-    if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
+    if (JsonManager->LoadJson(FPaths::ProjectContentDir() + TEXT("/Data/model.json")))
     {
+        TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
 
-        const TArray<TSharedPtr<FJsonValue>>* StatesArray;
-        if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
+        if (JsonData.IsValid())
         {
-            ParseStates(*StatesArray, Model);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
-        }
+            const TArray<TSharedPtr<FJsonValue>>* StatesArray;
+            if (JsonData->TryGetArrayField(TEXT("states"), StatesArray))
+            {
+                ParseStates(*StatesArray, Model);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
+            }
 
-        const TArray<TSharedPtr<FJsonValue>>* TransitionsArray;
-        if (JsonObject->TryGetArrayField(TEXT("transitions"), TransitionsArray))
-        {
-            ParseTransitions(*TransitionsArray, Model);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'transitions' array or it is invalid."));
-        }
+            const TArray<TSharedPtr<FJsonValue>>* TransitionsArray;
+            if (JsonData->TryGetArrayField(TEXT("transitions"), TransitionsArray))
+            {
+                ParseTransitions(*TransitionsArray, Model);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'transitions' array or it is invalid."));
+            }
 
-        const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
-        if (JsonObject->TryGetArrayField(TEXT("formulas"), FormulasArray))
-        {
-            ParseFormulas(*FormulasArray, Model);
+            const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
+            if (JsonData->TryGetArrayField(TEXT("formulas"), FormulasArray))
+            {
+                ParseFormulas(*FormulasArray, Model);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
+            }
         }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to deserialize JSON file from path: %s"), *FilePath);
     }
 
     return Model;
@@ -66,243 +55,78 @@ UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
 //Parses a partial model, made by the state with the given id and it's adjacent states, from a JSON file
 UCTLModel* UModelParser::LoadPartialModelFromJson(const FString& FilePath, int StartingStateId)
 {
-    FString JsonString;
-
-    if (!FFileHelper::LoadFileToString(JsonString, *FilePath))
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file from path: %s"), *FilePath);
-        return nullptr;
-    }
-
-    TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
-    TSharedPtr<FJsonObject> JsonObject;
-
     UCTLModel* Model = NewObject<UCTLModel>();
 
+    UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
 
-    if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
+    if (JsonManager->LoadJson(FPaths::ProjectContentDir() + TEXT("/Data/model.json")))
     {
-        const TArray<TSharedPtr<FJsonValue>>* StatesArray;
-        if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
+        TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
+
+        if (JsonData.IsValid())
         {
-            
-            const TSharedPtr<FJsonObject> StateObject = (*StatesArray)[StartingStateId - 1]->AsObject();
-               
-            if (StateObject->HasField(TEXT("properties")))
+            const TArray<TSharedPtr<FJsonValue>>* StatesArray;
+            if (JsonData->TryGetArrayField(TEXT("states"), StatesArray))
             {
-                TSharedPtr<FJsonObject> PropertiesObject = StateObject->GetObjectField(TEXT("properties"));
 
-                FState State;
-                State.Id = StartingStateId;
+                const TSharedPtr<FJsonObject> StateObject = (*StatesArray)[StartingStateId - 1]->AsObject();
 
-                for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
+                if (StateObject->HasField(TEXT("properties")))
                 {
-                    if (Property.Value.IsValid())
+                    TSharedPtr<FJsonObject> PropertiesObject = StateObject->GetObjectField(TEXT("properties"));
+
+                    FState State;
+                    State.Id = StartingStateId;
+
+                    for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
                     {
-                        bool PropertyValue = Property.Value->AsBool();
-                        State.Properties.Add(Property.Key, PropertyValue);
-                    }
-                    else
-                    {
-                        UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
-                    }
-                }
-
-                Model->AddState(State);
-            }
-            else
-            {
-                UE_LOG(LogTemp, Warning, TEXT("State with ID %d is missing 'properties' field."), StartingStateId);
-            }
-                
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
-        }
-
-        const TArray<TSharedPtr<FJsonValue>>* TransitionsArray;
-        if (JsonObject->TryGetArrayField(TEXT("transitions"), TransitionsArray))
-        {
-            for (const TSharedPtr<FJsonValue>& TransitionValue : *TransitionsArray)
-            {
-                const TSharedPtr<FJsonObject> TransitionObject = TransitionValue->AsObject();
-                if (TransitionObject->GetIntegerField(TEXT("from")) == StartingStateId)
-                {
-                    int32 TargetId = TransitionObject->GetIntegerField(TEXT("to"));
-                    ParseStateById(*StatesArray, TargetId, Model);
-
-                    int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
-                    int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
-                    FString Action = TransitionObject->GetStringField(TEXT("action"));
-                    const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromId);
-                    const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToId);
-
-                    if (FromNodePtr && ToNodePtr)
-                    {
-                        UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
-                        UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
-
-                        Model->AddTransition(Action, FromNode, ToNode);
-                    }
-                    else
-                    {
-                        UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
-                    }
-
-                }
-            }
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'transitions' array or it is invalid."));
-        }
-
-        const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
-        if (JsonObject->TryGetArrayField(TEXT("formulas"), FormulasArray))
-        {
-            ParseFormulas(*FormulasArray, Model);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to deserialize JSON file from path: %s"), *FilePath);
-    }
-
-    return Model;
-}
-
-void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model, UStateNode* node)
-{
-    FString JsonString;
-
-    if (!FFileHelper::LoadFileToString(JsonString, *FilePath))
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file from path: %s"), *FilePath);
-        return;
-    }
-
-    TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
-    TSharedPtr<FJsonObject> JsonObject;
-    int32 StartingStateId = node->GetState().Id;
-
-    if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
-    {
-        const TArray<TSharedPtr<FJsonValue>>* StatesArray;
-        if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
-        {
-            const TArray<TSharedPtr<FJsonValue>>* TransitionsArray;
-            if (JsonObject->TryGetArrayField(TEXT("transitions"), TransitionsArray))
-            {
-                // Utilizza una coda per esplorare tutti i nodi raggiungibili
-                TQueue<int32> OpenSet;
-                TSet<int32> Visited;
-
-                // Inserisci il nodo iniziale nella coda
-                OpenSet.Enqueue(StartingStateId);
-                Visited.Add(StartingStateId);
-
-                while (!OpenSet.IsEmpty())
-                {
-                    int32 CurrentStateId;
-                    OpenSet.Dequeue(CurrentStateId);
-
-                    // Per ogni transizione, verifica se parte dallo stato corrente
-                    for (const TSharedPtr<FJsonValue>& TransitionValue : *TransitionsArray)
-                    {
-                        const TSharedPtr<FJsonObject> TransitionObject = TransitionValue->AsObject();
-                        if (TransitionObject->GetIntegerField(TEXT("from")) == CurrentStateId)
+                        if (Property.Value.IsValid())
                         {
-                            int32 TargetId = TransitionObject->GetIntegerField(TEXT("to"));
-                            ParseStateById(*StatesArray, TargetId, model);
-
-                            int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
-                            int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
-                            FString Action = TransitionObject->GetStringField(TEXT("action"));
-
-                            const UStateNode* const* FromNodePtr = model->GetStateNodes().Find(FromId);
-                            const UStateNode* const* ToNodePtr = model->GetStateNodes().Find(ToId);
-
-                            if (FromNodePtr && ToNodePtr)
-                            {
-                                UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
-                                UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
-
-                                model->AddTransition(Action, FromNode, ToNode);
-
-                                // Se il nodo di destinazione non è stato ancora visitato, aggiungilo alla coda
-                                if (!Visited.Contains(ToId))
-                                {
-                                    OpenSet.Enqueue(ToId);
-                                    Visited.Add(ToId);
-                                }
-                            }
-                            else
-                            {
-                                UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
-                            }
+                            bool PropertyValue = Property.Value->AsBool();
+                            State.Properties.Add(Property.Key, PropertyValue);
+                        }
+                        else
+                        {
+                            UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
                         }
                     }
+
+                    Model->AddState(State);
                 }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("State with ID %d is missing 'properties' field."), StartingStateId);
+                }
+
             }
             else
             {
-                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'transitions' array or it is invalid."));
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
             }
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
-        }
-    }
-}
-
-
-/*void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model, UStateNode* node)
-{
-    FString JsonString;
-
-    if (!FFileHelper::LoadFileToString(JsonString, *FilePath))
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file from path: %s"), *FilePath);
-        return;
-    }
-    TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
-    TSharedPtr<FJsonObject> JsonObject;
-    int32 StartingStateId = node->GetState().Id;
-    if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
-    {
-        const TArray<TSharedPtr<FJsonValue>>* StatesArray;
-        if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
-        {
 
             const TArray<TSharedPtr<FJsonValue>>* TransitionsArray;
-            if (JsonObject->TryGetArrayField(TEXT("transitions"), TransitionsArray))
+            if (JsonData->TryGetArrayField(TEXT("transitions"), TransitionsArray))
             {
-
                 for (const TSharedPtr<FJsonValue>& TransitionValue : *TransitionsArray)
                 {
                     const TSharedPtr<FJsonObject> TransitionObject = TransitionValue->AsObject();
                     if (TransitionObject->GetIntegerField(TEXT("from")) == StartingStateId)
                     {
                         int32 TargetId = TransitionObject->GetIntegerField(TEXT("to"));
-                        ParseStateById(*StatesArray, TargetId, model);
+                        ParseStateById(*StatesArray, TargetId, Model);
 
                         int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
                         int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
                         FString Action = TransitionObject->GetStringField(TEXT("action"));
-                        const UStateNode* const* FromNodePtr = model->GetStateNodes().Find(FromId);
-                        const UStateNode* const* ToNodePtr = model->GetStateNodes().Find(ToId);
+                        const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromId);
+                        const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToId);
+
                         if (FromNodePtr && ToNodePtr)
                         {
                             UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
                             UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
 
-                            model->AddTransition(Action, FromNode, ToNode);
+                            Model->AddTransition(Action, FromNode, ToNode);
                         }
                         else
                         {
@@ -316,14 +140,97 @@ void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model
             {
                 UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'transitions' array or it is invalid."));
             }
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
-        }
 
+            const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
+            if (JsonData->TryGetArrayField(TEXT("formulas"), FormulasArray))
+            {
+                ParseFormulas(*FormulasArray, Model);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
+            }
+        }
     }
-}*/
+    
+    return Model;
+}
+
+void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model, UStateNode* node)
+{
+    UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
+    int32 StartingStateId = node->GetState().Id;
+    if (JsonManager->LoadJson(FPaths::ProjectContentDir() + TEXT("/Data/model.json")))
+    {
+        TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
+
+        if (JsonData.IsValid())
+        {
+            const TArray<TSharedPtr<FJsonValue>>* StatesArray;
+            if (JsonData->TryGetArrayField(TEXT("states"), StatesArray))
+            {
+                const TArray<TSharedPtr<FJsonValue>>* TransitionsArray;
+                if (JsonData->TryGetArrayField(TEXT("transitions"), TransitionsArray))
+                {
+                    TQueue<int32> OpenSet;
+                    TSet<int32> Visited;
+
+                    OpenSet.Enqueue(StartingStateId);
+                    Visited.Add(StartingStateId);
+
+                    while (!OpenSet.IsEmpty())
+                    {
+                        int32 CurrentStateId;
+                        OpenSet.Dequeue(CurrentStateId);
+
+                        for (const TSharedPtr<FJsonValue>& TransitionValue : *TransitionsArray)
+                        {
+                            const TSharedPtr<FJsonObject> TransitionObject = TransitionValue->AsObject();
+                            if (TransitionObject->GetIntegerField(TEXT("from")) == CurrentStateId)
+                            {
+                                int32 TargetId = TransitionObject->GetIntegerField(TEXT("to"));
+                                ParseStateById(*StatesArray, TargetId, model);
+
+                                int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
+                                int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
+                                FString Action = TransitionObject->GetStringField(TEXT("action"));
+
+                                const UStateNode* const* FromNodePtr = model->GetStateNodes().Find(FromId);
+                                const UStateNode* const* ToNodePtr = model->GetStateNodes().Find(ToId);
+
+                                if (FromNodePtr && ToNodePtr)
+                                {
+                                    UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
+                                    UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
+
+                                    model->AddTransition(Action, FromNode, ToNode);
+
+                                    if (!Visited.Contains(ToId))
+                                    {
+                                        OpenSet.Enqueue(ToId);
+                                        Visited.Add(ToId);
+                                    }
+                                }
+                                else
+                                {
+                                    UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'transitions' array or it is invalid."));
+                }
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
+            }
+        }
+    }
+}
 
 void UModelParser::ParseStateById(const TArray<TSharedPtr<FJsonValue>>& StatesArray, int32 TargetId, UCTLModel* Model)
 {
@@ -373,69 +280,66 @@ void UModelParser::ParseStateById(const TArray<TSharedPtr<FJsonValue>>& StatesAr
 
 UCTLModel* UModelParser::ParseStartingState(const FString& FilePath, int StartingStateId)
 {
-    FString JsonString;
-
-    if (!FFileHelper::LoadFileToString(JsonString, *FilePath))
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file from path: %s"), *FilePath);
-        return nullptr;
-    }
-
-    TSharedRef<TJsonReader<>> JsonReader = TJsonReaderFactory<>::Create(JsonString);
-    TSharedPtr<FJsonObject> JsonObject;
-
+    UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
     UCTLModel* Model = NewObject<UCTLModel>();
 
+    UE_LOG(LogTemp, Warning, TEXT("VALIDO %d "), JsonManager->GetJsonData().IsValid());
 
-    if (FJsonSerializer::Deserialize(JsonReader, JsonObject) && JsonObject.IsValid())
+    if (JsonManager->LoadJson(FilePath))
     {
-        const TArray<TSharedPtr<FJsonValue>>* StatesArray;
-        if (JsonObject->TryGetArrayField(TEXT("states"), StatesArray))
+        TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
+
+        if (JsonData.IsValid())
         {
-
-            const TSharedPtr<FJsonObject> StateObject = (*StatesArray)[StartingStateId - 1]->AsObject();
-
-            if (StateObject->HasField(TEXT("properties")))
+   
+            const TArray<TSharedPtr<FJsonValue>>* StatesArray;
+            if (JsonData->TryGetArrayField(TEXT("states"), StatesArray))
             {
-                TSharedPtr<FJsonObject> PropertiesObject = StateObject->GetObjectField(TEXT("properties"));
 
-                FState State;
-                State.Id = StartingStateId;
+                const TSharedPtr<FJsonObject> StateObject = (*StatesArray)[StartingStateId - 1]->AsObject();
 
-                for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
+                if (StateObject->HasField(TEXT("properties")))
                 {
-                    if (Property.Value.IsValid())
+                    TSharedPtr<FJsonObject> PropertiesObject = StateObject->GetObjectField(TEXT("properties"));
+
+                    FState State;
+                    State.Id = StartingStateId;
+
+                    for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
                     {
-                        bool PropertyValue = Property.Value->AsBool();
-                        State.Properties.Add(Property.Key, PropertyValue);
+                        if (Property.Value.IsValid())
+                        {
+                            bool PropertyValue = Property.Value->AsBool();
+                            State.Properties.Add(Property.Key, PropertyValue);
+                        }
+                        else
+                        {
+                            UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
+                        }
                     }
-                    else
-                    {
-                        UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
-                    }
+
+                    Model->AddState(State);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("State with ID %d is missing 'properties' field."), StartingStateId);
                 }
 
-                Model->AddState(State);
             }
             else
             {
-                UE_LOG(LogTemp, Warning, TEXT("State with ID %d is missing 'properties' field."), StartingStateId);
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
             }
 
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
-        }
-
-        const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
-        if (JsonObject->TryGetArrayField(TEXT("formulas"), FormulasArray))
-        {
-            ParseFormulas(*FormulasArray, Model);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
+            const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
+            if (JsonData->TryGetArrayField(TEXT("formulas"), FormulasArray))
+            {
+                ParseFormulas(*FormulasArray, Model);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
+            }
         }
     }
 

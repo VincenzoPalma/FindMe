@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "../ModelStructures.h"
 #include "../CTL_ModelChecking/CTLFormula.h"
+#include "Model/ModelParser/JsonDataManager.h"
 #include "ModelParser.generated.h"
 
 UCLASS(Blueprintable)
