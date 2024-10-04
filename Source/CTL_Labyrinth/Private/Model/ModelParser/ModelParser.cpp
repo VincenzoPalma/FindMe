@@ -283,8 +283,6 @@ UCTLModel* UModelParser::ParseStartingState(const FString& FilePath, int Startin
     UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
     UCTLModel* Model = NewObject<UCTLModel>();
 
-    UE_LOG(LogTemp, Warning, TEXT("VALIDO %d "), JsonManager->GetJsonData().IsValid());
-
     if (JsonManager->LoadJson(FilePath))
     {
         TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();

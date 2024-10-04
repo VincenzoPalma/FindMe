@@ -1310,14 +1310,14 @@
     },
     {
       "type": "Binary",
-      "operator": "AND",
+      "operator": "AU",
       "left_id": 7,
       "right_id": 6,
       "id": 8
     },
     {
       "type": "Unary",
-      "operator": "EF",
+      "operator": "AG",
       "subformula_id": 8,
       "id": 9
     },
@@ -1387,7 +1387,7 @@
     },
     {
       "type": "Binary",
-      "operator": "AU",
+      "operator": "EU",
       "left_id": 8,
       "right_id": 20,
       "id": 18

@@ -17,6 +17,7 @@ public:
 
     TSharedPtr<FJsonObject> GetJsonData() const;
 
+    UFUNCTION(BlueprintCallable, Category = "JsonData")
     static void Shutdown();
 
 private:

@@ -25,8 +25,8 @@
       "properties": {
         "isOpen": false,
         "isGoal": true,
-        "hasWeapon": false,
-        "isGuarded": true,
+        "hasWeapon": true,
+        "isGuarded": false,
         "isVisible": true
       }
     },
@@ -204,15 +204,15 @@
     },
     {
       "type": "Binary",
-      "operator": "AND",
+      "operator": "AU",
       "left_id": 7,
       "right_id": 6,
       "id": 8
     },
     {
       "type": "Unary",
-      "operator": "EF",
-      "subformula_id": 8,
+      "operator": "AG",
+      "subformula_id": 7,
       "id": 9
     },
     {
@@ -255,13 +255,13 @@
     },
     {
       "type": "Unary",
-      "operator": "EG",
+      "operator": "AG",
       "subformula_id": 15,
       "id": 16
     },
     {
       "type": "Unary",
-      "operator": "AG",
+      "operator": "EG",
       "subformula_id": 16,
       "id": 17
     },
@@ -281,7 +281,7 @@
     },
     {
       "type": "Binary",
-      "operator": "EU",
+      "operator": "AU",
       "left_id": 8,
       "right_id": 20,
       "id": 18

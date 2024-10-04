@@ -3664,9 +3664,9 @@
       "id": 245,
       "properties": {
         "isOpen": true,
-        "isGoal": false,
+        "isGoal": true,
         "hasWeapon": true,
-        "isGuarded": true,
+        "isGuarded": false,
         "isVisible": true,
         "isLocked": false,
         "isAccessible": true,
@@ -3695,7 +3695,7 @@
       "properties": {
         "isOpen": true,
         "isGoal": true,
-        "hasWeapon": false,
+        "hasWeapon": true,
         "isGuarded": false,
         "isVisible": true,
         "isLocked": true,
@@ -3725,8 +3725,8 @@
       "properties": {
         "isOpen": true,
         "isGoal": true,
-        "hasWeapon": false,
-        "isGuarded": true,
+        "hasWeapon": true,
+        "isGuarded": false,
         "isVisible": false,
         "isLocked": false,
         "isAccessible": false,
@@ -5559,14 +5559,14 @@
     },
     {
       "type": "Binary",
-      "operator": "AND",
+      "operator": "AU",
       "left_id": 7,
       "right_id": 6,
       "id": 8
     },
     {
       "type": "Unary",
-      "operator": "EF",
+      "operator": "AG",
       "subformula_id": 8,
       "id": 9
     },
@@ -5636,7 +5636,7 @@
     },
     {
       "type": "Binary",
-      "operator": "AU",
+      "operator": "EU",
       "left_id": 12,
       "right_id": 17,
       "id": 18
