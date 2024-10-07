@@ -11,7 +11,7 @@ UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
     UCTLModel* Model = NewObject<UCTLModel>();
     UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
 
-    if (JsonManager->LoadJson(FPaths::ProjectContentDir() + TEXT("/Data/model.json")))
+    if (JsonManager->LoadJson(FilePath))
     {
         TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
 
@@ -59,7 +59,7 @@ UCTLModel* UModelParser::LoadPartialModelFromJson(const FString& FilePath, int S
 
     UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
 
-    if (JsonManager->LoadJson(FPaths::ProjectContentDir() + TEXT("/Data/model.json")))
+    if (JsonManager->LoadJson(FilePath))
     {
         TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
 
@@ -160,7 +160,7 @@ void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model
 {
     UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
     int32 StartingStateId = node->GetState().Id;
-    if (JsonManager->LoadJson(FPaths::ProjectContentDir() + TEXT("/Data/model.json")))
+    if (JsonManager->LoadJson(FilePath))
     {
         TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
 
@@ -231,6 +231,64 @@ void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model
         }
     }
 }
+
+
+int UModelParser::FindStateWithProperties(const FString& FilePath, const TMap<FString, bool>& Properties)
+{
+    UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
+
+    if (JsonManager->LoadJson(FilePath))
+    {
+        TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
+
+        if (JsonData.IsValid())
+        {
+            const TArray<TSharedPtr<FJsonValue>>* StatesArray;
+            if (JsonData->TryGetArrayField(TEXT("states"), StatesArray))
+            {
+                for (const TSharedPtr<FJsonValue>& StateValue : *StatesArray)
+                {
+                    const TSharedPtr<FJsonObject> StateObject = StateValue->AsObject();
+
+                    const TSharedPtr<FJsonObject>* PropertiesObject;
+                    if (StateObject->TryGetObjectField(TEXT("properties"), PropertiesObject))
+                    {
+                        bool bMatch = true;
+                        for (const auto& PropertyPair : Properties)
+                        {
+                            FString Key = PropertyPair.Key;
+                            bool ExpectedValue = PropertyPair.Value;
+
+                            if (!(*PropertiesObject)->HasField(Key) || (*PropertiesObject)->GetBoolField(Key) != ExpectedValue)
+                            {
+                                bMatch = false;
+                                break;
+                            }
+                        }
+
+                        if (bMatch)
+                        {
+                            int32 StateId = StateObject->GetIntegerField(TEXT("id"));
+                            return StateId;
+                        }
+                    }
+                    else
+                    {
+                        UE_LOG(LogTemp, Warning, TEXT("State does not contain 'properties' object."));
+                    }
+                }
+
+                UE_LOG(LogTemp, Warning, TEXT("No state found with the specified properties."));
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
+            }
+        }
+    }
+    return -1;
+}
+
 
 void UModelParser::ParseStateById(const TArray<TSharedPtr<FJsonValue>>& StatesArray, int32 TargetId, UCTLModel* Model)
 {
@@ -521,7 +579,6 @@ void UModelParser::ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasA
         }
     }
 }
-
 
 
 ECTLOperator UModelParser::StringToOperator(const FString& OperatorString)
