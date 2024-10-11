@@ -1366,6 +1366,20 @@
       "operator": "EX",
       "subformula_id": 33,
       "id": 34
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 2,
+      "right_id": 32,
+      "id": 35
+    },
+    {
+      "type": "Binary",
+      "operator": "AND",
+      "left_id": 6,
+      "right_id": 34,
+      "id": 36
     }
   ]
 }
