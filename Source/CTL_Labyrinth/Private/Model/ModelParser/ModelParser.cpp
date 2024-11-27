@@ -117,22 +117,29 @@ UCTLModel* UModelParser::LoadPartialModelFromJson(const FString& FilePath, int S
 
                         int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
                         int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
-                        FString Action = TransitionObject->GetStringField(TEXT("action"));
-                        const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromId);
-                        const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToId);
+                        const TArray<TSharedPtr<FJsonValue>>* ActionsArray;
+                        FActionsArray Actions;
 
-                        if (FromNodePtr && ToNodePtr)
-                        {
-                            UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
-                            UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
+                        if (TransitionObject->TryGetArrayField(TEXT("actions"), ActionsArray)) {
+                            for (const TSharedPtr<FJsonValue>& ActionValue : *ActionsArray) {
+                                Actions.Keys.Add(ActionValue->AsString());
+                            }
 
-                            Model->AddTransition(Action, FromNode, ToNode);
+                            const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromId);
+                            const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToId);
+
+                            if (FromNodePtr && ToNodePtr)
+                            {
+                                UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
+                                UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
+
+                                Model->AddTransition(Actions, FromNode, ToNode);
+                            }
+                            else
+                            {
+                                UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
+                            }
                         }
-                        else
-                        {
-                            UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
-                        }
-
                     }
                 }
             }
@@ -193,27 +200,35 @@ void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model
 
                                 int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
                                 int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
-                                FString Action = TransitionObject->GetStringField(TEXT("action"));
+                                const TArray<TSharedPtr<FJsonValue>>* ActionsArray;
+                                FActionsArray Actions;
 
-                                const UStateNode* const* FromNodePtr = model->GetStateNodes().Find(FromId);
-                                const UStateNode* const* ToNodePtr = model->GetStateNodes().Find(ToId);
-
-                                if (FromNodePtr && ToNodePtr)
-                                {
-                                    UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
-                                    UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
-
-                                    model->AddTransition(Action, FromNode, ToNode);
-
-                                    if (!Visited.Contains(ToId))
-                                    {
-                                        OpenSet.Enqueue(ToId);
-                                        Visited.Add(ToId);
+                                if (TransitionObject->TryGetArrayField(TEXT("actions"), ActionsArray)) {
+                                    for (const TSharedPtr<FJsonValue>& ActionValue : *ActionsArray) {
+                                        Actions.Keys.Add(ActionValue->AsString());
                                     }
-                                }
-                                else
-                                {
-                                    UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
+
+
+                                    const UStateNode* const* FromNodePtr = model->GetStateNodes().Find(FromId);
+                                    const UStateNode* const* ToNodePtr = model->GetStateNodes().Find(ToId);
+
+                                    if (FromNodePtr && ToNodePtr)
+                                    {
+                                        UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
+                                        UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
+
+                                        model->AddTransition(Actions, FromNode, ToNode);
+
+                                        if (!Visited.Contains(ToId))
+                                        {
+                                            OpenSet.Enqueue(ToId);
+                                            Visited.Add(ToId);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
+                                    }
                                 }
                             }
                         }
@@ -466,20 +481,28 @@ void UModelParser::ParseTransitions(const TArray<TSharedPtr<FJsonValue>>& Transi
         {
             int32 FromId = TransitionObject->GetNumberField(TEXT("from"));
             int32 ToId = TransitionObject->GetNumberField(TEXT("to"));
-            FString Action = TransitionObject->GetStringField(TEXT("action"));
-            const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromId);
-            const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToId);
+            const TArray<TSharedPtr<FJsonValue>>* ActionsArray;
+            FActionsArray Actions;
 
-            if (FromNodePtr && ToNodePtr)
-            {
-                UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
-                UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
+            if (TransitionObject->TryGetArrayField(TEXT("actions"), ActionsArray)) {
+                for (const TSharedPtr<FJsonValue>& ActionValue : *ActionsArray) {
+                    Actions.Keys.Add(ActionValue->AsString());
+                }
 
-                Model->AddTransition(Action, FromNode, ToNode);
-            }
-            else
-            {
-                UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
+                const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromId);
+                const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToId);
+
+                if (FromNodePtr && ToNodePtr)
+                {
+                    UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
+                    UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
+
+                    Model->AddTransition(Actions, FromNode, ToNode);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("Failed to add transition from State ID: %d to State ID: %d. One or both states are not found."), FromId, ToId);
+                }
             }
         }
     }

@@ -13,11 +13,11 @@ public:
     UStateNode() {}
 
     UFUNCTION(BlueprintCallable, Category = "StateNode")
-    void AddChild(FString& action, UStateNode* child)
+    void AddChild(FActionsArray actions, UStateNode* child)
     {
         if (child)
         {
-            Children.Add(action, child);
+            Children.Add(actions, child);
         }
     }
 
@@ -42,10 +42,10 @@ public:
     void SetStateData(const FState& InStateData) { StateData = InStateData; }
 
     UFUNCTION(BlueprintGetter)
-    TMap<FString, UStateNode*> GetChildrenMap() const { return Children; }
+    TMap<FActionsArray, UStateNode*> GetChildrenMap() const { return Children; }
 
     UFUNCTION(BlueprintSetter)
-    void SetChildrenMap(const TMap<FString, UStateNode*>& InChildren) { Children = InChildren; }
+    void SetChildrenMap(const TMap<FActionsArray, UStateNode*>& InChildren) { Children = InChildren; }
 
 
 private:
@@ -53,5 +53,5 @@ private:
     FState StateData;
 
     UPROPERTY(BlueprintGetter = GetChildrenMap, BlueprintSetter = SetChildrenMap, Category = "StateNode")
-    TMap<FString, UStateNode*> Children;
+    TMap<FActionsArray, UStateNode*> Children;
 };

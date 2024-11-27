@@ -19,7 +19,7 @@ public:
     UCTLModel();
 
     void AddState(const FState& state);
-    void AddTransition(FString& action, UStateNode* FromNode, UStateNode* ToNode);
+    void AddTransition(FActionsArray actions, UStateNode* FromNode, UStateNode* ToNode);
     void AddFormula(int32 FormulaId, UCTLFormula* Formula);
 
     UFUNCTION(BlueprintCallable, Category = "Model")

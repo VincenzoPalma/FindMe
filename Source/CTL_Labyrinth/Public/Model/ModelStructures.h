@@ -27,3 +27,27 @@ struct FTransition
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Transition")
     FState To;
 };
+
+USTRUCT(BlueprintType)
+struct FActionsArray
+{
+    GENERATED_BODY()
+
+    UPROPERTY()
+    TArray<FString> Keys;
+
+    bool operator==(const FActionsArray& Other) const
+    {
+        return Keys == Other.Keys;
+    }
+};
+
+FORCEINLINE uint32 GetTypeHash(const FActionsArray& Key)
+{
+    uint32 Hash = 0;
+    for (const FString& Str : Key.Keys)
+    {
+        Hash = HashCombine(Hash, GetTypeHash(Str));
+    }
+    return Hash;
+}
