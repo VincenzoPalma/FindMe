@@ -25,32 +25,6 @@
           "NPC1Escaped": false,
           "NPC2Escaped": true
         }
-      },
-      {
-        "id": 3,
-        "properties": {
-          "NPC1InDanger": false,
-          "NPC2InDanger": false,
-          "NPC1NearExit": false,
-          "NPC2NearExit": false,
-          "NPC1Alive": true,
-          "NPC2Alive": true,
-          "NPC1Escaped": true,
-          "NPC2Escaped": false
-        }
-      },
-      {
-        "id": 4,
-        "properties": {
-          "NPC1InDanger": false,
-          "NPC2InDanger": false,
-          "NPC1NearExit": false,
-          "NPC2NearExit": false,
-          "NPC1Alive": true,
-          "NPC2Alive": true,
-          "NPC1Escaped": true,
-          "NPC2Escaped": true
-        }
       }
     ],
     "transitions": [
@@ -58,21 +32,6 @@
         "from": 1,
         "to": 2,
         "actions": ["NPC1GetsInDanger","NPC2GetsInDanger"]
-      },
-      {
-        "from": 2,
-        "to": 3,
-        "actions": ["NPC1GetsOutOfDanger","NPC2GetsCloseToExit"]
-      },
-      {
-        "from": 3,
-        "to": 1,
-        "actions": ["NPC1GetsInDanger","NPC2GetsOutOfDanger"]
-      },
-      {
-        "from": 1,
-        "to": 4,
-        "actions": ["NPC1Eliminated","NPC2Escaped"]
       }
     ],
     "formulas": [
