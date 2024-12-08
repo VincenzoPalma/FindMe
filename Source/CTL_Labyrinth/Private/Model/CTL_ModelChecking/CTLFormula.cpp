@@ -1,16 +1,16 @@
 ﻿#include "../Public/Model/CTL_ModelChecking/CTLFormula.h"
 #include "Model/CTLModel.h"
 
-UAtomicFormula::UAtomicFormula()
+UAtomicBoolFormula::UAtomicBoolFormula()
 {
 }
 
-void UAtomicFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+void UAtomicBoolFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
 {
     Predicate = InPredicate;
 }
 
-bool UAtomicFormula::EvaluatePredicate(UStateNode* stateNode) const
+bool UAtomicBoolFormula::EvaluatePredicate(UStateNode* stateNode) const
 {
     if (stateNode)
     {
@@ -19,7 +19,61 @@ bool UAtomicFormula::EvaluatePredicate(UStateNode* stateNode) const
     return false;
 }
 
-TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+UAtomicIntFormula::UAtomicIntFormula()
+{
+}
+
+void UAtomicIntFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+{
+    Predicate = InPredicate;
+}
+
+bool UAtomicIntFormula::EvaluatePredicate(UStateNode* stateNode) const
+{
+    if (stateNode)
+    {
+        return Predicate(stateNode->GetState());
+    }
+    return false;
+}
+
+UAtomicDoubleFormula::UAtomicDoubleFormula()
+{
+}
+
+void UAtomicDoubleFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+{
+    Predicate = InPredicate;
+}
+
+bool UAtomicDoubleFormula::EvaluatePredicate(UStateNode* stateNode) const
+{
+    if (stateNode)
+    {
+        return Predicate(stateNode->GetState());
+    }
+    return false;
+}
+
+UAtomicStringFormula::UAtomicStringFormula()
+{
+}
+
+void UAtomicStringFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+{
+    Predicate = InPredicate;
+}
+
+bool UAtomicStringFormula::EvaluatePredicate(UStateNode* stateNode) const
+{
+    if (stateNode)
+    {
+        return Predicate(stateNode->GetState());
+    }
+    return false;
+}
+
+TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -58,6 +112,122 @@ TArray<UStateNode*> UAtomicFormula::Evaluate(const UCTLModel* model, UStateNode*
     return satisfyingStates;
 }
 
+TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+{
+
+    TArray<UStateNode*> satisfyingStates;
+
+    if (!model)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Invalid model passed to Evaluate"));
+        return satisfyingStates;
+    }
+
+    // If stateNode is null, verifies all states in the model
+    if (!stateNode)
+    {
+        const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
+        for (const auto& StateNodeEntry : allStateNodes)
+        {
+
+            UStateNode* node = StateNodeEntry.Value;
+            if (EvaluatePredicate(node))
+            {
+                satisfyingStates.Add(node);
+            }
+        }
+    }
+    else
+    {
+        // Verifies the predicate on the passed stateNode and all reachable nodes
+        for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
+            if (EvaluatePredicate(currentNode))
+            {
+                satisfyingStates.Add(currentNode);
+            }
+        }
+    }
+
+    return satisfyingStates;
+}
+
+TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+{
+
+    TArray<UStateNode*> satisfyingStates;
+
+    if (!model)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Invalid model passed to Evaluate"));
+        return satisfyingStates;
+    }
+
+    // If stateNode is null, verifies all states in the model
+    if (!stateNode)
+    {
+        const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
+        for (const auto& StateNodeEntry : allStateNodes)
+        {
+
+            UStateNode* node = StateNodeEntry.Value;
+            if (EvaluatePredicate(node))
+            {
+                satisfyingStates.Add(node);
+            }
+        }
+    }
+    else
+    {
+        // Verifies the predicate on the passed stateNode and all reachable nodes
+        for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
+            if (EvaluatePredicate(currentNode))
+            {
+                satisfyingStates.Add(currentNode);
+            }
+        }
+    }
+
+    return satisfyingStates;
+}
+
+TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+{
+
+    TArray<UStateNode*> satisfyingStates;
+
+    if (!model)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Invalid model passed to Evaluate"));
+        return satisfyingStates;
+    }
+
+    // If stateNode is null, verifies all states in the model
+    if (!stateNode)
+    {
+        const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
+        for (const auto& StateNodeEntry : allStateNodes)
+        {
+
+            UStateNode* node = StateNodeEntry.Value;
+            if (EvaluatePredicate(node))
+            {
+                satisfyingStates.Add(node);
+            }
+        }
+    }
+    else
+    {
+        // Verifies the predicate on the passed stateNode and all reachable nodes
+        for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
+            if (EvaluatePredicate(currentNode))
+            {
+                satisfyingStates.Add(currentNode);
+            }
+        }
+    }
+
+    return satisfyingStates;
+}
 
 UUnaryFormula::UUnaryFormula()
 {
@@ -322,7 +492,22 @@ int32 UCTLFormula::CountSubformulas() const
     return 0;
 }
 
-int32 UAtomicFormula::CountSubformulas() const
+int32 UAtomicDoubleFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UAtomicBoolFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UAtomicIntFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UAtomicStringFormula::CountSubformulas() const
 {
     return 0;
 }

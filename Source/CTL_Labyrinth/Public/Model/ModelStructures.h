@@ -1,7 +1,55 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UObject/NoExportTypes.h"
 #include "ModelStructures.generated.h"
+
+USTRUCT(BlueprintType)
+struct FVariantValue
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Variant")
+    FString Type;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Variant")
+    FString StringValue;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Variant")
+    int32 IntValue;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Variant")
+    double DoubleValue;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Variant")
+    bool BoolValue;
+
+    FVariantValue() : Type(TEXT("None")), StringValue(TEXT("")), IntValue(0), DoubleValue(0.0f), BoolValue(false) {}
+
+    void SetBool(bool InValue)
+    {
+        Type = TEXT("bool");
+        BoolValue = InValue;
+    }
+
+    void SetInt(int32 InValue)
+    {
+        Type = TEXT("int");
+        IntValue = InValue;
+    }
+
+    void SetDouble(float InValue)
+    {
+        Type = TEXT("double");
+        DoubleValue = InValue;
+    }
+
+    void SetString(const FString& InValue)
+    {
+        Type = TEXT("string");
+        StringValue = InValue;
+    }
+};
 
 USTRUCT(BlueprintType)
 struct FState
@@ -12,7 +60,7 @@ struct FState
     int32 Id;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
-    TMap<FString, bool> Properties;
+    TMap<FString, FVariantValue> Properties;
 
 };
 

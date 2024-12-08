@@ -80,15 +80,34 @@ UCTLModel* UModelParser::LoadPartialModelFromJson(const FString& FilePath, int S
 
                     for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
                     {
-                        if (Property.Value.IsValid())
+                        FVariantValue PropertyValue;
+
+                        if (Property.Value->Type == EJson::Boolean)
                         {
-                            bool PropertyValue = Property.Value->AsBool();
-                            State.Properties.Add(Property.Key, PropertyValue);
+                            PropertyValue.SetBool(Property.Value->AsBool());
+                        }
+                        else if (Property.Value->Type == EJson::Number)
+                        {
+                            double NumberValue = Property.Value->AsNumber();
+                            if (NumberValue == static_cast<int32>(NumberValue))
+                            {
+                                PropertyValue.SetInt(static_cast<int32>(NumberValue));
+                            }
+                            else
+                            {
+                                PropertyValue.SetDouble(NumberValue);
+                            }
+                        }
+                        else if (Property.Value->Type == EJson::String)
+                        {
+                            PropertyValue.SetString(Property.Value->AsString());
                         }
                         else
                         {
                             UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
                         }
+                        State.Properties.Add(Property.Key, PropertyValue);
+
                     }
 
                     Model->AddState(State);
@@ -329,15 +348,33 @@ void UModelParser::ParseStateById(const TArray<TSharedPtr<FJsonValue>>& StatesAr
 
                 for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
                 {
-                    if (Property.Value.IsValid())
+                    FVariantValue PropertyValue;
+
+                    if (Property.Value->Type == EJson::Boolean)
                     {
-                        bool PropertyValue = Property.Value->AsBool();
-                        State.Properties.Add(Property.Key, PropertyValue);
+                        PropertyValue.SetBool(Property.Value->AsBool());
+                    }
+                    else if (Property.Value->Type == EJson::Number)
+                    {
+                        double NumberValue = Property.Value->AsNumber();
+                        if (NumberValue == static_cast<int32>(NumberValue))
+                        {
+                            PropertyValue.SetInt(static_cast<int32>(NumberValue));
+                        }
+                        else
+                        {
+                            PropertyValue.SetDouble(NumberValue);
+                        }
+                    }
+                    else if (Property.Value->Type == EJson::String)
+                    {
+                        PropertyValue.SetString(Property.Value->AsString());
                     }
                     else
                     {
                         UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
                     }
+                    State.Properties.Add(Property.Key, PropertyValue);
                 }
 
                 Model->AddState(State);
@@ -378,15 +415,33 @@ UCTLModel* UModelParser::ParseStartingState(const FString& FilePath, int Startin
 
                     for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
                     {
-                        if (Property.Value.IsValid())
+                        FVariantValue PropertyValue;
+
+                        if (Property.Value->Type == EJson::Boolean)
                         {
-                            bool PropertyValue = Property.Value->AsBool();
-                            State.Properties.Add(Property.Key, PropertyValue);
+                            PropertyValue.SetBool(Property.Value->AsBool());
+                        }
+                        else if (Property.Value->Type == EJson::Number)
+                        {
+                            double NumberValue = Property.Value->AsNumber();
+                            if (NumberValue == static_cast<int32>(NumberValue))
+                            {
+                                PropertyValue.SetInt(static_cast<int32>(NumberValue));
+                            }
+                            else
+                            {
+                                PropertyValue.SetDouble(NumberValue);
+                            }
+                        }
+                        else if (Property.Value->Type == EJson::String)
+                        {
+                            PropertyValue.SetString(Property.Value->AsString());
                         }
                         else
                         {
                             UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
                         }
+                        State.Properties.Add(Property.Key, PropertyValue);
                     }
 
                     Model->AddState(State);
@@ -441,15 +496,33 @@ void UModelParser::ParseStates(const TArray<TSharedPtr<FJsonValue>>& StatesArray
 
                     for (const TPair<FString, TSharedPtr<FJsonValue>>& Property : PropertiesObject->Values)
                     {
-                        if (Property.Value.IsValid())
+                        FVariantValue PropertyValue;
+
+                        if (Property.Value->Type == EJson::Boolean)
                         {
-                            bool PropertyValue = Property.Value->AsBool();
-                            State.Properties.Add(Property.Key, PropertyValue);
+                            PropertyValue.SetBool(Property.Value->AsBool());
+                        }
+                        else if (Property.Value->Type == EJson::Number)
+                        {
+                            double NumberValue = Property.Value->AsNumber();
+                            if (NumberValue == static_cast<int32>(NumberValue))
+                            {
+                                PropertyValue.SetInt(static_cast<int32>(NumberValue));
+                            }
+                            else
+                            {
+                                PropertyValue.SetDouble(NumberValue);
+                            }
+                        }
+                        else if (Property.Value->Type == EJson::String)
+                        {
+                            PropertyValue.SetString(Property.Value->AsString());
                         }
                         else
                         {
                             UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
                         }
+                        State.Properties.Add(Property.Key, PropertyValue);
                     }
 
                     Model->AddState(State);
@@ -520,54 +593,158 @@ void UModelParser::ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasA
             // Extract the type and ID of the formula
             FString Type = FormulaObject->GetStringField(TEXT("type"));
             int32 Id = FormulaObject->GetNumberField(TEXT("id"));
-
+            FVariantValue ComparisonValue;
             UCTLFormula* NewFormula = nullptr;
 
-            if (Type == TEXT("Atomic"))
+            if (Type == TEXT("AtomicBool"))
             {
-                // Extract the predicate name for the atomic formula
                 FString PredicateName = FormulaObject->GetStringField(TEXT("predicate"));
 
-                // Register the predicate if it is not already registered
                 if (!PredicateManager->GetPredicate(PredicateName))
                 {
-                    // Register the predicate with a lambda function that checks the state properties
                     PredicateManager->RegisterPredicate(PredicateName, [PredicateName](const FState& State) -> bool {
-                        return State.Properties.Contains(PredicateName) && State.Properties[PredicateName];
+                        if (State.Properties[PredicateName].Type.Equals("bool"))
+                        {
+                            return State.Properties[PredicateName].BoolValue;
+                        }
+                        return false;
                         });
                 }
 
-                // Create a new atomic formula and initialize it
-                NewFormula = NewObject<UAtomicFormula>();
+                NewFormula = NewObject<UAtomicBoolFormula>();
                 auto Predicate = PredicateManager->GetPredicate(PredicateName);
                 if (Predicate)
                 {
-                    UAtomicFormula* AtomicFormula = Cast<UAtomicFormula>(NewFormula);
+                    UAtomicBoolFormula* AtomicFormula = Cast<UAtomicBoolFormula>(NewFormula);
                     AtomicFormula->Initialize(Predicate);
-                    // Add the new formula to the model
                     Model->AddFormula(Id, AtomicFormula);
                 }
                 else
                 {
-                    // Log a warning if the predicate was not found
+                    UE_LOG(LogTemp, Warning, TEXT("Predicate %s not found"), *PredicateName);
+                }
+            }
+            else if (Type == TEXT("AtomicInt"))
+            {
+                FString PredicateName = FormulaObject->GetStringField(TEXT("predicate"));
+                FString ComparisonType = FormulaObject->GetStringField(TEXT("comparison_type"));
+                ComparisonValue.SetInt(FormulaObject->GetNumberField(TEXT("comparison_value")));
+
+                if (!PredicateManager->GetPredicate(PredicateName))
+                {
+                    PredicateManager->RegisterPredicate(PredicateName, [PredicateName, ComparisonValue, ComparisonType](const FState& State) -> bool {
+                        if (State.Properties[PredicateName].Type.Equals("int"))
+                        {
+                            int32 PropertyIntValue = State.Properties[PredicateName].IntValue;
+                            if (ComparisonType == TEXT("="))
+                            {
+                                return PropertyIntValue == ComparisonValue.IntValue;
+                            }
+                            else if (ComparisonType == TEXT(">="))
+                            {
+                                return PropertyIntValue >= ComparisonValue.IntValue;
+                            }
+                            else if (ComparisonType == TEXT("<="))
+                            {
+                                return PropertyIntValue <= ComparisonValue.IntValue;
+                            }
+                        }
+                        return false;
+                        });
+                }
+
+                NewFormula = NewObject<UAtomicIntFormula>();
+                auto Predicate = PredicateManager->GetPredicate(PredicateName);
+                if (Predicate)
+                {
+                    UAtomicIntFormula* AtomicFormula = Cast<UAtomicIntFormula>(NewFormula);
+                    AtomicFormula->Initialize(Predicate);
+                    Model->AddFormula(Id, AtomicFormula);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("Predicate %s not found"), *PredicateName);
+                }
+            }
+            else if (Type == TEXT("AtomicDouble"))
+            {
+                FString PredicateName = FormulaObject->GetStringField(TEXT("predicate"));
+                FString ComparisonType = FormulaObject->GetStringField(TEXT("comparison_type"));
+                ComparisonValue.SetDouble(FormulaObject->GetNumberField(TEXT("comparison_value")));
+
+                if (!PredicateManager->GetPredicate(PredicateName))
+                {
+                    PredicateManager->RegisterPredicate(PredicateName, [PredicateName, ComparisonValue, ComparisonType](const FState& State) -> bool{
+                        if (State.Properties[PredicateName].Type.Equals("double"))
+                        {
+                            double PropertyDoubleValue = State.Properties[PredicateName].DoubleValue;
+                            if (ComparisonType == TEXT("="))
+                            {
+                                return PropertyDoubleValue == ComparisonValue.DoubleValue;
+                            }
+                            else if (ComparisonType == TEXT(">="))
+                            {
+                                return PropertyDoubleValue >= ComparisonValue.DoubleValue;
+                            }
+                            else if (ComparisonType == TEXT("<="))
+                            {
+                                return PropertyDoubleValue <= ComparisonValue.DoubleValue;
+                            }
+                        }
+                        return false;
+                        });
+                }
+
+                NewFormula = NewObject<UAtomicDoubleFormula>();
+                auto Predicate = PredicateManager->GetPredicate(PredicateName);
+                if (Predicate)
+                {
+                    UAtomicDoubleFormula* AtomicFormula = Cast<UAtomicDoubleFormula>(NewFormula);
+                    AtomicFormula->Initialize(Predicate);
+                    Model->AddFormula(Id, AtomicFormula);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("Predicate %s not found"), *PredicateName);
+                }
+            }
+            else if (Type == TEXT("AtomicString"))
+            {
+                FString PredicateName = FormulaObject->GetStringField(TEXT("predicate"));
+                ComparisonValue.SetString(FormulaObject->GetStringField(TEXT("comparison_value")));
+
+                if (!PredicateManager->GetPredicate(PredicateName))
+                {
+                    PredicateManager->RegisterPredicate(PredicateName, [PredicateName, ComparisonValue](const FState& State) -> bool{
+                        return State.Properties[PredicateName].StringValue.Equals(ComparisonValue.StringValue);
+                        });
+                }
+
+                NewFormula = NewObject<UAtomicStringFormula>();
+                auto Predicate = PredicateManager->GetPredicate(PredicateName);
+                if (Predicate)
+                {
+                    UAtomicStringFormula* AtomicFormula = Cast<UAtomicStringFormula>(NewFormula);
+                    AtomicFormula->Initialize(Predicate);
+                    Model->AddFormula(Id, AtomicFormula);
+                }
+                else
+                {
                     UE_LOG(LogTemp, Warning, TEXT("Predicate %s not found"), *PredicateName);
                 }
             }
             else if (Type == TEXT("Unary"))
             {
-                // Extract the operator and subformula ID for the unary formula
                 FString OperatorString = FormulaObject->GetStringField(TEXT("operator"));
                 ECTLOperator Operator = StringToOperator(OperatorString);
                 int32 SubFormulaId = FormulaObject->GetNumberField(TEXT("subformula_id"));
 
-                // Create a new unary formula and initialize it
                 NewFormula = NewObject<UUnaryFormula>();
                 UCTLFormula* SubFormula = Model->GetFormula(SubFormulaId);
                 if (SubFormula)
                 {
                     UUnaryFormula* UnaryFormula = Cast<UUnaryFormula>(NewFormula);
                     UnaryFormula->Initialize(Operator, SubFormula);
-                    // Add the new formula to the model
                     Model->AddFormula(Id, UnaryFormula);
                 }
                 else
@@ -577,13 +754,11 @@ void UModelParser::ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasA
             }
             else if (Type == TEXT("Binary"))
             {
-                // Extract the operator and IDs for the left and right formulas
                 FString OperatorString = FormulaObject->GetStringField(TEXT("operator"));
                 ECTLOperator Operator = StringToOperator(OperatorString);
                 int32 LeftId = FormulaObject->GetNumberField(TEXT("left_id"));
                 int32 RightId = FormulaObject->GetNumberField(TEXT("right_id"));
 
-                // Create a new binary formula and initialize it
                 NewFormula = NewObject<UBinaryFormula>();
                 UCTLFormula* LeftFormula = Model->GetFormula(LeftId);
                 UCTLFormula* RightFormula = Model->GetFormula(RightId);
@@ -591,7 +766,6 @@ void UModelParser::ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasA
                 {
                     UBinaryFormula* BinaryFormula = Cast<UBinaryFormula>(NewFormula);
                     BinaryFormula->Initialize(Operator, LeftFormula, RightFormula);
-                    // Add the new formula to the model
                     Model->AddFormula(Id, BinaryFormula);
                 }
                 else
@@ -602,7 +776,6 @@ void UModelParser::ParseFormulas(const TArray<TSharedPtr<FJsonValue>>& FormulasA
         }
     }
 }
-
 
 ECTLOperator UModelParser::StringToOperator(const FString& OperatorString)
 {

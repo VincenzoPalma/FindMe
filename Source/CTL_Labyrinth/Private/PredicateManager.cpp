@@ -5,9 +5,9 @@ void UPredicateManager::RegisterPredicate(const FString& PredicateName, Predicat
     Predicates.Add(PredicateName, InPredicate);
 }
 
-TFunction<bool(const FState&)> UPredicateManager::GetPredicate(const FString& Name) const
+PredicateFunction UPredicateManager::GetPredicate(const FString& Name) const
 {
-    const TFunction<bool(const FState&)>* Predicate = Predicates.Find(Name);
+    const PredicateFunction* Predicate = Predicates.Find(Name);
     if (Predicate)
     {
         return *Predicate;

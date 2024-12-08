@@ -10,7 +10,10 @@
           "NPC1Alive": true,
           "NPC2Alive": true,
           "NPC1Escaped": false,
-          "NPC2Escaped": false
+          "NPC2Escaped": false,
+          "NPC1HealthPoints": 10,
+          "NPC1Status": "Alive",
+          "NPC1Speed": 5.5
         }
       },
       {
@@ -23,7 +26,10 @@
           "NPC1Alive": true,
           "NPC2Alive": true,
           "NPC1Escaped": false,
-          "NPC2Escaped": true
+          "NPC2Escaped": true,
+          "NPC1HealthPoints": 7,
+          "NPC1Status": "Escaped",
+          "NPC1Speed": 0.4
         }
       }
     ],
@@ -36,42 +42,62 @@
     ],
     "formulas": [
       {
-        "type": "Atomic",
+        "type": "AtomicInt",
+        "comparison_type": "=",
+        "comparison_value": 5,
+        "predicate": "NPC1HealthPointsEqualsFive",
+        "id": 37
+      },
+      {
+        "type": "AtomicString",
+        "comparison_value": "Eliminated",
+        "predicate": "IsNPC1Eliminated",
+        "id": 38
+      },
+      {
+        "type": "AtomicDouble",
+        "comparison_type": ">=",
+        "comparison_value": 3.4,
+        "predicate": "IsNPC1FasterThan",
+        "id": 39
+      },
+      {
+        "type": "AtomicBool",
         "predicate": "NPC1InDanger",
         "id": 1
       },
       {
-        "type": "Atomic",
+        "type": "AtomicBool",
         "predicate": "NPC1NearExit",
         "id": 2
       },
       {
-        "type": "Atomic",
+        "type": "AtomicBool",
         "predicate": "NPC1Alive",
         "id": 3
       },
       {
-        "type": "Atomic",
+        "type": "AtomicBool",
         "predicate": "NPC1Escaped",
         "id": 4
       },
       {
-        "type": "Atomic",
+        "type": "AtomicBool",
         "predicate": "NPC2InDanger",
         "id": 5
       },
       {
-        "type": "Atomic",
+        "type": "AtomicBool",
         "predicate": "NPC2NearExit",
         "id": 6
       },
       {
-        "type": "Atomic",
+        "type": "AtomicBool",
         "predicate": "NPC2Alive",
         "id": 7
       },
       {
-        "type": "Atomic",
+        "type": "AtomicBool",
         "predicate": "NPC2Escaped",
         "id": 8
       },

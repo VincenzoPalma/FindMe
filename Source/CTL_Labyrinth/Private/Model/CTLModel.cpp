@@ -197,9 +197,35 @@ void UCTLModel::DebugPrintModel() const
             FString StateMessage = FString::Printf(TEXT("State ID: %d"), StateNode->GetState().Id);
             UE_LOG(LogTemp, Log, TEXT("%s"), *StateMessage);
 
-            for (const TPair<FString, bool>& Property : StateNode->GetState().Properties)
+            for (const TPair<FString, FVariantValue>& Property : StateNode->GetState().Properties)
             {
-                FString PropertyMessage = FString::Printf(TEXT("  Property: %s = %s"), *Property.Key, Property.Value ? TEXT("true") : TEXT("false"));
+                FString PropertyMessage;
+
+                if (Property.Value.Type.Equals("bool"))
+                {
+                    bool BoolValue = Property.Value.BoolValue;
+                    PropertyMessage = FString::Printf(TEXT("Bool Property: %s = %s"), *Property.Key, BoolValue ? TEXT("true") : TEXT("false"));
+                }
+                else if (Property.Value.Type.Equals("int"))
+                {
+                    int32 IntValue = Property.Value.IntValue;
+                    PropertyMessage = FString::Printf(TEXT("Integer Property: %s = %d"), *Property.Key, IntValue);
+                }
+                else if (Property.Value.Type.Equals("double"))
+                {
+                    double DoubleValue = Property.Value.DoubleValue;
+                    PropertyMessage = FString::Printf(TEXT("Double Property: %s = %f"), *Property.Key, DoubleValue);
+                }
+                else if (Property.Value.Type.Equals("string"))
+                {
+                    FString StringValue = Property.Value.StringValue;
+                    PropertyMessage = FString::Printf(TEXT("String Property: %s = %s"), *Property.Key, *StringValue);
+                }
+                else
+                {
+                    PropertyMessage = FString::Printf(TEXT("  Property: %s has an unsupported type"), *Property.Key);
+                }
+
                 UE_LOG(LogTemp, Log, TEXT("%s"), *PropertyMessage);
             }
 
@@ -250,9 +276,9 @@ void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<int32, 
 {
     UModelParser::UpdateModelFromNode("C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Source\\CTL_Labyrinth\\ModelFiles\\CTLLabyrinthModelNew.json", this, node);
     int subFormulasNum = formula->CountSubformulas();
-    for (const UStateNode* node : GetReachableNodes(node))
+    for (const UStateNode* currNode : GetReachableNodes(node))
     {
-        statesScores.Add(node->GetState().Id, subFormulasNum);
+        statesScores.Add(currNode->GetState().Id, subFormulasNum);
     }
     TArray<UStateNode*> result = formula->Evaluate(this, node, statesScores);
 }
