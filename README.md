@@ -4,4 +4,4 @@ Developed in Unreal Engine 5, with the core system implemented in C++ and its fu
 
 The system has been utilized to model the behavior of NPCs in a simple chase game set within a labyrinthine map.
 
-![Map](https://imgur.com/S6Yh2kp)
+![Map](https://i.imgur.com/S6Yh2kp.png)
