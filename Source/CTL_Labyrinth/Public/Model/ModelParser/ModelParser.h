@@ -22,7 +22,7 @@ public:
     static void UpdateModelFromNode(const FString& FilePath, UCTLModel* model, UStateNode* node);
 
     UFUNCTION(BlueprintCallable, Category = "Model Parsing")
-    static int FindStateWithProperties(const FString& FilePath, const TMap<FString, bool>& Properties);
+    static int FindStateWithProperties(const FString& FilePath, const TMap<FString, FVariantValue>& Properties);
 
 
 private:

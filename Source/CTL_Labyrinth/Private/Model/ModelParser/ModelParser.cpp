@@ -267,7 +267,7 @@ void UModelParser::UpdateModelFromNode(const FString& FilePath, UCTLModel* model
 }
 
 
-int UModelParser::FindStateWithProperties(const FString& FilePath, const TMap<FString, bool>& Properties)
+int UModelParser::FindStateWithProperties(const FString& FilePath, const TMap<FString, FVariantValue>& Properties)
 {
     UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
 
@@ -290,11 +290,50 @@ int UModelParser::FindStateWithProperties(const FString& FilePath, const TMap<FS
                         bool bMatch = true;
                         for (const auto& PropertyPair : Properties)
                         {
-                            FString Key = PropertyPair.Key;
-                            bool ExpectedValue = PropertyPair.Value;
+                            const FString& Key = PropertyPair.Key;
+                            const FVariantValue& ExpectedValue = PropertyPair.Value;
 
-                            if (!(*PropertiesObject)->HasField(Key) || (*PropertiesObject)->GetBoolField(Key) != ExpectedValue)
+                            if (!(*PropertiesObject)->HasField(Key))
                             {
+                                bMatch = false;
+                                break;
+                            }
+
+                            if (ExpectedValue.Type == TEXT("bool"))
+                            {
+                                if ((*PropertiesObject)->GetBoolField(Key) != ExpectedValue.BoolValue)
+                                {
+                                    bMatch = false;
+                                    break;
+                                }
+                            }
+                            else if (ExpectedValue.Type == TEXT("int"))
+                            {
+                                if ((*PropertiesObject)->GetIntegerField(Key) != ExpectedValue.IntValue)
+                                {
+                                    bMatch = false;
+                                    break;
+                                }
+                            }
+                            else if (ExpectedValue.Type == TEXT("double"))
+                            {
+                                if ((*PropertiesObject)->GetNumberField(Key) != ExpectedValue.DoubleValue)
+                                {
+                                    bMatch = false;
+                                    break;
+                                }
+                            }
+                            else if (ExpectedValue.Type == TEXT("string"))
+                            {
+                                if ((*PropertiesObject)->GetStringField(Key) != ExpectedValue.StringValue)
+                                {
+                                    bMatch = false;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                UE_LOG(LogTemp, Warning, TEXT("Unsupported type for property '%s'."), *Key);
                                 bMatch = false;
                                 break;
                             }
