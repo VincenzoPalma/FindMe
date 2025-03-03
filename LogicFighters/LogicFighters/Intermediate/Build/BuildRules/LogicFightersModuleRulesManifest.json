@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\LogicFighters\\LogicFighters\\Source\\LogicFighters\\LogicFighters.Build.cs",
+		"C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\LogicFighters\\LogicFighters\\Source\\LogicFighters.Target.cs",
+		"C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\LogicFighters\\LogicFighters\\Source\\LogicFightersEditor.Target.cs"
+	],
+	"EngineVersion": "5.4.3"
+}

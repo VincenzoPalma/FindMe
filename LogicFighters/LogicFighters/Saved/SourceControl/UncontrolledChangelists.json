@@ -1,0 +1,16 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Changelist non controllate predefinite",
+			"files": [
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/LogicFighters/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/LogicFighters/Content/LogicFighters/BaseCharacter.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/LogicFighters/Content/LogicFighters/Wizard.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/LogicFighters/Content/LogicFighters/Warrior.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/LogicFighters/Content/LogicFighters/Ranger.uasset"
+			]
+		}
+	]
+}

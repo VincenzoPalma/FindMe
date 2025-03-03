@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\LogicFighters.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\LogicFighters.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\LogicFightersEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\LogicFighters">
+      <UniqueIdentifier>{06822E87-095B-3113-A0FA-7A8A76F393D1}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\LogicFighters\LogicFighters.Build.cs">
+      <Filter>Source\LogicFighters</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\LogicFighters\LogicFighters.cpp">
+      <Filter>Source\LogicFighters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LogicFighters\LogicFighters.h">
+      <Filter>Source\LogicFighters</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LogicFighters\LogicFightersCharacter.cpp">
+      <Filter>Source\LogicFighters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LogicFighters\LogicFightersCharacter.h">
+      <Filter>Source\LogicFighters</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LogicFighters\LogicFightersGameMode.cpp">
+      <Filter>Source\LogicFighters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LogicFighters\LogicFightersGameMode.h">
+      <Filter>Source\LogicFighters</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LogicFighters\LogicFightersPlayerController.cpp">
+      <Filter>Source\LogicFighters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LogicFighters\LogicFightersPlayerController.h">
+      <Filter>Source\LogicFighters</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
