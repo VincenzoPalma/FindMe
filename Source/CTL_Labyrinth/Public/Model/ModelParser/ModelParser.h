@@ -24,6 +24,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Model Parsing")
     static int FindStateWithProperties(const FString& FilePath, const TMap<FString, FVariantValue>& Properties);
 
+    UFUNCTION(BlueprintCallable, Category = "Model Parsing")
+    static UCTLModel* FindAndParseState(const FString& FilePath, const TMap<FString, FVariantValue>& Properties);
+
 
 private:
     static void ParseStateById(const TArray<TSharedPtr<FJsonValue>>& StatesArray, int32 TargetId, UCTLModel* Model);

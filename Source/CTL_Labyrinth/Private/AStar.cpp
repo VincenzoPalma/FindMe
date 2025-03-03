@@ -13,7 +13,6 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 	//Structures for the path, if found
 	TArray<UStateNode*> finalPath;
 	TMap<int32, UStateNode*> cameFrom;
-
 	//Initialization and evaluation of the score for the starting state
 	int subFormulasNum = formula->CountSubformulas();
 	TMap<int32, int32> statesScores;

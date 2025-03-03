@@ -833,3 +833,141 @@ ECTLOperator UModelParser::StringToOperator(const FString& OperatorString)
     UE_LOG(LogTemp, Warning, TEXT("Unknown operator: %s"), *OperatorString);
     return ECTLOperator::AND;
 }
+
+UCTLModel* UModelParser::FindAndParseState(const FString& FilePath, const TMap<FString, FVariantValue>& Properties)
+{
+    UJsonDataManager* JsonManager = UJsonDataManager::GetInstance();
+    UCTLModel* Model = NewObject<UCTLModel>();
+    if (JsonManager->LoadJson(FilePath))
+    {
+        TSharedPtr<FJsonObject> JsonData = JsonManager->GetJsonData();
+
+        if (JsonData.IsValid())
+        {
+            const TArray<TSharedPtr<FJsonValue>>* StatesArray;
+            if (JsonData->TryGetArrayField(TEXT("states"), StatesArray))
+            {
+                for (const TSharedPtr<FJsonValue>& StateValue : *StatesArray)
+                {
+                    const TSharedPtr<FJsonObject> StateObject = StateValue->AsObject();
+
+                    const TSharedPtr<FJsonObject>* PropertiesObject;
+                    if (StateObject->TryGetObjectField(TEXT("properties"), PropertiesObject))
+                    {
+                        bool bMatch = true;
+                        for (const auto& PropertyPair : Properties)
+                        {
+                            const FString& Key = PropertyPair.Key;
+                            const FVariantValue& ExpectedValue = PropertyPair.Value;
+
+                            if (!(*PropertiesObject)->HasField(Key))
+                            {
+                                bMatch = false;
+                                break;
+                            }
+
+                            if (ExpectedValue.Type == TEXT("bool"))
+                            {
+                                if ((*PropertiesObject)->GetBoolField(Key) != ExpectedValue.BoolValue)
+                                {
+                                    bMatch = false;
+                                    break;
+                                }
+                            }
+                            else if (ExpectedValue.Type == TEXT("int"))
+                            {
+                                if ((*PropertiesObject)->GetIntegerField(Key) != ExpectedValue.IntValue)
+                                {
+                                    bMatch = false;
+                                    break;
+                                }
+                            }
+                            else if (ExpectedValue.Type == TEXT("double"))
+                            {
+                                if ((*PropertiesObject)->GetNumberField(Key) != ExpectedValue.DoubleValue)
+                                {
+                                    bMatch = false;
+                                    break;
+                                }
+                            }
+                            else if (ExpectedValue.Type == TEXT("string"))
+                            {
+                                if ((*PropertiesObject)->GetStringField(Key) != ExpectedValue.StringValue)
+                                {
+                                    bMatch = false;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                UE_LOG(LogTemp, Warning, TEXT("Unsupported type for property '%s'."), *Key);
+                                bMatch = false;
+                                break;
+                            }
+                        }
+
+                        if (bMatch)
+                        {
+                            FState State;
+                            State.Id = StateObject->GetIntegerField(TEXT("id"));
+
+                            for (const auto& Property : (*PropertiesObject)->Values)
+                            {
+                                FVariantValue PropertyValue;
+
+                                if (Property.Value->Type == EJson::Boolean)
+                                {
+                                    PropertyValue.SetBool(Property.Value->AsBool());
+                                }
+                                else if (Property.Value->Type == EJson::Number)
+                                {
+                                    double NumberValue = Property.Value->AsNumber();
+                                    if (NumberValue == static_cast<int32>(NumberValue))
+                                    {
+                                        PropertyValue.SetInt(static_cast<int32>(NumberValue));
+                                    }
+                                    else
+                                    {
+                                        PropertyValue.SetDouble(NumberValue);
+                                    }
+                                }
+                                else if (Property.Value->Type == EJson::String)
+                                {
+                                    PropertyValue.SetString(Property.Value->AsString());
+                                }
+                                else
+                                {
+                                    UE_LOG(LogTemp, Warning, TEXT("Property value for '%s' is invalid."), *Property.Key);
+                                }
+                                State.Properties.Add(Property.Key, PropertyValue);
+                            }
+
+                            Model->AddState(State);
+                        }
+
+                    }
+                    else
+                    {
+                        UE_LOG(LogTemp, Warning, TEXT("State does not contain 'properties' object."));
+                    }
+                }
+
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'states' array or it is invalid."));
+            }
+
+            const TArray<TSharedPtr<FJsonValue>>* FormulasArray;
+            if (JsonData->TryGetArrayField(TEXT("formulas"), FormulasArray))
+            {
+                ParseFormulas(*FormulasArray, Model);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("JSON file does not contain 'formulas' array or it is invalid."));
+            }
+        }
+    }
+    return Model;
+}
