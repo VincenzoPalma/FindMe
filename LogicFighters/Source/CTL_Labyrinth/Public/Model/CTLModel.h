@@ -31,7 +31,7 @@ public:
     }
 
     UFUNCTION(BlueprintCallable, Category = "Model")
-    const TMap<int32, UStateNode*>& GetStateNodes() const { 
+    const TMap<FString, UStateNode*>& GetStateNodes() const { 
         return stateNodes; 
     }
 
@@ -48,9 +48,10 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Model")
     TArray<UStateNode*> GetReachableNodes(UStateNode* StartNode) const;
-
+    
     UFUNCTION(BlueprintCallable, Category = "Debug")
     void DebugPrintModel() const;
+
 
 
     virtual void PostInitProperties() override;
@@ -62,10 +63,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Model")
     TArray<UStateNode*> EvaluateFormula(UStateNode* node, UCTLFormula* formula);
 
-    void UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<int32, int32>& statesScores);
+    void UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& statesScores);
 private:
     UPROPERTY()
-    TMap<int32, UStateNode*> stateNodes;
+    TMap<FString, UStateNode*> stateNodes;
 
     UPROPERTY()
     UStateNode* rootNode;

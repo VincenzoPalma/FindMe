@@ -341,7 +341,7 @@ struct Z_Construct_UFunction_UCTLModel_GetStateNodes_Statics
 {
 	struct CTLModel_eventGetStateNodes_Parms
 	{
-		TMap<int32,UStateNode*> ReturnValue;
+		TMap<FString,UStateNode*> ReturnValue;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -353,13 +353,13 @@ struct Z_Construct_UFunction_UCTLModel_GetStateNodes_Statics
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_ValueProp;
-	static const UECodeGen_Private::FIntPropertyParams NewProp_ReturnValue_Key_KeyProp;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue_Key_KeyProp;
 	static const UECodeGen_Private::FMapPropertyParams NewProp_ReturnValue;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLModel_GetStateNodes_Statics::NewProp_ReturnValue_ValueProp = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UCTLModel_GetStateNodes_Statics::NewProp_ReturnValue_Key_KeyProp = { "ReturnValue_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UCTLModel_GetStateNodes_Statics::NewProp_ReturnValue_Key_KeyProp = { "ReturnValue_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FMapPropertyParams Z_Construct_UFunction_UCTLModel_GetStateNodes_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000008000582, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventGetStateNodes_Parms, ReturnValue), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ReturnValue_MetaData), NewProp_ReturnValue_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCTLModel_GetStateNodes_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_GetStateNodes_Statics::NewProp_ReturnValue_ValueProp,
@@ -382,7 +382,7 @@ DEFINE_FUNCTION(UCTLModel::execGetStateNodes)
 {
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	*(TMap<int32,UStateNode*>*)Z_Param__Result=P_THIS->GetStateNodes();
+	*(TMap<FString,UStateNode*>*)Z_Param__Result=P_THIS->GetStateNodes();
 	P_NATIVE_END;
 }
 // End Class UCTLModel Function GetStateNodes
@@ -431,7 +431,7 @@ struct Z_Construct_UClass_UCTLModel_Statics
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_stateNodes_ValueProp;
-	static const UECodeGen_Private::FIntPropertyParams NewProp_stateNodes_Key_KeyProp;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_stateNodes_Key_KeyProp;
 	static const UECodeGen_Private::FMapPropertyParams NewProp_stateNodes;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_rootNode;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_Formulas_ValueProp;
@@ -448,7 +448,7 @@ struct Z_Construct_UClass_UCTLModel_Statics
 		{ &Z_Construct_UFunction_UCTLModel_GetPredicateManager, "GetPredicateManager" }, // 3149239671
 		{ &Z_Construct_UFunction_UCTLModel_GetReachableNodes, "GetReachableNodes" }, // 2871945672
 		{ &Z_Construct_UFunction_UCTLModel_GetRootNode, "GetRootNode" }, // 3047178962
-		{ &Z_Construct_UFunction_UCTLModel_GetStateNodes, "GetStateNodes" }, // 3380966089
+		{ &Z_Construct_UFunction_UCTLModel_GetStateNodes, "GetStateNodes" }, // 1143806030
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -457,7 +457,7 @@ struct Z_Construct_UClass_UCTLModel_Statics
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_stateNodes_ValueProp = { "stateNodes", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_stateNodes_Key_KeyProp = { "stateNodes_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_stateNodes_Key_KeyProp = { "stateNodes_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_stateNodes = { "stateNodes", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCTLModel, stateNodes), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_stateNodes_MetaData), NewProp_stateNodes_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_rootNode = { "rootNode", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCTLModel, rootNode), Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_rootNode_MetaData), NewProp_rootNode_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_Formulas_ValueProp = { "Formulas", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UClass_UCTLFormula_NoRegister, METADATA_PARAMS(0, nullptr) };
@@ -515,10 +515,10 @@ UCTLModel::~UCTLModel() {}
 struct Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCTLModel, UCTLModel::StaticClass, TEXT("UCTLModel"), &Z_Registration_Info_UClass_UCTLModel, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLModel), 2214589754U) },
+		{ Z_Construct_UClass_UCTLModel, UCTLModel::StaticClass, TEXT("UCTLModel"), &Z_Registration_Info_UClass_UCTLModel, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLModel), 466885040U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_1938440345(TEXT("/Script/CTL_Labyrinth"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_1884982207(TEXT("/Script/CTL_Labyrinth"),
 	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

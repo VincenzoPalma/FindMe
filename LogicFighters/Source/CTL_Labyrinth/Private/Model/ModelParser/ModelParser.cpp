@@ -3,8 +3,11 @@
 #include "Serialization/JsonSerializer.h"
 #include "Json.h"
 #include "JsonUtilities.h"
+#include "Misc/Paths.h"
+#include "HAL/PlatformFilemanager.h"
+#include "Misc/FileHelper.h"
 
-
+/*
 //Parses the whole model from a JSON file
 UCTLModel* UModelParser::LoadModelFromJson(const FString& FilePath)
 {
@@ -970,4 +973,150 @@ UCTLModel* UModelParser::FindAndParseState(const FString& FilePath, const TMap<F
         }
     }
     return Model;
+}
+*/
+
+
+UCTLModel* UModelParser::ParseStateById(const FString& Character1Class, const FString& Character2Class, const FString& TargetStateId)
+{
+    FString JsonFilePath = GetJsonFilePath(Character1Class, Character2Class);
+
+    FString JsonString;
+    if (!FFileHelper::LoadFileToString(JsonString, *JsonFilePath))
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file: %s"), *JsonFilePath);
+        return nullptr;
+    }
+    UE_LOG(LogTemp, Log, TEXT("Successfully loaded JSON file: %s"), *JsonFilePath);
+
+    TSharedPtr<FJsonObject> JsonObject;
+    TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonString);
+    if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to parse JSON file"));
+        return nullptr;
+    }
+
+    UCTLModel* Model = NewObject<UCTLModel>();
+
+    const TSharedPtr<FJsonObject>* StateJson;
+    if (!JsonObject->TryGetObjectField(TargetStateId, StateJson))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("State ID not found: %s"), *TargetStateId);
+        return nullptr;
+    }
+
+    FState TargetState = ParseStateProperties(TargetStateId);
+    Model->AddState(TargetState);
+
+    AddTransitionsFromState(TargetStateId, JsonObject, Model);
+
+    return Model;
+}
+
+FState UModelParser::ParseStateProperties(const FString& StateId)
+{
+    FState TargetState;
+    TArray<FString> PropertiesArray;
+    TArray<FString> PropertyNames;
+    TargetState.Id = *StateId;
+    StateId.ParseIntoArray(PropertiesArray, TEXT("-"), true);
+
+    if (PropertiesArray.Num() == 10)
+    {
+
+        PropertyNames = {
+            TEXT("HealthPoints1"), TEXT("AbilityPoints1"), TEXT("DefenseAvailable1"), TEXT("CounterAvailable1"), TEXT("BuffTurns1"),
+            TEXT("HealthPoints2"), TEXT("AbilityPoints2"), TEXT("DefenseAvailable2"), TEXT("CounterAvailable2"), TEXT("BuffTurns2")
+        };
+
+    }
+    else
+    {
+        return TargetState;
+    }
+
+    if (PropertiesArray.Num() == PropertyNames.Num())
+    {
+
+        for (int i = 0; i < PropertyNames.Num(); ++i)
+        {
+            FVariantValue Value;
+
+            if (FCString::IsNumeric(*PropertiesArray[i]))
+            {
+                Value.SetInt(FCString::Atoi(*PropertiesArray[i]));
+            }
+            else if (PropertiesArray[i] == TEXT("True") || PropertiesArray[i] == TEXT("False"))
+            {
+                Value.SetBool(PropertiesArray[i] == TEXT("True"));
+            }
+            else
+            {
+                Value.SetString(PropertiesArray[i]);
+            }
+
+            TargetState.Properties.Add(PropertyNames[i], Value);
+        }
+    }
+
+    return TargetState;
+}
+
+void UModelParser::AddTransitionsFromState(const FString& FromStateId, const TSharedPtr<FJsonObject>& JsonObject, UCTLModel* Model)
+{
+    TSet<FString> StatesAdded;
+
+    if (JsonObject->HasField(FromStateId))
+    {
+        const TSharedPtr<FJsonObject> FromStateTransitions = JsonObject->GetObjectField(FromStateId);
+
+        for (const auto& TransitionElem : FromStateTransitions->Values)
+        {
+            FString ToStateId = TransitionElem.Key;
+
+            if (!StatesAdded.Contains(ToStateId))
+            {
+                FState TargetState = ParseStateProperties(ToStateId);
+                Model->AddState(TargetState);
+
+                StatesAdded.Add(ToStateId);
+            }
+
+            const UStateNode* const* FromNodePtr = Model->GetStateNodes().Find(FromStateId);
+            const UStateNode* const* ToNodePtr = Model->GetStateNodes().Find(ToStateId);
+
+            if (FromNodePtr && ToNodePtr)
+            {
+                UStateNode* FromNode = const_cast<UStateNode*>(*FromNodePtr);
+                UStateNode* ToNode = const_cast<UStateNode*>(*ToNodePtr);
+
+                const TArray<TSharedPtr<FJsonValue>>& Actions = TransitionElem.Value->AsArray();
+                FActionsArray ActionsArray;
+
+                for (const TSharedPtr<FJsonValue>& Action : Actions)
+                {
+                    int32 ActionInt = FCString::Atoi(*Action->AsString());
+                    ActionsArray.Keys.Add(ActionInt);
+                }
+
+                Model->AddTransition(ActionsArray, FromNode, ToNode);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Failed to find one or both nodes for the transition from %s to %s"), *FromStateId, *ToStateId);
+            }
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("FromStateId %s not found in JSON."), *FromStateId);
+    }
+}
+
+FString UModelParser::GetJsonFilePath(const FString& Character1Class, const FString& Character2Class)
+{
+    FString JsonFileName = Character1Class + TEXT("_") + Character2Class + TEXT("_") + TEXT("gameplay") + TEXT(".json");
+    FString JsonFilePath = FPaths::ProjectContentDir() / TEXT("ModelFiles") / JsonFileName;
+    return JsonFilePath;
 }

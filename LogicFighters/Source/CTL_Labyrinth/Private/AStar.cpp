@@ -12,17 +12,17 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 {
 	//Structures for the path, if found
 	TArray<UStateNode*> finalPath;
-	TMap<int32, UStateNode*> cameFrom;
+	TMap<FString, UStateNode*> cameFrom;
 	//Initialization and evaluation of the score for the starting state
 	int subFormulasNum = formula->CountSubformulas();
-	TMap<int32, int32> statesScores;
+	TMap<FString, int32> statesScores;
 	statesScores.Add(startingNode->GetState().Id, subFormulasNum);
 	formula->Evaluate(model, startingNode, statesScores);
 
 	//Initialization of the g and f values for the starting state
-	TMap<int32, int32> gScores;
-	TMap<int32, int32> fScores;
-	int startingNodeId = startingNode->GetState().Id;
+	TMap<FString, int32> gScores;
+	TMap<FString, int32> fScores;
+	FString startingNodeId = startingNode->GetState().Id;
 	UpdateGScores(gScores, startingNodeId, 0);
 	UpdateFScores(fScores, startingNodeId, gScores, statesScores);
 
@@ -59,7 +59,7 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 		
 		//Loop for each adjacent state of the current state
 		for (UStateNode* node : currentNode->GetChildren()) {
-			int nodeId = node->GetState().Id;
+			FString nodeId = node->GetState().Id;
 
 			//Skip it if it was already visited
 			if (closedSet.Contains(node)) {
@@ -85,7 +85,7 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 	return finalPath; //Empty array if no path was found
 }
 
-void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<int32, int32> fScores)
+void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<FString, int32> fScores)
 {
 	if (openSet.IsEmpty()) {
 		openSet.Add(node);
@@ -111,19 +111,19 @@ void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<in
 	}
 }
 
-void AStar::UpdateGScores(TMap<int32, int32>& gScores, int nodeId, int newValue)
+void AStar::UpdateGScores(TMap<FString, int32>& gScores, FString nodeId, int newValue)
 {
 	gScores.Remove(nodeId);
 	gScores.Add(nodeId, newValue);
 }
 
-void AStar::UpdateFScores(TMap<int32, int32>& fScores, int nodeId, TMap<int32, int32>& gScores, TMap<int32, int32>& statesScores)
+void AStar::UpdateFScores(TMap<FString, int32>& fScores, FString nodeId, TMap<FString, int32>& gScores, TMap<FString, int32>& statesScores)
 {
 	fScores.Remove(nodeId);
 	fScores.Add(nodeId, *gScores.Find(nodeId) + *statesScores.Find(nodeId));
 }
 
-TArray<UStateNode*> AStar::ReconstructPath(UStateNode* currentNode, const TMap<int32, UStateNode*>& cameFrom)
+TArray<UStateNode*> AStar::ReconstructPath(UStateNode* currentNode, const TMap<FString, UStateNode*>& cameFrom)
 {
 	TArray<UStateNode*> totalPath;
 	totalPath.Add(currentNode);
@@ -138,11 +138,11 @@ TArray<UStateNode*> AStar::ReconstructPath(UStateNode* currentNode, const TMap<i
 	return totalPath;
 }
 
-void AStar::InitializeScores(const TMap<int32, int32>& statesScores, TMap<int32, int32>& gScore, TMap<int32, int32>& fScore)
+void AStar::InitializeScores(const TMap<FString, int32>& statesScores, TMap<FString, int32>& gScore, TMap<FString, int32>& fScore)
 {
-	for (const TPair<int32, int32>& entry : statesScores)
+	for (const TPair<FString, int32>& entry : statesScores)
 	{
-		int32 key = entry.Key;
+		FString key = entry.Key;
 
 		if (!gScore.Contains(key)) {
 			gScore.Add(key, MAX_int32);

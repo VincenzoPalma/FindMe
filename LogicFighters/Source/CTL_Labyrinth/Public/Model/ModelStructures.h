@@ -57,7 +57,7 @@ struct FState
     GENERATED_BODY()
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
-    int32 Id;
+    FString Id;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
     TMap<FString, FVariantValue> Properties;
@@ -82,7 +82,7 @@ struct FActionsArray
     GENERATED_BODY()
 
     UPROPERTY()
-    TArray<FString> Keys;
+    TArray<int32> Keys;
 
     bool operator==(const FActionsArray& Other) const
     {
@@ -90,12 +90,12 @@ struct FActionsArray
     }
 };
 
-FORCEINLINE uint32 GetTypeHash(const FActionsArray& Key)
+FORCEINLINE uint32 GetTypeHash(const FActionsArray& ActionsArray)
 {
     uint32 Hash = 0;
-    for (const FString& Str : Key.Keys)
+    for (const int32 Key : ActionsArray.Keys)
     {
-        Hash = HashCombine(Hash, GetTypeHash(Str));
+        Hash = HashCombine(Hash, GetTypeHash(Key));
     }
     return Hash;
 }

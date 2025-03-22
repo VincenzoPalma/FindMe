@@ -32,7 +32,7 @@ public:
     virtual ~UCTLFormula() = default;
 
     UFUNCTION(BlueprintCallable, Category = "CTLFormula")
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<int32, int32>& statesScores) const PURE_VIRTUAL(UCTLFormula::Evaluate, return TArray<UStateNode*>(););
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<FString, int32>& statesScores) const PURE_VIRTUAL(UCTLFormula::Evaluate, return TArray<UStateNode*>(););
 
     virtual int32 CountSubformulas() const;
 };
@@ -46,7 +46,7 @@ public:
     UAtomicBoolFormula();
     virtual bool EvaluatePredicate(UStateNode* node) const;
 
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<int32, int32>& statesScores) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<FString, int32>& statesScores) const override;
 
     void Initialize(TFunction<bool(const FState&)> InPredicate);
 
@@ -64,7 +64,7 @@ public:
     UAtomicIntFormula();
     virtual bool EvaluatePredicate(UStateNode* node) const;
 
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<int32, int32>& statesScores) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<FString, int32>& statesScores) const override;
 
     void Initialize(TFunction<bool(const FState&)> InPredicate);
 
@@ -82,7 +82,7 @@ public:
     UAtomicDoubleFormula();
     virtual bool EvaluatePredicate(UStateNode* node) const;
 
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<int32, int32>& statesScores) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<FString, int32>& statesScores) const override;
 
     void Initialize(TFunction<bool(const FState&)> InPredicate);
 
@@ -100,7 +100,7 @@ public:
     UAtomicStringFormula();
     virtual bool EvaluatePredicate(UStateNode* node) const;
 
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<int32, int32>& statesScores) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<FString, int32>& statesScores) const override;
 
     void Initialize(TFunction<bool(const FState&)> InPredicate);
 
@@ -116,7 +116,7 @@ class CTL_LABYRINTH_API UUnaryFormula : public UCTLFormula
 
 public:
     UUnaryFormula();
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<int32, int32>& statesScores) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<FString, int32>& statesScores) const override;
     void Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula);
     virtual int32 CountSubformulas() const;
 private:
@@ -131,7 +131,7 @@ class CTL_LABYRINTH_API UBinaryFormula : public UCTLFormula
 
 public:
     UBinaryFormula();
-    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<int32, int32>& statesScores) const override;
+    virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<FString, int32>& statesScores) const override;
     void Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight);
     virtual int32 CountSubformulas() const;
 private:

@@ -108,7 +108,7 @@ struct Z_Construct_UFunction_UCTLFormula_Evaluate_Statics
 	{
 		const UCTLModel* model;
 		UStateNode* node;
-		TMap<int32,int32> statesScores;
+		TMap<FString,int32> statesScores;
 		TArray<UStateNode*> ReturnValue;
 	};
 #if WITH_METADATA
@@ -123,7 +123,7 @@ struct Z_Construct_UFunction_UCTLFormula_Evaluate_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_model;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_node;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_statesScores_ValueProp;
-	static const UECodeGen_Private::FIntPropertyParams NewProp_statesScores_Key_KeyProp;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_statesScores_Key_KeyProp;
 	static const UECodeGen_Private::FMapPropertyParams NewProp_statesScores;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
@@ -133,7 +133,7 @@ struct Z_Construct_UFunction_UCTLFormula_Evaluate_Statics
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLFormula_Evaluate_Statics::NewProp_model = { "model", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLFormula_eventEvaluate_Parms, model), Z_Construct_UClass_UCTLModel_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_model_MetaData), NewProp_model_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLFormula_Evaluate_Statics::NewProp_node = { "node", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLFormula_eventEvaluate_Parms, node), Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UCTLFormula_Evaluate_Statics::NewProp_statesScores_ValueProp = { "statesScores", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UCTLFormula_Evaluate_Statics::NewProp_statesScores_Key_KeyProp = { "statesScores_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UCTLFormula_Evaluate_Statics::NewProp_statesScores_Key_KeyProp = { "statesScores_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FMapPropertyParams Z_Construct_UFunction_UCTLFormula_Evaluate_Statics::NewProp_statesScores = { "statesScores", nullptr, (EPropertyFlags)0x0010000000000180, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLFormula_eventEvaluate_Parms, statesScores), EMapPropertyFlags::None, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLFormula_Evaluate_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UCTLFormula_Evaluate_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLFormula_eventEvaluate_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) };
@@ -162,7 +162,7 @@ DEFINE_FUNCTION(UCTLFormula::execEvaluate)
 {
 	P_GET_OBJECT(UCTLModel,Z_Param_model);
 	P_GET_OBJECT(UStateNode,Z_Param_node);
-	P_GET_TMAP_REF(int32,int32,Z_Param_Out_statesScores);
+	P_GET_TMAP_REF(FString,int32,Z_Param_Out_statesScores);
 	P_FINISH;
 	P_NATIVE_BEGIN;
 	*(TArray<UStateNode*>*)Z_Param__Result=P_THIS->Evaluate(Z_Param_model,Z_Param_node,Z_Param_Out_statesScores);
@@ -196,7 +196,7 @@ struct Z_Construct_UClass_UCTLFormula_Statics
 #endif // WITH_METADATA
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UCTLFormula_Evaluate, "Evaluate" }, // 237041390
+		{ &Z_Construct_UFunction_UCTLFormula_Evaluate, "Evaluate" }, // 2726411698
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -613,16 +613,16 @@ struct Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model
 		{ ECTLOperator_StaticEnum, TEXT("ECTLOperator"), &Z_Registration_Info_UEnum_ECTLOperator, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 658010145U) },
 	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCTLFormula, UCTLFormula::StaticClass, TEXT("UCTLFormula"), &Z_Registration_Info_UClass_UCTLFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLFormula), 957957465U) },
-		{ Z_Construct_UClass_UAtomicBoolFormula, UAtomicBoolFormula::StaticClass, TEXT("UAtomicBoolFormula"), &Z_Registration_Info_UClass_UAtomicBoolFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAtomicBoolFormula), 2670254666U) },
-		{ Z_Construct_UClass_UAtomicIntFormula, UAtomicIntFormula::StaticClass, TEXT("UAtomicIntFormula"), &Z_Registration_Info_UClass_UAtomicIntFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAtomicIntFormula), 187347103U) },
-		{ Z_Construct_UClass_UAtomicDoubleFormula, UAtomicDoubleFormula::StaticClass, TEXT("UAtomicDoubleFormula"), &Z_Registration_Info_UClass_UAtomicDoubleFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAtomicDoubleFormula), 3882014292U) },
-		{ Z_Construct_UClass_UAtomicStringFormula, UAtomicStringFormula::StaticClass, TEXT("UAtomicStringFormula"), &Z_Registration_Info_UClass_UAtomicStringFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAtomicStringFormula), 1795127711U) },
-		{ Z_Construct_UClass_UUnaryFormula, UUnaryFormula::StaticClass, TEXT("UUnaryFormula"), &Z_Registration_Info_UClass_UUnaryFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UUnaryFormula), 486991816U) },
-		{ Z_Construct_UClass_UBinaryFormula, UBinaryFormula::StaticClass, TEXT("UBinaryFormula"), &Z_Registration_Info_UClass_UBinaryFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UBinaryFormula), 1261520068U) },
+		{ Z_Construct_UClass_UCTLFormula, UCTLFormula::StaticClass, TEXT("UCTLFormula"), &Z_Registration_Info_UClass_UCTLFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLFormula), 3697992042U) },
+		{ Z_Construct_UClass_UAtomicBoolFormula, UAtomicBoolFormula::StaticClass, TEXT("UAtomicBoolFormula"), &Z_Registration_Info_UClass_UAtomicBoolFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAtomicBoolFormula), 321220529U) },
+		{ Z_Construct_UClass_UAtomicIntFormula, UAtomicIntFormula::StaticClass, TEXT("UAtomicIntFormula"), &Z_Registration_Info_UClass_UAtomicIntFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAtomicIntFormula), 2691061049U) },
+		{ Z_Construct_UClass_UAtomicDoubleFormula, UAtomicDoubleFormula::StaticClass, TEXT("UAtomicDoubleFormula"), &Z_Registration_Info_UClass_UAtomicDoubleFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAtomicDoubleFormula), 1720177225U) },
+		{ Z_Construct_UClass_UAtomicStringFormula, UAtomicStringFormula::StaticClass, TEXT("UAtomicStringFormula"), &Z_Registration_Info_UClass_UAtomicStringFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UAtomicStringFormula), 3782499456U) },
+		{ Z_Construct_UClass_UUnaryFormula, UUnaryFormula::StaticClass, TEXT("UUnaryFormula"), &Z_Registration_Info_UClass_UUnaryFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UUnaryFormula), 741351402U) },
+		{ Z_Construct_UClass_UBinaryFormula, UBinaryFormula::StaticClass, TEXT("UBinaryFormula"), &Z_Registration_Info_UClass_UBinaryFormula, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UBinaryFormula), 763056257U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_1343064304(TEXT("/Script/CTL_Labyrinth"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_2832865615(TEXT("/Script/CTL_Labyrinth"),
 	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_Statics::ClassInfo),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_Statics::EnumInfo));

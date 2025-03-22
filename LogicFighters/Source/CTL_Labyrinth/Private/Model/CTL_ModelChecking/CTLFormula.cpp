@@ -73,7 +73,7 @@ bool UAtomicStringFormula::EvaluatePredicate(UStateNode* stateNode) const
     return false;
 }
 
-TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -87,7 +87,7 @@ TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateN
     // If stateNode is null, verifies all states in the model
     if (!stateNode)
     {
-        const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
+        const TMap<FString, UStateNode*>& allStateNodes = model->GetStateNodes();
         for (const auto& StateNodeEntry : allStateNodes)
         {
 
@@ -112,7 +112,7 @@ TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateN
     return satisfyingStates;
 }
 
-TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -126,7 +126,7 @@ TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNo
     // If stateNode is null, verifies all states in the model
     if (!stateNode)
     {
-        const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
+        const TMap<FString, UStateNode*>& allStateNodes = model->GetStateNodes();
         for (const auto& StateNodeEntry : allStateNodes)
         {
 
@@ -151,7 +151,7 @@ TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNo
     return satisfyingStates;
 }
 
-TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -165,7 +165,7 @@ TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStat
     // If stateNode is null, verifies all states in the model
     if (!stateNode)
     {
-        const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
+        const TMap<FString, UStateNode*>& allStateNodes = model->GetStateNodes();
         for (const auto& StateNodeEntry : allStateNodes)
         {
 
@@ -190,7 +190,7 @@ TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStat
     return satisfyingStates;
 }
 
-TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -204,7 +204,7 @@ TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStat
     // If stateNode is null, verifies all states in the model
     if (!stateNode)
     {
-        const TMap<int32, UStateNode*>& allStateNodes = model->GetStateNodes();
+        const TMap<FString, UStateNode*>& allStateNodes = model->GetStateNodes();
         for (const auto& StateNodeEntry : allStateNodes)
         {
 
@@ -239,7 +239,7 @@ void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
     SubFormula = InSubFormula;
 }
 
-TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
 {
     // Temporary array to collect results
     TArray<UStateNode*> satisfyingStatesArray;
@@ -397,7 +397,7 @@ void UBinaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLForm
     Right = InRight;
 }
 
-TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<int32, int32>& statesScores) const
+TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
 {
     // Temporary array to collect results
     TArray<UStateNode*> satisfyingStatesArray;

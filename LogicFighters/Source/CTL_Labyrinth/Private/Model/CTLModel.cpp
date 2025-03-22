@@ -182,7 +182,7 @@ void UCTLModel::DebugPrintModel() const
         // Print root node
         if (rootNode)
         {
-            FString RootNodeMessage = FString::Printf(TEXT("Root Node ID: %d"), rootNode->GetState().Id);
+            FString RootNodeMessage = "Root Node ID: " + rootNode->GetState().Id;
             UE_LOG(LogTemp, Log, TEXT("%s"), *RootNodeMessage);
         }
         else
@@ -190,79 +190,31 @@ void UCTLModel::DebugPrintModel() const
             UE_LOG(LogTemp, Log, TEXT("Root Node is not set."));
         }
 
-        // Print states and their data
-        for (const auto& StatePair : stateNodes)
+        //Print adjacent nodes id
+        UE_LOG(LogTemp, Log, TEXT("Adjacent nodes:\n"));
+        TMap<FActionsArray, UStateNode*> Children = rootNode->GetChildrenMap();
+        for (const TPair<FActionsArray, UStateNode*>& Pair : Children)
         {
-            const UStateNode* StateNode = StatePair.Value;
-            FString StateMessage = FString::Printf(TEXT("State ID: %d"), StateNode->GetState().Id);
-            UE_LOG(LogTemp, Log, TEXT("%s"), *StateMessage);
+            FString KeyString;
 
-            for (const TPair<FString, FVariantValue>& Property : StateNode->GetState().Properties)
+            if (Pair.Value)
             {
-                FString PropertyMessage;
-
-                if (Property.Value.Type.Equals("bool"))
-                {
-                    bool BoolValue = Property.Value.BoolValue;
-                    PropertyMessage = FString::Printf(TEXT("Bool Property: %s = %s"), *Property.Key, BoolValue ? TEXT("true") : TEXT("false"));
-                }
-                else if (Property.Value.Type.Equals("int"))
-                {
-                    int32 IntValue = Property.Value.IntValue;
-                    PropertyMessage = FString::Printf(TEXT("Integer Property: %s = %d"), *Property.Key, IntValue);
-                }
-                else if (Property.Value.Type.Equals("double"))
-                {
-                    double DoubleValue = Property.Value.DoubleValue;
-                    PropertyMessage = FString::Printf(TEXT("Double Property: %s = %f"), *Property.Key, DoubleValue);
-                }
-                else if (Property.Value.Type.Equals("string"))
-                {
-                    FString StringValue = Property.Value.StringValue;
-                    PropertyMessage = FString::Printf(TEXT("String Property: %s = %s"), *Property.Key, *StringValue);
-                }
-                else
-                {
-                    PropertyMessage = FString::Printf(TEXT("  Property: %s has an unsupported type"), *Property.Key);
-                }
-
-                UE_LOG(LogTemp, Log, TEXT("%s"), *PropertyMessage);
+                UE_LOG(LogTemp, Log, TEXT("Adjacent node: %s"), *Pair.Value->GetStateData().Id);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Null state encountered for this key"));
             }
 
-            // Print child nodes
-            for (const auto& Pair : StateNode->GetChildrenMap())
+            for (const int32 Action : Pair.Key.Keys)
             {
-                const FActionsArray& Action = Pair.Key;               
-                const UStateNode* ChildNode = Pair.Value;      
-                FString ActionString = FString::Join(Action.Keys, TEXT(", "));
-                FString ChildMessage = FString::Printf(TEXT("  Child State ID: %d, Actions: [%s]"), ChildNode->GetState().Id, *ActionString);
-                UE_LOG(LogTemp, Log, TEXT("%s"), *ChildMessage);
+                KeyString += FString::Printf(TEXT("%d "), Action);
             }
-        }
-        // Print formulas
-        for (const auto& FormulaPair : GetFormulas())
-        {
 
-            const UCTLFormula* Formula = FormulaPair.Value;
-            if (Formula)
-            {
-                FString FormulaMessage = FString::Printf(TEXT("Formula ID: %d, Type: %s"), FormulaPair.Key, *Formula->GetClass()->GetName());
-                UE_LOG(LogTemp, Log, TEXT("%s"), *FormulaMessage);
-            }
+            UE_LOG(LogTemp, Log, TEXT("Actions: %s\n\n"), *KeyString);
+
         }
 
-        // Print predicates
-        const UPredicateManager* PredManager = GetPredicateManager();
-        if (PredManager)
-        {
-            for (const auto& PredicatePair : PredManager->GetPredicates())
-            {
-
-                FString PredicateName = PredicatePair.Key;
-                FString PredicateMessage = FString::Printf(TEXT("Predicate: %s"), *PredicateName);
-                UE_LOG(LogTemp, Log, TEXT("%s"), *PredicateMessage);
-            }
-        }
     }
 }
 
@@ -272,9 +224,9 @@ TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* fo
     return result;
 }
 
-void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<int32, int32>& statesScores)
+void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& statesScores)
 {
-    UModelParser::UpdateModelFromNode("C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Source\\CTL_Labyrinth\\ModelFiles\\CTLLabyrinthModelNew.json", this, node);
+    //UModelParser::ParseStateById("C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Source\\CTL_Labyrinth\\ModelFiles\\CTLLabyrinthModelNew.json", this, node);
     int subFormulasNum = formula->CountSubformulas();
     for (const UStateNode* currNode : GetReachableNodes(node))
     {

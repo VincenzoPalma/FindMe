@@ -45,13 +45,7 @@
     <Filter Include="Source\CTL_Labyrinth\ModelFiles">
       <UniqueIdentifier>{B1089B6B-500F-3F7B-A498-2A87700DF67F}</UniqueIdentifier>
     </Filter>
-    <None Include="..\..\Source\CTL_Labyrinth\ModelFiles\CTLLabyrinthModel.json">
-      <Filter>Source\CTL_Labyrinth\ModelFiles</Filter>
-    </None>
-    <None Include="..\..\Source\CTL_Labyrinth\ModelFiles\CTLLabyrinthModelNew.json">
-      <Filter>Source\CTL_Labyrinth\ModelFiles</Filter>
-    </None>
-    <None Include="..\..\Source\CTL_Labyrinth\ModelFiles\prova.json">
+    <None Include="..\..\Source\CTL_Labyrinth\ModelFiles\Warrior_Warrior_gameplay.json">
       <Filter>Source\CTL_Labyrinth\ModelFiles</Filter>
     </None>
     <Filter Include="Source\CTL_Labyrinth\Private">
