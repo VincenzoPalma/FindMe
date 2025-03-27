@@ -93,6 +93,7 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
     Formulas.Add(0, AIHealthAtomic);
     UUnaryFormula* AIHealthAG = NewObject<UUnaryFormula>();
     AIHealthAG->Initialize(ECTLOperator::AG, AIHealthAtomic);
+    Formulas.Add(1, AIHealthAG);
 
     //AG(PlayerHealthPoints < (PlayerHealthPoints - x))
     UAtomicIntFormula* PlayerHealthAtomic = NewObject<UAtomicIntFormula>();
@@ -102,9 +103,10 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
             return PlayerHealthPoints < PlayerHealthPoints - 10;
         });
 
-    Formulas.Add(0, PlayerHealthAtomic);
+    Formulas.Add(2, PlayerHealthAtomic);
     UUnaryFormula* PlayerHealthAG = NewObject<UUnaryFormula>();
     PlayerHealthAG->Initialize(ECTLOperator::AG, PlayerHealthAtomic);
+    Formulas.Add(3, PlayerHealthAG);
 
     //AG(AIAbilityPoints > (AIAbilityPoints - x))
     UAtomicIntFormula* AIAbilityAtomic = NewObject<UAtomicIntFormula>();
@@ -114,9 +116,10 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
             return AIAbilityPoints > AIAbilityPoints - 3;
         });
 
-    Formulas.Add(0, AIAbilityAtomic);
+    Formulas.Add(4, AIAbilityAtomic);
     UUnaryFormula* AIAbilityAG = NewObject<UUnaryFormula>();
     AIAbilityAG->Initialize(ECTLOperator::AG, AIAbilityAtomic);
+    Formulas.Add(5, AIAbilityAG);
 
     //AG(PlayerAbilityPoints > (PlayerAbilityPoints - x))
     UAtomicIntFormula* PlayerAbilityAtomic = NewObject<UAtomicIntFormula>();
@@ -126,9 +129,10 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
             return PlayerAbilityPoints > PlayerAbilityPoints - 3;
         });
 
-    Formulas.Add(0, PlayerAbilityAtomic);
+    Formulas.Add(6, PlayerAbilityAtomic);
     UUnaryFormula* PlayerAbilityAG = NewObject<UUnaryFormula>();
     PlayerAbilityAG->Initialize(ECTLOperator::AG, PlayerAbilityAtomic);
+    Formulas.Add(7, PlayerAbilityAG);
 
 
 }
