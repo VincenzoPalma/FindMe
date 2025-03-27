@@ -13,12 +13,13 @@ class CTL_LABYRINTH_API UModelParser : public UObject
 
 public:
     UFUNCTION(BlueprintCallable, Category = "Model Parsing")
-    static UCTLModel* ParseStateById(const FString& Character1Class, const FString& Character2Class, const FString& TargetStateId);
+    static UCTLModel* ParseStateById(const FString& TargetStateId, UCTLModel* Model);
+    UFUNCTION(BlueprintCallable, Category = "Model Parsing")
+    static UCTLModel* UpdateModelFromState(const UStateNode* Node, UCTLModel* Model, int Steps);
 
 
 
 private:
     static FState ParseStateProperties(const FString& StateId);
     static void AddTransitionsFromState(const FString& FromStateId, const TSharedPtr<FJsonObject>& JsonObject, UCTLModel* Model);
-    static FString GetJsonFilePath(const FString& Character1Class, const FString& Character2Class);
 };

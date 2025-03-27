@@ -8,7 +8,12 @@
 #include "ModelStructures.h"
 #include "HAL/PlatformTime.h"
 #include "AStar.h"
+#include "Templates/SharedPointer.h"
+#include "Json.h"
+#include "JsonUtilities.h"
+#include "Dom/JsonObject.h"
 #include "CTLModel.generated.h"
+
 
 UCLASS(Blueprintable)
 class CTL_LABYRINTH_API UCTLModel : public UObject
@@ -21,6 +26,10 @@ public:
     void AddState(const FState& state);
     void AddTransition(FActionsArray actions, UStateNode* FromNode, UStateNode* ToNode);
     void AddFormula(int32 FormulaId, UCTLFormula* Formula);
+    TSharedPtr<FJsonObject> GetJsonFile();
+
+    UFUNCTION(BlueprintCallable, Category = "Model")
+    void InitializeModel(const FString& Character1Class, const FString& Character2Class);
 
     UFUNCTION(BlueprintCallable, Category = "Model")
     UCTLFormula* GetFormula(int32 Id) const;
@@ -64,6 +73,7 @@ public:
     TArray<UStateNode*> EvaluateFormula(UStateNode* node, UCTLFormula* formula);
 
     void UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& statesScores);
+
 private:
     UPROPERTY()
     TMap<FString, UStateNode*> stateNodes;
@@ -77,4 +87,5 @@ private:
     UPROPERTY()
     UPredicateManager* PredicateManager;
 
+    TSharedPtr<FJsonObject> JsonFile;
 };

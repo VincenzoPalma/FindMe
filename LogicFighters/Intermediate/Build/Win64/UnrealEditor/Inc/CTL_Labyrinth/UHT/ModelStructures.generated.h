@@ -21,21 +21,21 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 
 template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<struct FVariantValue>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_57_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_79_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FState_Statics; \
 	CTL_LABYRINTH_API static class UScriptStruct* StaticStruct();
 
 
 template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<struct FState>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_70_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_92_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FTransition_Statics; \
 	CTL_LABYRINTH_API static class UScriptStruct* StaticStruct();
 
 
 template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<struct FTransition>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_82_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_104_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FActionsArray_Statics; \
 	CTL_LABYRINTH_API static class UScriptStruct* StaticStruct();
 

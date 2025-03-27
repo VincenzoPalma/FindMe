@@ -387,6 +387,60 @@ DEFINE_FUNCTION(UCTLModel::execGetStateNodes)
 }
 // End Class UCTLModel Function GetStateNodes
 
+// Begin Class UCTLModel Function InitializeModel
+struct Z_Construct_UFunction_UCTLModel_InitializeModel_Statics
+{
+	struct CTLModel_eventInitializeModel_Parms
+	{
+		FString Character1Class;
+		FString Character2Class;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Model" },
+		{ "ModuleRelativePath", "Public/Model/CTLModel.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Character1Class_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Character2Class_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Character1Class;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_Character2Class;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_Character1Class = { "Character1Class", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventInitializeModel_Parms, Character1Class), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Character1Class_MetaData), NewProp_Character1Class_MetaData) };
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_Character2Class = { "Character2Class", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventInitializeModel_Parms, Character2Class), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Character2Class_MetaData), NewProp_Character2Class_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_Character1Class,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_Character2Class,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UCTLModel, nullptr, "InitializeModel", nullptr, nullptr, Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::PropPointers), sizeof(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::CTLModel_eventInitializeModel_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::Function_MetaDataParams), Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::CTLModel_eventInitializeModel_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UCTLModel_InitializeModel()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UCTLModel::execInitializeModel)
+{
+	P_GET_PROPERTY(FStrProperty,Z_Param_Character1Class);
+	P_GET_PROPERTY(FStrProperty,Z_Param_Character2Class);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->InitializeModel(Z_Param_Character1Class,Z_Param_Character2Class);
+	P_NATIVE_END;
+}
+// End Class UCTLModel Function InitializeModel
+
 // Begin Class UCTLModel
 void UCTLModel::StaticRegisterNativesUCTLModel()
 {
@@ -400,6 +454,7 @@ void UCTLModel::StaticRegisterNativesUCTLModel()
 		{ "GetReachableNodes", &UCTLModel::execGetReachableNodes },
 		{ "GetRootNode", &UCTLModel::execGetRootNode },
 		{ "GetStateNodes", &UCTLModel::execGetStateNodes },
+		{ "InitializeModel", &UCTLModel::execInitializeModel },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -449,6 +504,7 @@ struct Z_Construct_UClass_UCTLModel_Statics
 		{ &Z_Construct_UFunction_UCTLModel_GetReachableNodes, "GetReachableNodes" }, // 2871945672
 		{ &Z_Construct_UFunction_UCTLModel_GetRootNode, "GetRootNode" }, // 3047178962
 		{ &Z_Construct_UFunction_UCTLModel_GetStateNodes, "GetStateNodes" }, // 1143806030
+		{ &Z_Construct_UFunction_UCTLModel_InitializeModel, "InitializeModel" }, // 2835035698
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -515,10 +571,10 @@ UCTLModel::~UCTLModel() {}
 struct Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCTLModel, UCTLModel::StaticClass, TEXT("UCTLModel"), &Z_Registration_Info_UClass_UCTLModel, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLModel), 466885040U) },
+		{ Z_Construct_UClass_UCTLModel, UCTLModel::StaticClass, TEXT("UCTLModel"), &Z_Registration_Info_UClass_UCTLModel, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLModel), 867583518U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_1884982207(TEXT("/Script/CTL_Labyrinth"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_1291080454(TEXT("/Script/CTL_Labyrinth"),
 	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

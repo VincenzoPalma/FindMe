@@ -35,6 +35,8 @@ public:
     virtual TArray<UStateNode*> Evaluate(const UCTLModel* model, UStateNode* node, TMap<FString, int32>& statesScores) const PURE_VIRTUAL(UCTLFormula::Evaluate, return TArray<UStateNode*>(););
 
     virtual int32 CountSubformulas() const;
+
+    
 };
 
 UCLASS(Blueprintable)

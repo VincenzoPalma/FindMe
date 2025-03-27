@@ -10,12 +10,14 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 class UCTLModel;
+class UStateNode;
 #ifdef CTL_LABYRINTH_ModelParser_generated_h
 #error "ModelParser.generated.h already included, missing '#pragma once' in ModelParser.h"
 #endif
 #define CTL_LABYRINTH_ModelParser_generated_h
 
 #define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelParser_ModelParser_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execUpdateModelFromState); \
 	DECLARE_FUNCTION(execParseStateById);
 
 

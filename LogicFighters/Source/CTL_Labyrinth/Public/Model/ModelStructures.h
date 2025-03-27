@@ -49,6 +49,28 @@ struct FVariantValue
         Type = TEXT("string");
         StringValue = InValue;
     }
+
+    FString ToString() const
+    {
+        if (Type == TEXT("bool"))
+        {
+            return BoolValue ? TEXT("true") : TEXT("false");
+        }
+        else if (Type == TEXT("int"))
+        {
+            return FString::Printf(TEXT("%d"), IntValue);
+        }
+        else if (Type == TEXT("double"))
+        {
+            return FString::Printf(TEXT("%f"), DoubleValue);
+        }
+        else if (Type == TEXT("string"))
+        {
+            return StringValue;
+        }
+        return TEXT("Unknown");
+    }
+
 };
 
 USTRUCT(BlueprintType)
@@ -99,3 +121,4 @@ FORCEINLINE uint32 GetTypeHash(const FActionsArray& ActionsArray)
     }
     return Hash;
 }
+

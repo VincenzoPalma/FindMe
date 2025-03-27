@@ -977,39 +977,53 @@ UCTLModel* UModelParser::FindAndParseState(const FString& FilePath, const TMap<F
 */
 
 
-UCTLModel* UModelParser::ParseStateById(const FString& Character1Class, const FString& Character2Class, const FString& TargetStateId)
+UCTLModel* UModelParser::ParseStateById(const FString& TargetStateId, UCTLModel* Model)
 {
-    FString JsonFilePath = GetJsonFilePath(Character1Class, Character2Class);
-
-    FString JsonString;
-    if (!FFileHelper::LoadFileToString(JsonString, *JsonFilePath))
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file: %s"), *JsonFilePath);
-        return nullptr;
-    }
-    UE_LOG(LogTemp, Log, TEXT("Successfully loaded JSON file: %s"), *JsonFilePath);
-
-    TSharedPtr<FJsonObject> JsonObject;
-    TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonString);
-    if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to parse JSON file"));
-        return nullptr;
-    }
-
-    UCTLModel* Model = NewObject<UCTLModel>();
-
-    const TSharedPtr<FJsonObject>* StateJson;
-    if (!JsonObject->TryGetObjectField(TargetStateId, StateJson))
-    {
-        UE_LOG(LogTemp, Warning, TEXT("State ID not found: %s"), *TargetStateId);
-        return nullptr;
-    }
-
     FState TargetState = ParseStateProperties(TargetStateId);
     Model->AddState(TargetState);
 
-    AddTransitionsFromState(TargetStateId, JsonObject, Model);
+    return Model;
+}
+
+UCTLModel* UModelParser::UpdateModelFromState(const UStateNode* Node, UCTLModel* Model, int Steps)
+{
+    if (!Node) {
+        return nullptr;
+    }
+
+    TQueue<const UStateNode*> NodeQueue;
+    NodeQueue.Enqueue(Node);
+
+    int CurrentStep = 0;
+
+    while (!NodeQueue.IsEmpty() && CurrentStep < Steps)
+    {
+        TArray<const UStateNode*> CurrentLevelNodes;
+
+        const UStateNode* CurrentNode;
+        while (NodeQueue.Dequeue(CurrentNode))
+        {
+            if (CurrentNode)
+            {
+                CurrentLevelNodes.Add(CurrentNode);
+            }
+        }
+
+        for (const UStateNode* ProcessedNode : CurrentLevelNodes)
+        {
+            AddTransitionsFromState(ProcessedNode->GetStateData().Id, Model->GetJsonFile(), Model);
+
+            for (const UStateNode* Neighbor : ProcessedNode->GetChildren())
+            {
+                if (Neighbor)
+                {
+                    NodeQueue.Enqueue(Neighbor);
+                }
+            }
+        }
+
+        CurrentStep++;
+    }
 
     return Model;
 }
@@ -1026,8 +1040,8 @@ FState UModelParser::ParseStateProperties(const FString& StateId)
     {
 
         PropertyNames = {
-            TEXT("HealthPoints1"), TEXT("AbilityPoints1"), TEXT("DefenseAvailable1"), TEXT("CounterAvailable1"), TEXT("BuffTurns1"),
-            TEXT("HealthPoints2"), TEXT("AbilityPoints2"), TEXT("DefenseAvailable2"), TEXT("CounterAvailable2"), TEXT("BuffTurns2")
+            TEXT("PlayerHealthPoints"), TEXT("PlayerAbilityPoints"), TEXT("PlayerDefenseAvailable"), TEXT("PlayerCounterAvailable"), TEXT("PlayerBuffTurns"),
+            TEXT("AIHealthPoints"), TEXT("AIAbilityPoints"), TEXT("AIDefenseAvailable"), TEXT("AICounterAvailable"), TEXT("AIBuffTurns")
         };
 
     }
@@ -1047,9 +1061,9 @@ FState UModelParser::ParseStateProperties(const FString& StateId)
             {
                 Value.SetInt(FCString::Atoi(*PropertiesArray[i]));
             }
-            else if (PropertiesArray[i] == TEXT("True") || PropertiesArray[i] == TEXT("False"))
+            else if (PropertiesArray[i] == TEXT("true") || PropertiesArray[i] == TEXT("false"))
             {
-                Value.SetBool(PropertiesArray[i] == TEXT("True"));
+                Value.SetBool(PropertiesArray[i] == TEXT("true"));
             }
             else
             {
@@ -1112,11 +1126,4 @@ void UModelParser::AddTransitionsFromState(const FString& FromStateId, const TSh
     {
         UE_LOG(LogTemp, Warning, TEXT("FromStateId %s not found in JSON."), *FromStateId);
     }
-}
-
-FString UModelParser::GetJsonFilePath(const FString& Character1Class, const FString& Character2Class)
-{
-    FString JsonFileName = Character1Class + TEXT("_") + Character2Class + TEXT("_") + TEXT("gameplay") + TEXT(".json");
-    FString JsonFilePath = FPaths::ProjectContentDir() / TEXT("ModelFiles") / JsonFileName;
-    return JsonFilePath;
 }
