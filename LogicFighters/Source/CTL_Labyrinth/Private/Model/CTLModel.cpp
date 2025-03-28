@@ -82,57 +82,57 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
     formule che considerano la disponibilità delle abilità (difesa, counterattck)
     */
 
-    //AG(AIHealthPoints > (AIHealthPoints - x))
+    //AG(CurrentAIHealthPoints - AIHealthPoints < x)
     UAtomicIntFormula* AIHealthAtomic = NewObject<UAtomicIntFormula>();
-    AIHealthAtomic->Initialize([](const FState& State) 
+    AIHealthAtomic->Initialize([](const FState& State, const FState& CurrentState)
         { 
             int32 AIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
-            return AIHealthPoints > AIHealthPoints - 10; 
+            int32 CurrentAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
+            return CurrentAIHealthPoints - AIHealthPoints <= 12; 
         });
 
-    Formulas.Add(0, AIHealthAtomic);
     UUnaryFormula* AIHealthAG = NewObject<UUnaryFormula>();
     AIHealthAG->Initialize(ECTLOperator::AG, AIHealthAtomic);
-    Formulas.Add(1, AIHealthAG);
+    Formulas.Add(0, AIHealthAG);
 
-    //AG(PlayerHealthPoints < (PlayerHealthPoints - x))
+    //AG(CurrentPlayerHealthPoints - PlayerHealthPoints < x)
     UAtomicIntFormula* PlayerHealthAtomic = NewObject<UAtomicIntFormula>();
-    PlayerHealthAtomic->Initialize([](const FState& State)
+    PlayerHealthAtomic->Initialize([](const FState& State, const FState& CurrentState)
         {
             int32 PlayerHealthPoints = State.Properties.Find("PlayerHealthPoints")->IntValue;
-            return PlayerHealthPoints < PlayerHealthPoints - 10;
+            int32 CurrentPlayerHealthPoints = State.Properties.Find("PlayerHealthPoints")->IntValue;
+            return CurrentPlayerHealthPoints - PlayerHealthPoints > 10;
         });
 
-    Formulas.Add(2, PlayerHealthAtomic);
     UUnaryFormula* PlayerHealthAG = NewObject<UUnaryFormula>();
     PlayerHealthAG->Initialize(ECTLOperator::AG, PlayerHealthAtomic);
-    Formulas.Add(3, PlayerHealthAG);
+    Formulas.Add(1, PlayerHealthAG);
 
-    //AG(AIAbilityPoints > (AIAbilityPoints - x))
+    //AG(AIAbilityPoints - CurrentAIAbilityPoints > x)
     UAtomicIntFormula* AIAbilityAtomic = NewObject<UAtomicIntFormula>();
-    AIAbilityAtomic->Initialize([](const FState& State)
+    AIAbilityAtomic->Initialize([](const FState& State, const FState& CurrentState)
         {
             int32 AIAbilityPoints = State.Properties.Find("AIAbilityPoints")->IntValue;
-            return AIAbilityPoints > AIAbilityPoints - 3;
+            int32 CurrentAIAbilityPoints = State.Properties.Find("AIAbilityPoints")->IntValue;
+            return AIAbilityPoints - CurrentAIAbilityPoints > 0;
         });
 
-    Formulas.Add(4, AIAbilityAtomic);
     UUnaryFormula* AIAbilityAG = NewObject<UUnaryFormula>();
     AIAbilityAG->Initialize(ECTLOperator::AG, AIAbilityAtomic);
-    Formulas.Add(5, AIAbilityAG);
+    Formulas.Add(2, AIAbilityAG);
 
-    //AG(PlayerAbilityPoints > (PlayerAbilityPoints - x))
+    //AG(CurrentAIAbilityPoints - AIAbilityPoints > x)
     UAtomicIntFormula* PlayerAbilityAtomic = NewObject<UAtomicIntFormula>();
-    PlayerAbilityAtomic->Initialize([](const FState& State)
+    PlayerAbilityAtomic->Initialize([](const FState& State, const FState& CurrentState)
         {
             int32 PlayerAbilityPoints = State.Properties.Find("PlayerAbilityPoints")->IntValue;
-            return PlayerAbilityPoints > PlayerAbilityPoints - 3;
+            int32 CurrentPlayerAbilityPoints = State.Properties.Find("PlayerAbilityPoints")->IntValue;
+            return CurrentPlayerAbilityPoints - PlayerAbilityPoints > 0;
         });
 
-    Formulas.Add(6, PlayerAbilityAtomic);
     UUnaryFormula* PlayerAbilityAG = NewObject<UUnaryFormula>();
     PlayerAbilityAG->Initialize(ECTLOperator::AG, PlayerAbilityAtomic);
-    Formulas.Add(7, PlayerAbilityAG);
+    Formulas.Add(3, PlayerAbilityAG);
 
 
 }
@@ -329,13 +329,14 @@ TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* fo
     return result;
 }
 
-void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& statesScores)
+void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& unsatScores, int32 depth, int32 MAX_UNSAT_SCORE)
 {
-    UModelParser::UpdateModelFromState(node, this, 3);
+    UModelParser::UpdateModelFromState(node, this, depth);
     int subFormulasNum = formula->CountSubformulas();
+    int subFormulaWeight = MAX_UNSAT_SCORE / subFormulasNum;
     for (const UStateNode* currNode : GetReachableNodes(node))
     {
-        statesScores.Add(currNode->GetState().Id, subFormulasNum);
+        unsatScores.Add(currNode->GetState().Id, MAX_UNSAT_SCORE);
     }
-    TArray<UStateNode*> result = formula->Evaluate(this, node, statesScores);
+    TArray<UStateNode*> result = formula->Evaluate(this, node, unsatScores, subFormulaWeight);
 }

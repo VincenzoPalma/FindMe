@@ -10,11 +10,21 @@ void UAtomicBoolFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
     Predicate = InPredicate;
 }
 
-bool UAtomicBoolFormula::EvaluatePredicate(UStateNode* stateNode) const
+void UAtomicBoolFormula::Initialize(TFunction<bool(const FState&, const FState&)> InPredicate)
+{
+    TwoParametersPredicate = InPredicate;
+}
+
+bool UAtomicBoolFormula::EvaluatePredicate(UStateNode* stateNode, UStateNode* CurrentNode) const
 {
     if (stateNode)
     {
-        return Predicate(stateNode->GetState());
+        if (Predicate) {
+            return Predicate(stateNode->GetState());
+        }
+        else {
+            return TwoParametersPredicate(stateNode->GetState(), CurrentNode->GetState());
+        }
     }
     return false;
 }
@@ -28,11 +38,21 @@ void UAtomicIntFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
     Predicate = InPredicate;
 }
 
-bool UAtomicIntFormula::EvaluatePredicate(UStateNode* stateNode) const
+void UAtomicIntFormula::Initialize(TFunction<bool(const FState&, const FState&)> InPredicate)
+{
+    TwoParametersPredicate = InPredicate;
+}
+
+bool UAtomicIntFormula::EvaluatePredicate(UStateNode* stateNode, UStateNode* CurrentNode) const
 {
     if (stateNode)
     {
-        return Predicate(stateNode->GetState());
+        if (Predicate) {
+            return Predicate(stateNode->GetState());
+        }
+        else {
+            return TwoParametersPredicate(stateNode->GetState(), CurrentNode->GetState());
+        }
     }
     return false;
 }
@@ -46,11 +66,21 @@ void UAtomicDoubleFormula::Initialize(TFunction<bool(const FState&)> InPredicate
     Predicate = InPredicate;
 }
 
-bool UAtomicDoubleFormula::EvaluatePredicate(UStateNode* stateNode) const
+void UAtomicDoubleFormula::Initialize(TFunction<bool(const FState&, const FState&)> InPredicate)
+{
+    TwoParametersPredicate = InPredicate;
+}
+
+bool UAtomicDoubleFormula::EvaluatePredicate(UStateNode* stateNode, UStateNode* CurrentNode) const
 {
     if (stateNode)
     {
-        return Predicate(stateNode->GetState());
+        if (Predicate) {
+            return Predicate(stateNode->GetState());
+        }
+        else {
+            return TwoParametersPredicate(stateNode->GetState(), CurrentNode->GetState());
+        }
     }
     return false;
 }
@@ -64,16 +94,26 @@ void UAtomicStringFormula::Initialize(TFunction<bool(const FState&)> InPredicate
     Predicate = InPredicate;
 }
 
-bool UAtomicStringFormula::EvaluatePredicate(UStateNode* stateNode) const
+void UAtomicStringFormula::Initialize(TFunction<bool(const FState&, const FState&)> InPredicate)
+{
+    TwoParametersPredicate = InPredicate;
+}
+
+bool UAtomicStringFormula::EvaluatePredicate(UStateNode* stateNode, UStateNode* CurrentNode) const
 {
     if (stateNode)
     {
-        return Predicate(stateNode->GetState());
+        if (Predicate) {
+            return Predicate(stateNode->GetState());
+        }
+        else {
+            return TwoParametersPredicate(stateNode->GetState(), CurrentNode->GetState());
+        }
     }
     return false;
 }
 
-TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
+TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -92,7 +132,7 @@ TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateN
         {
 
             UStateNode* node = StateNodeEntry.Value;
-            if (EvaluatePredicate(node))
+            if (EvaluatePredicate(node, model->GetRootNode()))
             {
                 satisfyingStates.Add(node);
             }
@@ -102,7 +142,7 @@ TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateN
     {
         // Verifies the predicate on the passed stateNode and all reachable nodes
         for (UStateNode* currentNode: model->GetReachableNodes(stateNode)){
-            if (EvaluatePredicate(currentNode))
+            if (EvaluatePredicate(currentNode, model->GetRootNode()))
             {
                 satisfyingStates.Add(currentNode);
             }
@@ -112,7 +152,7 @@ TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateN
     return satisfyingStates;
 }
 
-TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
+TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -131,7 +171,7 @@ TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNo
         {
 
             UStateNode* node = StateNodeEntry.Value;
-            if (EvaluatePredicate(node))
+            if (EvaluatePredicate(node, model->GetRootNode()))
             {
                 satisfyingStates.Add(node);
             }
@@ -141,7 +181,7 @@ TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNo
     {
         // Verifies the predicate on the passed stateNode and all reachable nodes
         for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
-            if (EvaluatePredicate(currentNode))
+            if (EvaluatePredicate(currentNode, model->GetRootNode()))
             {
                 satisfyingStates.Add(currentNode);
             }
@@ -151,7 +191,7 @@ TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNo
     return satisfyingStates;
 }
 
-TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
+TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -170,7 +210,7 @@ TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStat
         {
 
             UStateNode* node = StateNodeEntry.Value;
-            if (EvaluatePredicate(node))
+            if (EvaluatePredicate(node, model->GetRootNode()))
             {
                 satisfyingStates.Add(node);
             }
@@ -180,7 +220,7 @@ TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStat
     {
         // Verifies the predicate on the passed stateNode and all reachable nodes
         for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
-            if (EvaluatePredicate(currentNode))
+            if (EvaluatePredicate(currentNode, model->GetRootNode()))
             {
                 satisfyingStates.Add(currentNode);
             }
@@ -190,7 +230,7 @@ TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStat
     return satisfyingStates;
 }
 
-TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
+TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
 {
 
     TArray<UStateNode*> satisfyingStates;
@@ -209,7 +249,7 @@ TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStat
         {
 
             UStateNode* node = StateNodeEntry.Value;
-            if (EvaluatePredicate(node))
+            if (EvaluatePredicate(node, model->GetRootNode()))
             {
                 satisfyingStates.Add(node);
             }
@@ -219,7 +259,7 @@ TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStat
     {
         // Verifies the predicate on the passed stateNode and all reachable nodes
         for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
-            if (EvaluatePredicate(currentNode))
+            if (EvaluatePredicate(currentNode, model->GetRootNode()))
             {
                 satisfyingStates.Add(currentNode);
             }
@@ -239,7 +279,7 @@ void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
     SubFormula = InSubFormula;
 }
 
-TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
+TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
 {
     // Temporary array to collect results
     TArray<UStateNode*> satisfyingStatesArray;
@@ -254,7 +294,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     }
 
     // Evaluate the sub-formula
-    TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, stateNode, statesScores);
+    TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
 
     switch (Op)
     {
@@ -378,7 +418,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
     for (UStateNode* Node : satisfyingStatesArray)
     {
-        statesScores.Add(Node->GetState().Id) = statesScores.FindOrAdd(Node->GetState().Id) - 1;
+        unsatScores.Add(Node->GetState().Id) = unsatScores.FindOrAdd(Node->GetState().Id) - subFormulaWeight;
     }
 
     return satisfyingStatesArray;
@@ -397,7 +437,7 @@ void UBinaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLForm
     Right = InRight;
 }
 
-TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& statesScores) const
+TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
 {
     // Temporary array to collect results
     TArray<UStateNode*> satisfyingStatesArray;
@@ -412,8 +452,8 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
     }
 
     // Evaluate the left and right formulas
-    TArray<UStateNode*> leftStates = Left->Evaluate(model, stateNode, statesScores);
-    TArray<UStateNode*> rightStates = Right->Evaluate(model, stateNode, statesScores);
+    TArray<UStateNode*> leftStates = Left->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
+    TArray<UStateNode*> rightStates = Right->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
 
     switch (Op)
     {
@@ -481,7 +521,7 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
 
     for (UStateNode* Node : satisfyingStatesArray)
     {
-        statesScores.Add(Node->GetState().Id) = statesScores.FindOrAdd(Node->GetState().Id) - 1;
+        unsatScores.Add(Node->GetState().Id) = unsatScores.FindOrAdd(Node->GetState().Id) - subFormulaWeight;
     }
 
     return satisfyingStatesArray;

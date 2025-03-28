@@ -72,7 +72,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Model")
     TArray<UStateNode*> EvaluateFormula(UStateNode* node, UCTLFormula* formula);
 
-    void UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& statesScores);
+    void UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& unsatScores, int32 depth, int32 MAX_UNSAT_SCORE);
 
 private:
     UPROPERTY()

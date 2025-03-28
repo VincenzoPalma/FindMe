@@ -12,6 +12,12 @@ class CTL_LABYRINTH_API UStateNode : public UObject
 public:
     UStateNode() {}
 
+    TArray<int32> PreviousTurnActions;
+
+    TMap<FActionsArray, UStateNode*> GetChildrenMap() {
+        return Children;
+    }
+
     UFUNCTION(BlueprintCallable, Category = "StateNode")
     void AddChild(FActionsArray actions, UStateNode* child)
     {

@@ -11,24 +11,27 @@ AStar::~AStar()
 TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula)
 {
 	//Structures for the path, if found
+	int totalDepth = 0, MAX_DEPTH = 6, MAX_UNSAT_SCORE = 12;
+	UStateNode* bestNode;
 	TArray<UStateNode*> finalPath;
 	TMap<FString, UStateNode*> cameFrom;
 	//Initialization and evaluation of the score for the starting state
 	int subFormulasNum = formula->CountSubformulas();
-	TMap<FString, int32> statesScores;
-	statesScores.Add(startingNode->GetState().Id, subFormulasNum);
-	formula->Evaluate(model, startingNode, statesScores);
+	int subFormulaWeight = MAX_UNSAT_SCORE / subFormulasNum;
+	TMap<FString, int32> unsatScores;
+	unsatScores.Add(startingNode->GetState().Id, MAX_UNSAT_SCORE);
+	formula->Evaluate(model, startingNode, unsatScores, subFormulaWeight);
 
 	//Initialization of the g and f values for the starting state
-	TMap<FString, int32> gScores;
-	TMap<FString, int32> fScores;
+	TMap<FString, int32> pathCost;
+	TMap<FString, int32> HeuristicTotalCosts;
 	FString startingNodeId = startingNode->GetState().Id;
-	UpdateGScores(gScores, startingNodeId, 0);
-	UpdateFScores(fScores, startingNodeId, gScores, statesScores);
+	UpdatePathCosts(pathCost, startingNodeId, 0);
+	UpdateHeuristicTotalCosts(HeuristicTotalCosts, startingNodeId, pathCost, unsatScores);
 
 	//Initialization of the priority queue
 	TArray<UStateNode*> openSet;
-	AddToOpenSet(openSet, startingNode, fScores);
+	AddToOpenSet(openSet, startingNode, HeuristicTotalCosts);
 
 	TSet<UStateNode*> closedSet;
 
@@ -39,10 +42,17 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 		openSet.RemoveAt(0);
 
 		//Get the adjacent states, updating the model and initializing their scores
-		if (currentNode->GetChildren().IsEmpty())
+		if (currentNode->GetChildren().IsEmpty() && totalDepth < MAX_DEPTH)
 		{
-			model->UpdateModel(currentNode, formula, statesScores);
-			InitializeScores(statesScores, gScores, fScores);
+			model->UpdateModel(currentNode, formula, unsatScores, MAX_DEPTH, MAX_UNSAT_SCORE);
+			InitializeScores(unsatScores, pathCost, HeuristicTotalCosts);
+
+			totalDepth = MAX_DEPTH;
+		}
+		else if (totalDepth == MAX_DEPTH)
+		{
+			finalPath = ReconstructPath(bestNode, cameFrom);
+			return finalPath;
 		}
 
 		//Add state to closed set so that it will not be visited in the future
@@ -50,15 +60,15 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 
 		//If the current state satifies the entire formula, then it is a target state
 		for (UStateNode* node : closedSet) {
-			if (*statesScores.Find(node->GetState().Id) == 0) {
+			if (*unsatScores.Find(node->GetState().Id) == 0) {
 				finalPath = ReconstructPath(currentNode, cameFrom);
 				return finalPath;
 			}
 		}
-
 		
 		//Loop for each adjacent state of the current state
-		for (UStateNode* node : currentNode->GetChildren()) {
+		for (const TPair<FActionsArray, UStateNode*> Pair : currentNode->GetChildrenMap()) {
+			UStateNode* node = Pair.Value;
 			FString nodeId = node->GetState().Id;
 
 			//Skip it if it was already visited
@@ -66,18 +76,19 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 				continue;
 			}
 
-			//Calculate a possible new g score
-			int tentative_gScore = *gScores.Find(currentNode->GetState().Id) + 1; //1 in this case. The weight of the edge generally.
+			//Calculate a possible new path cost
+			int tentative_pathCost = *pathCost.Find(currentNode->GetState().Id) + 1; //1 in this case. The weight of the edge generally.
 			//Update the scores and add the state to the cameFrom map, used to build the resulting path
-			if (tentative_gScore < *gScores.Find(nodeId)) {
-				UpdateGScores(gScores, nodeId, tentative_gScore);
-				UpdateFScores(fScores, nodeId, gScores, statesScores);
+			if (tentative_pathCost < *pathCost.Find(nodeId)) {
+				currentNode->PreviousTurnActions = Pair.Key.Keys;
+				UpdatePathCosts(pathCost, nodeId, tentative_pathCost);
+				UpdateHeuristicTotalCosts(HeuristicTotalCosts, nodeId, pathCost, unsatScores);
 				cameFrom.Add(nodeId, currentNode);
 
 				//Add it to the priority queue
 				if (!openSet.Contains(node))
 				{
-					AddToOpenSet(openSet, node, fScores);
+					AddToOpenSet(openSet, node, HeuristicTotalCosts);
 				}
 			}
 		}
@@ -85,18 +96,18 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 	return finalPath; //Empty array if no path was found
 }
 
-void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<FString, int32> fScores)
+void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<FString, int32> HeuristicTotalCosts)
 {
 	if (openSet.IsEmpty()) {
 		openSet.Add(node);
 	}
 	else {
-		int32 newNodeScore = *fScores.Find(node->GetState().Id);
+		int32 newNodeScore = *HeuristicTotalCosts.Find(node->GetState().Id);
 
 		bool added = false;
 		for (int32 i = 0; i < openSet.Num(); ++i) {
 			UStateNode* currentNode = openSet[i];
-			int32 currentNodeScore = *fScores.Find(currentNode->GetState().Id);
+			int32 currentNodeScore = *HeuristicTotalCosts.Find(currentNode->GetState().Id);
 
 			if (newNodeScore < currentNodeScore) {
 				openSet.Insert(node, i);
@@ -111,16 +122,16 @@ void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<FS
 	}
 }
 
-void AStar::UpdateGScores(TMap<FString, int32>& gScores, FString nodeId, int newValue)
+void AStar::UpdatePathCosts(TMap<FString, int32>& pathCost, FString nodeId, int newValue)
 {
-	gScores.Remove(nodeId);
-	gScores.Add(nodeId, newValue);
+	pathCost.Remove(nodeId);
+	pathCost.Add(nodeId, newValue);
 }
 
-void AStar::UpdateFScores(TMap<FString, int32>& fScores, FString nodeId, TMap<FString, int32>& gScores, TMap<FString, int32>& statesScores)
+void AStar::UpdateHeuristicTotalCosts(TMap<FString, int32>& HeuristicTotalCosts, FString nodeId, TMap<FString, int32>& gScores, TMap<FString, int32>& statesScores)
 {
-	fScores.Remove(nodeId);
-	fScores.Add(nodeId, *gScores.Find(nodeId) + *statesScores.Find(nodeId));
+	HeuristicTotalCosts.Remove(nodeId);
+	HeuristicTotalCosts.Add(nodeId, *gScores.Find(nodeId) + *statesScores.Find(nodeId));
 }
 
 TArray<UStateNode*> AStar::ReconstructPath(UStateNode* currentNode, const TMap<FString, UStateNode*>& cameFrom)
@@ -130,7 +141,8 @@ TArray<UStateNode*> AStar::ReconstructPath(UStateNode* currentNode, const TMap<F
 
 	while (cameFrom.Contains(currentNode->GetState().Id))
 	{
-		currentNode = cameFrom[currentNode->GetState().Id];
+		UStateNode* ParentNode = cameFrom[currentNode->GetState().Id];
+		currentNode = ParentNode;
 		totalPath.Add(currentNode);
 	}
 
@@ -138,17 +150,17 @@ TArray<UStateNode*> AStar::ReconstructPath(UStateNode* currentNode, const TMap<F
 	return totalPath;
 }
 
-void AStar::InitializeScores(const TMap<FString, int32>& statesScores, TMap<FString, int32>& gScore, TMap<FString, int32>& fScore)
+void AStar::InitializeScores(const TMap<FString, int32>& unsatScores, TMap<FString, int32>& pathCost, TMap<FString, int32>& HeuristicTotalCosts)
 {
-	for (const TPair<FString, int32>& entry : statesScores)
+	for (const TPair<FString, int32>& entry : unsatScores)
 	{
 		FString key = entry.Key;
 
-		if (!gScore.Contains(key)) {
-			gScore.Add(key, MAX_int32);
+		if (!pathCost.Contains(key)) {
+			pathCost.Add(key, MAX_int32);
 		}
-		if (!fScore.Contains(key)) {
-			fScore.Add(key, MAX_int32);
+		if (!HeuristicTotalCosts.Contains(key)) {
+			HeuristicTotalCosts.Add(key, MAX_int32);
 		}
 	}
 }
