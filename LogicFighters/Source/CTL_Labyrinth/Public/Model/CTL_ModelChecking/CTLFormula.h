@@ -18,7 +18,8 @@ enum class ECTLOperator : uint8 {
     EG,
     AG,
     EU,
-    AU
+    AU,
+    null
 };
 
 class UCTLModel;
@@ -36,7 +37,16 @@ public:
 
     virtual int32 CountSubformulas() const;
 
-    
+    ECTLOperator GetOperator() const {
+        return Op;
+    }
+
+    void SetOperator(ECTLOperator InOp) {
+        Op = InOp;
+    }
+
+private:
+    ECTLOperator Op = ECTLOperator::null;
 };
 
 UCLASS(Blueprintable)
@@ -131,7 +141,6 @@ public:
     void Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula);
     virtual int32 CountSubformulas() const;
 private:
-    ECTLOperator Op;
     UCTLFormula* SubFormula;
 };
 
@@ -146,7 +155,6 @@ public:
     void Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight);
     virtual int32 CountSubformulas() const;
 private:
-    ECTLOperator Op;
     UCTLFormula* Left;
     UCTLFormula* Right;
 };

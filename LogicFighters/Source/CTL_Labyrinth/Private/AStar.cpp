@@ -7,25 +7,34 @@ AStar::AStar()
 AStar::~AStar()
 {
 }
-
+/*
+unsatScore deve essere 0 nello stato in cui (F x) x è soddisfatta 
+*/
 TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula)
 {
 	//Structures for the path, if found
-	int totalDepth = 0, MAX_DEPTH = 6, MAX_UNSAT_SCORE = 12;
-	UStateNode* bestNode;
+	UStateNode* bestNode = NULL;
 	TArray<UStateNode*> finalPath;
 	TMap<FString, UStateNode*> cameFrom;
 	//Initialization and evaluation of the score for the starting state
+	int MAX_UNSAT_SCORE = 12;
 	int subFormulasNum = formula->CountSubformulas();
 	int subFormulaWeight = MAX_UNSAT_SCORE / subFormulasNum;
 	TMap<FString, int32> unsatScores;
+
 	unsatScores.Add(startingNode->GetState().Id, MAX_UNSAT_SCORE);
 	formula->Evaluate(model, startingNode, unsatScores, subFormulaWeight);
+	ECTLOperator formulaOp = formula->GetOperator();
+
+	bool found = false;
+	int totalDepth = 0, bestValue = MAX_int32;
+	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 5;
 
 	//Initialization of the g and f values for the starting state
 	TMap<FString, int32> pathCost;
 	TMap<FString, int32> HeuristicTotalCosts;
 	FString startingNodeId = startingNode->GetState().Id;
+
 	UpdatePathCosts(pathCost, startingNodeId, 0);
 	UpdateHeuristicTotalCosts(HeuristicTotalCosts, startingNodeId, pathCost, unsatScores);
 
@@ -36,7 +45,7 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 	TSet<UStateNode*> closedSet;
 
 	//Main loop
-	while (!openSet.IsEmpty()) {
+	while (!openSet.IsEmpty() && !found) {
 		//The state in position 0 will always be the best choice
 		UStateNode* currentNode = openSet[0];
 		openSet.RemoveAt(0);
@@ -45,25 +54,23 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 		if (currentNode->GetChildren().IsEmpty() && totalDepth < MAX_DEPTH)
 		{
 			model->UpdateModel(currentNode, formula, unsatScores, MAX_DEPTH, MAX_UNSAT_SCORE);
+			formula->Evaluate(model, currentNode, unsatScores, subFormulaWeight);
+
 			InitializeScores(unsatScores, pathCost, HeuristicTotalCosts);
 
 			totalDepth = MAX_DEPTH;
-		}
-		else if (totalDepth == MAX_DEPTH)
-		{
-			finalPath = ReconstructPath(bestNode, cameFrom);
-			return finalPath;
 		}
 
 		//Add state to closed set so that it will not be visited in the future
 		closedSet.Add(currentNode);
 
-		//If the current state satifies the entire formula, then it is a target state
-		for (UStateNode* node : closedSet) {
-			if (*unsatScores.Find(node->GetState().Id) == 0) {
-				finalPath = ReconstructPath(currentNode, cameFrom);
-				return finalPath;
-			}
+		if (*unsatScores.Find(currentNode->GetState().Id) == 0) {
+			bestNode = currentNode;
+			found = true;
+		}
+		else if (*HeuristicTotalCosts.Find(currentNode->GetState().Id) < bestValue) {
+			bestNode = currentNode;
+			bestValue = *HeuristicTotalCosts.Find(currentNode->GetState().Id);
 		}
 		
 		//Loop for each adjacent state of the current state
@@ -93,7 +100,9 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 			}
 		}
 	}
-	return finalPath; //Empty array if no path was found
+
+	finalPath = ReconstructPath(bestNode, cameFrom);
+	return finalPath;
 }
 
 void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<FString, int32> HeuristicTotalCosts)

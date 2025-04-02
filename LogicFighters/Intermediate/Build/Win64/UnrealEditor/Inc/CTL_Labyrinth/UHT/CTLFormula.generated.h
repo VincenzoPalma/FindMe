@@ -17,11 +17,11 @@ class UStateNode;
 #endif
 #define CTL_LABYRINTH_CTLFormula_generated_h
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_30_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execEvaluate);
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_29_INCLASS_NO_PURE_DECLS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_30_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUCTLFormula(); \
 	friend struct Z_Construct_UClass_UCTLFormula_Statics; \
@@ -30,7 +30,7 @@ public: \
 	DECLARE_SERIALIZER(UCTLFormula)
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_29_ENHANCED_CONSTRUCTORS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_30_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UCTLFormula(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 private: \
@@ -43,20 +43,20 @@ public: \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UCTLFormula)
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_26_PROLOG
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_29_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_27_PROLOG
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_30_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_29_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_29_INCLASS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_29_ENHANCED_CONSTRUCTORS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_30_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_30_INCLASS_NO_PURE_DECLS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_30_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
 template<> CTL_LABYRINTH_API UClass* StaticClass<class UCTLFormula>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_45_INCLASS_NO_PURE_DECLS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_55_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUAtomicBoolFormula(); \
 	friend struct Z_Construct_UClass_UAtomicBoolFormula_Statics; \
@@ -65,7 +65,7 @@ public: \
 	DECLARE_SERIALIZER(UAtomicBoolFormula)
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_45_ENHANCED_CONSTRUCTORS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_55_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	UAtomicBoolFormula(UAtomicBoolFormula&&); \
@@ -77,19 +77,19 @@ public: \
 	NO_API virtual ~UAtomicBoolFormula();
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_42_PROLOG
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_45_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_52_PROLOG
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_55_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_45_INCLASS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_45_ENHANCED_CONSTRUCTORS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_55_INCLASS_NO_PURE_DECLS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_55_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
 template<> CTL_LABYRINTH_API UClass* StaticClass<class UAtomicBoolFormula>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_65_INCLASS_NO_PURE_DECLS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_75_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUAtomicIntFormula(); \
 	friend struct Z_Construct_UClass_UAtomicIntFormula_Statics; \
@@ -98,7 +98,7 @@ public: \
 	DECLARE_SERIALIZER(UAtomicIntFormula)
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_65_ENHANCED_CONSTRUCTORS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_75_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	UAtomicIntFormula(UAtomicIntFormula&&); \
@@ -110,19 +110,19 @@ public: \
 	NO_API virtual ~UAtomicIntFormula();
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_62_PROLOG
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_65_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_72_PROLOG
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_75_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_65_INCLASS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_65_ENHANCED_CONSTRUCTORS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_75_INCLASS_NO_PURE_DECLS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_75_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
 template<> CTL_LABYRINTH_API UClass* StaticClass<class UAtomicIntFormula>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_86_INCLASS_NO_PURE_DECLS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_96_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUAtomicDoubleFormula(); \
 	friend struct Z_Construct_UClass_UAtomicDoubleFormula_Statics; \
@@ -131,7 +131,7 @@ public: \
 	DECLARE_SERIALIZER(UAtomicDoubleFormula)
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_86_ENHANCED_CONSTRUCTORS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_96_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	UAtomicDoubleFormula(UAtomicDoubleFormula&&); \
@@ -143,19 +143,19 @@ public: \
 	NO_API virtual ~UAtomicDoubleFormula();
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_83_PROLOG
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_86_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_93_PROLOG
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_96_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_86_INCLASS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_86_ENHANCED_CONSTRUCTORS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_96_INCLASS_NO_PURE_DECLS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_96_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
 template<> CTL_LABYRINTH_API UClass* StaticClass<class UAtomicDoubleFormula>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_106_INCLASS_NO_PURE_DECLS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_116_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUAtomicStringFormula(); \
 	friend struct Z_Construct_UClass_UAtomicStringFormula_Statics; \
@@ -164,7 +164,7 @@ public: \
 	DECLARE_SERIALIZER(UAtomicStringFormula)
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_106_ENHANCED_CONSTRUCTORS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_116_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	UAtomicStringFormula(UAtomicStringFormula&&); \
@@ -176,19 +176,19 @@ public: \
 	NO_API virtual ~UAtomicStringFormula();
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_103_PROLOG
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_106_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_113_PROLOG
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_116_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_106_INCLASS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_106_ENHANCED_CONSTRUCTORS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_116_INCLASS_NO_PURE_DECLS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_116_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
 template<> CTL_LABYRINTH_API UClass* StaticClass<class UAtomicStringFormula>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_126_INCLASS_NO_PURE_DECLS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_136_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUUnaryFormula(); \
 	friend struct Z_Construct_UClass_UUnaryFormula_Statics; \
@@ -197,7 +197,7 @@ public: \
 	DECLARE_SERIALIZER(UUnaryFormula)
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_126_ENHANCED_CONSTRUCTORS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_136_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	UUnaryFormula(UUnaryFormula&&); \
@@ -209,19 +209,19 @@ public: \
 	NO_API virtual ~UUnaryFormula();
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_123_PROLOG
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_126_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_133_PROLOG
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_136_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_126_INCLASS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_126_ENHANCED_CONSTRUCTORS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_136_INCLASS_NO_PURE_DECLS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_136_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
 template<> CTL_LABYRINTH_API UClass* StaticClass<class UUnaryFormula>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_141_INCLASS_NO_PURE_DECLS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_150_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUBinaryFormula(); \
 	friend struct Z_Construct_UClass_UBinaryFormula_Statics; \
@@ -230,7 +230,7 @@ public: \
 	DECLARE_SERIALIZER(UBinaryFormula)
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_141_ENHANCED_CONSTRUCTORS \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_150_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	UBinaryFormula(UBinaryFormula&&); \
@@ -242,12 +242,12 @@ public: \
 	NO_API virtual ~UBinaryFormula();
 
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_138_PROLOG
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_141_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_147_PROLOG
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_150_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_141_INCLASS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_141_ENHANCED_CONSTRUCTORS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_150_INCLASS_NO_PURE_DECLS \
+	FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTL_ModelChecking_CTLFormula_h_150_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -269,7 +269,8 @@ template<> CTL_LABYRINTH_API UClass* StaticClass<class UBinaryFormula>();
 	op(ECTLOperator::EG) \
 	op(ECTLOperator::AG) \
 	op(ECTLOperator::EU) \
-	op(ECTLOperator::AU) 
+	op(ECTLOperator::AU) \
+	op(ECTLOperator::null) 
 
 enum class ECTLOperator : uint8;
 template<> struct TIsUEnumClass<ECTLOperator> { enum { Value = true }; };

@@ -92,7 +92,7 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
         });
 
     UUnaryFormula* AIHealthAG = NewObject<UUnaryFormula>();
-    AIHealthAG->Initialize(ECTLOperator::AG, AIHealthAtomic);
+    AIHealthAG->Initialize(ECTLOperator::EF, AIHealthAtomic);
     Formulas.Add(0, AIHealthAG);
 
     //AG(CurrentPlayerHealthPoints - PlayerHealthPoints < x)
@@ -338,5 +338,5 @@ void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString
     {
         unsatScores.Add(currNode->GetState().Id, MAX_UNSAT_SCORE);
     }
-    TArray<UStateNode*> result = formula->Evaluate(this, node, unsatScores, subFormulaWeight);
+    //TArray<UStateNode*> result = formula->Evaluate(this, node, unsatScores, subFormulaWeight);
 }

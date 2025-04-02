@@ -275,7 +275,7 @@ UUnaryFormula::UUnaryFormula()
 
 void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
 {
-    Op = InOp;
+    SetOperator(InOp);
     SubFormula = InSubFormula;
 }
 
@@ -296,7 +296,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     // Evaluate the sub-formula
     TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
 
-    switch (Op)
+    switch (GetOperator())
     {
     case ECTLOperator::NOT:
     {
@@ -432,7 +432,7 @@ UBinaryFormula::UBinaryFormula()
 
 void UBinaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight)
 {
-    Op = InOp;
+    SetOperator(InOp);
     Left = InLeft;
     Right = InRight;
 }
@@ -455,7 +455,7 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
     TArray<UStateNode*> leftStates = Left->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
     TArray<UStateNode*> rightStates = Right->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
 
-    switch (Op)
+    switch (GetOperator())
     {
     case ECTLOperator::AND:
     {
@@ -554,7 +554,7 @@ int32 UAtomicStringFormula::CountSubformulas() const
 
 int32 UUnaryFormula::CountSubformulas() const
 {
-    if (Op == ECTLOperator::NOT)
+    if (GetOperator() == ECTLOperator::NOT)
     {
         return (SubFormula ? SubFormula->CountSubformulas() : 0);
     }
