@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\LogicFighters.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\LogicFighters.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\LogicFightersEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\CTL_Labyrinth">
+      <UniqueIdentifier>{9F153D9E-26C2-34C6-A804-B2D1A520FA18}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\CTL_Labyrinth\CTL_Labyrinth.Build.cs">
+      <Filter>Source\CTL_Labyrinth</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\CTL_Labyrinth.cpp">
+      <Filter>Source\CTL_Labyrinth</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\CTL_Labyrinth.h">
+      <Filter>Source\CTL_Labyrinth</Filter>
+    </ClInclude>
+    <Filter Include="Source\CTL_Labyrinth\ModelFiles">
+      <UniqueIdentifier>{B1089B6B-500F-3F7B-A498-2A87700DF67F}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\CTL_Labyrinth\ModelFiles\Warrior_Warrior_gameplay.json">
+      <Filter>Source\CTL_Labyrinth\ModelFiles</Filter>
+    </None>
+    <Filter Include="Source\CTL_Labyrinth\Private">
+      <UniqueIdentifier>{4C0C08A8-C57A-378A-B9F6-FA4AE675054A}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\AStar.cpp">
+      <Filter>Source\CTL_Labyrinth\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\PredicateManager.cpp">
+      <Filter>Source\CTL_Labyrinth\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\CTL_Labyrinth\Private\Model">
+      <UniqueIdentifier>{6FFAF53C-8FE7-34A3-9843-3104B7666597}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\Model\CTLModel.cpp">
+      <Filter>Source\CTL_Labyrinth\Private\Model</Filter>
+    </ClCompile>
+    <Filter Include="Source\CTL_Labyrinth\Private\Model\CTL_ModelChecking">
+      <UniqueIdentifier>{54F1A422-CD35-3693-9D62-19ED816967BB}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\Model\CTL_ModelChecking\CTLFormula.cpp">
+      <Filter>Source\CTL_Labyrinth\Private\Model\CTL_ModelChecking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\Model\CTL_ModelChecking\StatesUtils.cpp">
+      <Filter>Source\CTL_Labyrinth\Private\Model\CTL_ModelChecking</Filter>
+    </ClCompile>
+    <Filter Include="Source\CTL_Labyrinth\Private\Model\ModelParser">
+      <UniqueIdentifier>{85063ABE-DF55-3303-B9FE-A8255760B76E}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\Model\ModelParser\JsonDataManager.cpp">
+      <Filter>Source\CTL_Labyrinth\Private\Model\ModelParser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\Model\ModelParser\ModelParser.cpp">
+      <Filter>Source\CTL_Labyrinth\Private\Model\ModelParser</Filter>
+    </ClCompile>
+    <Filter Include="Source\CTL_Labyrinth\Private\Model\StateTree">
+      <UniqueIdentifier>{B63A8542-E709-31F0-A55F-3E595ABB7BA5}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\Model\StateTree\StateNode.cpp">
+      <Filter>Source\CTL_Labyrinth\Private\Model\StateTree</Filter>
+    </ClCompile>
+    <Filter Include="Source\CTL_Labyrinth\Public">
+      <UniqueIdentifier>{D64A26E4-D797-3E62-9F57-6CF061BA176F}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\AStar.h">
+      <Filter>Source\CTL_Labyrinth\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\PredicateManager.h">
+      <Filter>Source\CTL_Labyrinth\Public</Filter>
+    </ClInclude>
+    <Filter Include="Source\CTL_Labyrinth\Public\Model">
+      <UniqueIdentifier>{F15DA7B4-3E89-3766-A3FE-E61CC06A0A6A}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\Model\CTLModel.h">
+      <Filter>Source\CTL_Labyrinth\Public\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\Model\ModelStructures.h">
+      <Filter>Source\CTL_Labyrinth\Public\Model</Filter>
+    </ClInclude>
+    <Filter Include="Source\CTL_Labyrinth\Public\Model\CTL_ModelChecking">
+      <UniqueIdentifier>{9EE0E1CF-0EA6-3F7C-B9A3-25E5B96E9C42}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\Model\CTL_ModelChecking\CTLFormula.h">
+      <Filter>Source\CTL_Labyrinth\Public\Model\CTL_ModelChecking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\Model\CTL_ModelChecking\StatesUtils.h">
+      <Filter>Source\CTL_Labyrinth\Public\Model\CTL_ModelChecking</Filter>
+    </ClInclude>
+    <Filter Include="Source\CTL_Labyrinth\Public\Model\ModelParser">
+      <UniqueIdentifier>{8FCD67D2-667A-3289-8476-319C63450A86}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\Model\ModelParser\JsonDataManager.h">
+      <Filter>Source\CTL_Labyrinth\Public\Model\ModelParser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\Model\ModelParser\ModelParser.h">
+      <Filter>Source\CTL_Labyrinth\Public\Model\ModelParser</Filter>
+    </ClInclude>
+    <Filter Include="Source\CTL_Labyrinth\Public\Model\StateTree">
+      <UniqueIdentifier>{5AEC6F93-8D44-35BD-8C70-FB6A51032904}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\CTL_Labyrinth\Public\Model\StateTree\StateNode.h">
+      <Filter>Source\CTL_Labyrinth\Public\Model\StateTree</Filter>
+    </ClInclude>
+    <Filter Include="Source\LogicFighters">
+      <UniqueIdentifier>{06822E87-095B-3113-A0FA-7A8A76F393D1}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\LogicFighters\LogicFighters.Build.cs">
+      <Filter>Source\LogicFighters</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\LogicFighters\LogicFighters.cpp">
+      <Filter>Source\LogicFighters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LogicFighters\LogicFighters.h">
+      <Filter>Source\LogicFighters</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LogicFighters\LogicFightersCharacter.cpp">
+      <Filter>Source\LogicFighters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LogicFighters\LogicFightersCharacter.h">
+      <Filter>Source\LogicFighters</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LogicFighters\LogicFightersGameMode.cpp">
+      <Filter>Source\LogicFighters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LogicFighters\LogicFightersGameMode.h">
+      <Filter>Source\LogicFighters</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LogicFighters\LogicFightersPlayerController.cpp">
+      <Filter>Source\LogicFighters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LogicFighters\LogicFightersPlayerController.h">
+      <Filter>Source\LogicFighters</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

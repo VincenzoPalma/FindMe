@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "LogicFighters",
+			"Path": "..\\Source\\LogicFighters.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "LogicFightersEditor",
+			"Path": "..\\Source\\LogicFightersEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
