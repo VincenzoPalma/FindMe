@@ -8,16 +8,18 @@ AStar::~AStar()
 {
 }
 /*
-unsatScore deve essere 0 nello stato in cui (F x) x è soddisfatta 
+unsatScore deve essere 0 nello stato in cui (F x) x è soddisfatta
+insieme al g score, quando incontriamo un nodo già messo nell'open set, invece di controllare solo il g score dobbiamo controllare anche la preferenza dell'utente (la prob che l'utente faccia una certa azione)
 */
-TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula)
+TMap<FString, FActionsToNode> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula, bool ShortestPath)
 {
 	//Structures for the path, if found
 	UStateNode* bestNode = NULL;
-	TArray<UStateNode*> finalPath;
-	TMap<FString, UStateNode*> cameFrom;
+	TMap<FString, FActionsToNode> finalPath;
+	TMap<FString, FActionsToNode> cameFrom; //le key sono gli id dei nodi figlio, i value gli id dei nodi padre
 	//Initialization and evaluation of the score for the starting state
 	int MAX_UNSAT_SCORE = 12;
+	float MAX_PATH_COST = MAX_UNSAT_SCORE;
 	int subFormulasNum = formula->CountSubformulas();
 	int subFormulaWeight = MAX_UNSAT_SCORE / subFormulasNum;
 	TMap<FString, int32> unsatScores;
@@ -28,14 +30,14 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 
 	bool found = false;
 	int totalDepth = 0, bestValue = MAX_int32;
-	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 5;
+	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 4;
 
-	//Initialization of the g and f values for the starting state
-	TMap<FString, int32> pathCost;
+	//Initialization of the pathCost and HeuristicTotalCosts values for the starting state
+	TMap<FString, float> pathCost;
 	TMap<FString, int32> HeuristicTotalCosts;
 	FString startingNodeId = startingNode->GetState().Id;
 
-	UpdatePathCosts(pathCost, startingNodeId, 0);
+	UpdatePathCosts(pathCost, startingNodeId, ShortestPath ? 0 : MAX_PATH_COST);
 	UpdateHeuristicTotalCosts(HeuristicTotalCosts, startingNodeId, pathCost, unsatScores);
 
 	//Initialization of the priority queue
@@ -64,7 +66,7 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 		//Add state to closed set so that it will not be visited in the future
 		closedSet.Add(currentNode);
 
-		if (*unsatScores.Find(currentNode->GetState().Id) == 0) {
+		if (*unsatScores.Find(currentNode->GetState().Id) == 0 && ShortestPath) {
 			bestNode = currentNode;
 			found = true;
 		}
@@ -84,13 +86,17 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 			}
 
 			//Calculate a possible new path cost
-			int tentative_pathCost = *pathCost.Find(currentNode->GetState().Id) + 1; //1 in this case. The weight of the edge generally.
+			float tentative_pathCost = *pathCost.Find(currentNode->GetState().Id) + (ShortestPath ? MAX_PATH_COST/MAX_DEPTH : - MAX_PATH_COST / MAX_DEPTH)
+				+ *(model->GetPlayerActionRates().Find(Pair.Key.Keys[0])); //1 in this case. The weight of the edge generally.
 			//Update the scores and add the state to the cameFrom map, used to build the resulting path
 			if (tentative_pathCost < *pathCost.Find(nodeId)) {
-				currentNode->PreviousTurnActions = Pair.Key.Keys;
+				
 				UpdatePathCosts(pathCost, nodeId, tentative_pathCost);
 				UpdateHeuristicTotalCosts(HeuristicTotalCosts, nodeId, pathCost, unsatScores);
-				cameFrom.Add(nodeId, currentNode);
+				FActionsToNode ActToNode;
+				ActToNode.ToNodeId = currentNode->GetState().Id;
+				ActToNode.Actions = Pair.Key.Keys;
+				cameFrom.Add(nodeId, ActToNode);
 
 				//Add it to the priority queue
 				if (!openSet.Contains(node))
@@ -101,7 +107,7 @@ TArray<UStateNode*> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNo
 		}
 	}
 
-	finalPath = ReconstructPath(bestNode, cameFrom);
+	finalPath = ReconstructPath(bestNode->GetState().Id, cameFrom);
 	return finalPath;
 }
 
@@ -131,42 +137,44 @@ void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<FS
 	}
 }
 
-void AStar::UpdatePathCosts(TMap<FString, int32>& pathCost, FString nodeId, int newValue)
+void AStar::UpdatePathCosts(TMap<FString, float>& pathCost, FString nodeId, float newValue)
 {
 	pathCost.Remove(nodeId);
 	pathCost.Add(nodeId, newValue);
 }
 
-void AStar::UpdateHeuristicTotalCosts(TMap<FString, int32>& HeuristicTotalCosts, FString nodeId, TMap<FString, int32>& gScores, TMap<FString, int32>& statesScores)
+void AStar::UpdateHeuristicTotalCosts(TMap<FString, int32>& HeuristicTotalCosts, FString nodeId, TMap<FString, float>& pathCost, TMap<FString, int32>& statesScores)
 {
 	HeuristicTotalCosts.Remove(nodeId);
-	HeuristicTotalCosts.Add(nodeId, *gScores.Find(nodeId) + *statesScores.Find(nodeId));
+	HeuristicTotalCosts.Add(nodeId, *pathCost.Find(nodeId) + *statesScores.Find(nodeId));
 }
 
-TArray<UStateNode*> AStar::ReconstructPath(UStateNode* currentNode, const TMap<FString, UStateNode*>& cameFrom)
+TMap<FString, FActionsToNode> AStar::ReconstructPath(FString currentNodeId, const TMap<FString, FActionsToNode>& cameFrom)
 {
-	TArray<UStateNode*> totalPath;
-	totalPath.Add(currentNode);
+	TMap<FString, FActionsToNode> totalPath;
 
-	while (cameFrom.Contains(currentNode->GetState().Id))
+	while (cameFrom.Contains(currentNodeId))
 	{
-		UStateNode* ParentNode = cameFrom[currentNode->GetState().Id];
-		currentNode = ParentNode;
-		totalPath.Add(currentNode);
+		FActionsToNode ActToNode;
+		ActToNode = *cameFrom.Find(currentNodeId);
+		FString ParentNodeId = ActToNode.ToNodeId;
+		ActToNode.ToNodeId = currentNodeId;
+		totalPath.Add(ParentNodeId, ActToNode);
+
+		currentNodeId = ParentNodeId;
 	}
 
-	Algo::Reverse(totalPath);
 	return totalPath;
 }
 
-void AStar::InitializeScores(const TMap<FString, int32>& unsatScores, TMap<FString, int32>& pathCost, TMap<FString, int32>& HeuristicTotalCosts)
+void AStar::InitializeScores(const TMap<FString, int32>& unsatScores, TMap<FString, float>& pathCost, TMap<FString, int32>& HeuristicTotalCosts)
 {
 	for (const TPair<FString, int32>& entry : unsatScores)
 	{
 		FString key = entry.Key;
 
 		if (!pathCost.Contains(key)) {
-			pathCost.Add(key, MAX_int32);
+			pathCost.Add(key, INFINITY);
 		}
 		if (!HeuristicTotalCosts.Contains(key)) {
 			HeuristicTotalCosts.Add(key, MAX_int32);

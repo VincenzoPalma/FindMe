@@ -13,10 +13,10 @@ public:
 	AStar();
 	~AStar();
 
-	static TArray<UStateNode*> ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula);
+	static TMap<FString, FActionsToNode> ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula, bool ShortestPath = true);
 	static void AddToOpenSet(TArray <UStateNode*>& openSet, UStateNode* node, TMap<FString, int32> HeuristicTotalCosts);
-	static TArray<UStateNode*> ReconstructPath(UStateNode* currentNode, const TMap<FString, UStateNode*>& cameFrom);
-	static void InitializeScores(const TMap<FString, int32>& unsatScores, TMap<FString, int32>& pathCost, TMap<FString, int32>& HeuristicTotalCosts);
-	static void UpdatePathCosts(TMap<FString, int32>& pathCost, FString nodeId, int newValue);
-	static void UpdateHeuristicTotalCosts(TMap<FString, int32>& HeuristicTotalCosts, FString nodeId, TMap<FString, int32>& pathCost, TMap<FString, int32>& unsatScores);
+	static TMap<FString, FActionsToNode> ReconstructPath(FString currentNodeId, const TMap<FString, FActionsToNode>& cameFrom);
+	static void InitializeScores(const TMap<FString, int32>& unsatScores, TMap<FString, float>& pathCost, TMap<FString, int32>& HeuristicTotalCosts);
+	static void UpdatePathCosts(TMap<FString, float>& pathCost, FString nodeId, float newValue);
+	static void UpdateHeuristicTotalCosts(TMap<FString, int32>& HeuristicTotalCosts, FString nodeId, TMap<FString, float>& pathCost, TMap<FString, int32>& unsatScores);
 };

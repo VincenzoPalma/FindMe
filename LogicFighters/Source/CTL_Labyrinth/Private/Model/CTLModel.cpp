@@ -35,6 +35,7 @@ void UCTLModel::AddTransition(FActionsArray actions, UStateNode* FromNode, UStat
     if (FromNode && ToNode)
     {
         FromNode->AddChild(actions, ToNode);
+        ToNode->AddParent(FromNode);
     }
 }
 
@@ -47,7 +48,7 @@ void UCTLModel::AddFormula(int32 FormulaId, UCTLFormula* Formula)
     }
 }
 
-void UCTLModel::InitializeModel(const FString& Character1Class, const FString& Character2Class)
+void UCTLModel::InitializeModel(const FString& Character1Class, const FString& Character2Class, const TMap<ECharacterActions, float> ActionRates)
 {
     //Opens JSON file
     FString JsonFileName = Character1Class + TEXT("_") + Character2Class + TEXT("_") + TEXT("gameplay") + TEXT(".json");
@@ -83,16 +84,26 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
     */
 
     //AG(CurrentAIHealthPoints - AIHealthPoints < x)
-    UAtomicIntFormula* AIHealthAtomic = NewObject<UAtomicIntFormula>();
-    AIHealthAtomic->Initialize([](const FState& State, const FState& CurrentState)
+    UAtomicIntFormula* AIHealthAtomicLeft = NewObject<UAtomicIntFormula>();
+    AIHealthAtomicLeft->Initialize([](const FState& State, const FState& CurrentState)
         { 
-            int32 AIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
-            int32 CurrentAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
-            return CurrentAIHealthPoints - AIHealthPoints <= 12; 
+            int32 CurrentAIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
+            int32 StartingAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
+            return StartingAIHealthPoints - CurrentAIHealthPoints >= 0;
         });
 
+    UAtomicIntFormula* AIHealthAtomicRight = NewObject<UAtomicIntFormula>();
+    AIHealthAtomicRight->Initialize([](const FState& State, const FState& CurrentState)
+        {
+            int32 CurrentAIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
+            int32 StartingAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
+            return StartingAIHealthPoints - CurrentAIHealthPoints <= 20;
+        });
+
+    UBinaryFormula* AIHealthAND = NewObject<UBinaryFormula>();
+    AIHealthAND->Initialize(ECTLOperator::AND, AIHealthAtomicLeft, AIHealthAtomicRight);
     UUnaryFormula* AIHealthAG = NewObject<UUnaryFormula>();
-    AIHealthAG->Initialize(ECTLOperator::EF, AIHealthAtomic);
+    AIHealthAG->Initialize(ECTLOperator::EG, AIHealthAND);
     Formulas.Add(0, AIHealthAG);
 
     //AG(CurrentPlayerHealthPoints - PlayerHealthPoints < x)
@@ -134,7 +145,7 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
     PlayerAbilityAG->Initialize(ECTLOperator::AG, PlayerAbilityAtomic);
     Formulas.Add(3, PlayerAbilityAG);
 
-
+    PlayerActionRates = ActionRates;
 }
 
 TSharedPtr<FJsonObject> UCTLModel::GetJsonFile()
@@ -152,80 +163,46 @@ UCTLFormula* UCTLModel::GetFormula(int32 Id) const
     return nullptr;
 }
 
-TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& states, UStateNode* StartNode) const
+TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& states, TArray<UStateNode*>& targetStates) const
 {
-    TArray<UStateNode*> PreImage;
+    TSet<UStateNode*> PreImage;
 
-    if (!StartNode)
-    {
-        UE_LOG(LogTemp, Error, TEXT("Invalid StartNode passed to PreImageExistential"));
-        return PreImage;
-    }
+    for (UStateNode* StateNode : states)
+        PreImage.Append(StateNode->GetParents());
 
-    TArray<UStateNode*> ReachableStates = GetReachableNodes(StartNode);
+    targetStates = states;
 
-    for (UStateNode* StateNode : ReachableStates)
-    {
-
-        bool HasSuccessorInQ = false;
-        for (UStateNode* Successor : StateNode->GetChildren())
-        {
-            if (states.Contains(Successor))
-            {
-                HasSuccessorInQ = true;
-                break;
-            }
-        }
-
-        if (HasSuccessorInQ)
-        {
-            PreImage.Add(StateNode);
-        }
-    }
-
-    return PreImage;
+    return PreImage.Array();
 }
 
-TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& states, UStateNode* StartNode) const
+TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& states, TArray<UStateNode*>& targetStates) const
 {
-    TArray<UStateNode*> PreImage;
+    TSet<UStateNode*> PreImage;
 
-    if (!StartNode)
+    for (UStateNode* StateNode : states)
     {
-        UE_LOG(LogTemp, Error, TEXT("Invalid StartNode passed to PreImageUniversal"));
-        return PreImage;
-    }
-
-    TArray<UStateNode*> ReachableStates = GetReachableNodes(StartNode);
-
-    for (UStateNode* StateNode : ReachableStates)
-    {
-        bool AllSuccessorsInQ = true;
-        TArray<UStateNode*> Successors = StateNode->GetChildren();
-
-        if (Successors.Num() == 0)
+        for (UStateNode* parents : StateNode->GetParents())
         {
-            AllSuccessorsInQ = false;
-        }
-        else
-        {
+            TArray<UStateNode*> Successors = parents->GetChildren();
+            bool AllSuccessorsInQ = true;
+
             for (UStateNode* Successor : Successors)
             {
                 if (!states.Contains(Successor))
                 {
                     AllSuccessorsInQ = false;
-                    break;
                 }
             }
-        }
 
-        if (AllSuccessorsInQ)
-        {
-            PreImage.Add(StateNode);
+            if(AllSuccessorsInQ)
+            {
+                targetStates.Add(StateNode);
+                PreImage.Add(StateNode);
+            }
         }
     }
 
-    return PreImage;
+    return PreImage.Array();
 }
 
 
@@ -297,33 +274,27 @@ void UCTLModel::DebugPrintModel() const
 
             // Print adjacent nodes
             UE_LOG(LogTemp, Log, TEXT("  Adjacent Nodes:"));
-            TMap<FActionsArray, UStateNode*> Children = CurrentNode->GetChildrenMap();
-            for (const TPair<FActionsArray, UStateNode*>& ChildPair : Children)
+            for (const UStateNode* Parent : CurrentNode->GetParents())
             {
                 FString KeyString;
-                for (const int32 Action : ChildPair.Key.Keys)
-                {
-                    KeyString += FString::Printf(TEXT("%d "), Action);
-                }
 
-                if (ChildPair.Value)
+                if (Parent)
                 {
-                    UE_LOG(LogTemp, Log, TEXT("    Adjacent Node ID: %s"), *ChildPair.Value->GetState().Id);
+                    UE_LOG(LogTemp, Log, TEXT("    Parent Node ID: %s"), *Parent->GetState().Id);
                 }
                 else
                 {
-                    UE_LOG(LogTemp, Warning, TEXT("    Null adjacent node encountered."));
+                    UE_LOG(LogTemp, Warning, TEXT("    Null parent node encountered."));
                 }
-                UE_LOG(LogTemp, Log, TEXT("    Actions: %s"), *KeyString);
             }
         }
     }
 }
 
 
-TArray<UStateNode*> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* formula)
+TMap<FString, FActionsToNode> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* formula, bool ShortestPath)
 {
-    TArray<UStateNode*> result = AStar::ExecuteAStar(this, node, formula);
+    TMap<FString, FActionsToNode> result = AStar::ExecuteAStar(this, node, formula, ShortestPath);
     this->rootNode = nullptr;
     this->stateNodes.Empty();
     return result;
@@ -339,4 +310,80 @@ void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString
         unsatScores.Add(currNode->GetState().Id, MAX_UNSAT_SCORE);
     }
     //TArray<UStateNode*> result = formula->Evaluate(this, node, unsatScores, subFormulaWeight);
+}
+
+// This function returns a set of valid target nodes from the original targetStates set.
+// A target node is considered valid if, for every node in its parent chain,
+// all of that parent's children are contained in the targetStates set.
+TArray<UStateNode*> UCTLModel::EvaluateUniversalG(TArray<UStateNode*>& targetStates, bool universalCheck) const
+{
+    TSet<UStateNode*> validTargets;
+
+    // Process each target node individually.
+    for (UStateNode* target : targetStates)
+    {
+        bool bIsValid = true;
+        TQueue<UStateNode*> queue;
+        TSet<UStateNode*> visited; // To avoid processing the same node more than once
+        queue.Enqueue(target);
+        visited.Add(target);
+
+        // Process nodes in a FIFO order.
+        while (!queue.IsEmpty() && bIsValid)
+        {
+            bool parentInTarget = false;
+            bool bChildrenConditionMet = true;
+            UStateNode* currentNode;
+            queue.Dequeue(currentNode);
+
+            // If currentNode has no parents in our map, it's a root; no further check is needed.
+            if (currentNode->GetParents().IsEmpty())
+                continue;
+
+            // Iterate over each parent of the current node.
+            for (UStateNode* parentNode : currentNode->GetParents())
+            {
+                //Ensure that the parent itself is in the targetStates set.
+                if (!targetStates.Contains(parentNode))
+                    continue;
+                parentInTarget = true;
+
+                // Check parent's children condition.
+                if (universalCheck)
+                {
+                    // Every child of the parent must be in targetStates.
+                    for (UStateNode* child : parentNode->GetChildren())
+                    {
+                        if (!targetStates.Contains(child))
+                        {
+                            bChildrenConditionMet = false;
+                            break;
+                        }
+                    }
+                }
+
+                // If the condition on the parent's children is not met, mark as invalid.
+                if (!bChildrenConditionMet)
+                    continue;
+
+                // Enqueue the parent for further processing if not already visited.
+                if (!visited.Contains(parentNode))
+                {
+                    visited.Add(parentNode);
+                    queue.Enqueue(parentNode);
+                }
+            }
+
+            if (!parentInTarget || !bChildrenConditionMet)
+                bIsValid = false;
+        }
+
+        // If the entire parent chain satisfied the conditions, add the target to the valid set.
+        if (bIsValid)
+        {
+            validTargets.Add(target);
+        }
+    }
+
+    return validTargets.Array();
 }

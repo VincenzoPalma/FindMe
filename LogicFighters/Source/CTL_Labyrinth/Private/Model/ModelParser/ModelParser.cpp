@@ -1107,19 +1107,41 @@ void UModelParser::AddTransitionsFromState(const FString& FromStateId, const TSh
 
                 const TArray<TSharedPtr<FJsonValue>>& Actions = TransitionElem.Value->AsArray();
                 FActionsArray ActionsArray;
-
                 for (const TSharedPtr<FJsonValue>& Action : Actions)
                 {
                     int32 ActionInt = FCString::Atoi(*Action->AsString());
-                    ActionsArray.Keys.Add(ActionInt);
+                    switch (ActionInt)
+                    {
+                    case 0:
+                        ActionsArray.Keys.Add(ECharacterActions::Attack);
+                        break;
+                    case 1:
+                        ActionsArray.Keys.Add(ECharacterActions::Defense);
+                        break;
+                    case 2:
+                        ActionsArray.Keys.Add(ECharacterActions::CounterAttack);
+                        break;
+                    case 3:
+                        ActionsArray.Keys.Add(ECharacterActions::Buff);
+                        break;
+                    case 4:
+                        ActionsArray.Keys.Add(ECharacterActions::SpecialAttack);
+                        break;
+                    default:
+                        ActionsArray.Keys.Add(ECharacterActions::Null);
+                        break;
+                    }
+              
                 }
-
                 Model->AddTransition(ActionsArray, FromNode, ToNode);
+                ActionsArray.Keys.Empty();
+
             }
             else
             {
                 UE_LOG(LogTemp, Warning, TEXT("Failed to find one or both nodes for the transition from %s to %s"), *FromStateId, *ToStateId);
             }
+   
         }
     }
     else

@@ -25,6 +25,8 @@ struct FState;
 	DECLARE_FUNCTION(execGetStateData); \
 	DECLARE_FUNCTION(execGetState); \
 	DECLARE_FUNCTION(execGetChildren); \
+	DECLARE_FUNCTION(execGetParents); \
+	DECLARE_FUNCTION(execAddParent); \
 	DECLARE_FUNCTION(execAddChild);
 
 
