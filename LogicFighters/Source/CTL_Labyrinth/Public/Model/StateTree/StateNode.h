@@ -12,7 +12,8 @@ class CTL_LABYRINTH_API UStateNode : public UObject
 public:
     UStateNode() {}
 
-    TArray<int32> PreviousTurnActions;
+    UPROPERTY(BlueprintReadWrite, Category = "StateNode")
+    TArray<ECharacterActions> PreviousTurnActions;
 
     TMap<FActionsArray, UStateNode*> GetChildrenMap() {
         return Children;
@@ -25,6 +26,21 @@ public:
         {
             Children.Add(actions, child);
         }
+    }
+
+    UFUNCTION(BlueprintCallable, Category = "StateNode")
+    void AddParent(UStateNode* parent)
+    {
+        if (parent)
+        {
+            Parents.Add(parent);
+        }
+    }
+
+    UFUNCTION(BlueprintCallable, Category = "StateNode")
+    TArray<UStateNode*> GetParents()
+    {
+        return Parents;
     }
 
     UFUNCTION(BlueprintCallable, Category = "StateNode")
@@ -60,4 +76,6 @@ private:
 
     UPROPERTY(BlueprintGetter = GetChildrenMap, BlueprintSetter = SetChildrenMap, Category = "StateNode")
     TMap<FActionsArray, UStateNode*> Children;
+
+    TArray<UStateNode*> Parents;
 };

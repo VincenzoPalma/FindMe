@@ -6,6 +6,7 @@
 
 #include "UObject/GeneratedCppIncludes.h"
 #include "CTL_Labyrinth/Public/Model/CTLModel.h"
+#include "CTL_Labyrinth/Public/Model/ModelStructures.h"
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeCTLModel() {}
 
@@ -16,6 +17,8 @@ CTL_LABYRINTH_API UClass* Z_Construct_UClass_UCTLModel();
 CTL_LABYRINTH_API UClass* Z_Construct_UClass_UCTLModel_NoRegister();
 CTL_LABYRINTH_API UClass* Z_Construct_UClass_UPredicateManager_NoRegister();
 CTL_LABYRINTH_API UClass* Z_Construct_UClass_UStateNode_NoRegister();
+CTL_LABYRINTH_API UEnum* Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions();
+CTL_LABYRINTH_API UScriptStruct* Z_Construct_UScriptStruct_FActionsToNode();
 UPackage* Z_Construct_UPackage__Script_CTL_Labyrinth();
 // End Cross Module References
 
@@ -56,7 +59,7 @@ struct Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics
 	{
 		UStateNode* node;
 		UCTLFormula* formula;
-		TArray<UStateNode*> ReturnValue;
+		TMap<FString,FActionsToNode> ReturnValue;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -66,19 +69,22 @@ struct Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_node;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_formula;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
-	static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue_ValueProp;
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue_Key_KeyProp;
+	static const UECodeGen_Private::FMapPropertyParams NewProp_ReturnValue;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_node = { "node", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventEvaluateFormula_Parms, node), Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_formula = { "formula", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventEvaluateFormula_Parms, formula), Z_Construct_UClass_UCTLFormula_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventEvaluateFormula_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_ValueProp = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UScriptStruct_FActionsToNode, METADATA_PARAMS(0, nullptr) }; // 4027915148
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_Key_KeyProp = { "ReturnValue_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventEvaluateFormula_Parms, ReturnValue), EMapPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 4027915148
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_node,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_formula,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_ValueProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_Key_KeyProp,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::PropPointers) < 2048);
@@ -99,7 +105,7 @@ DEFINE_FUNCTION(UCTLModel::execEvaluateFormula)
 	P_GET_OBJECT(UCTLFormula,Z_Param_formula);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	*(TArray<UStateNode*>*)Z_Param__Result=P_THIS->EvaluateFormula(Z_Param_node,Z_Param_formula);
+	*(TMap<FString,FActionsToNode>*)Z_Param__Result=P_THIS->EvaluateFormula(Z_Param_node,Z_Param_formula);
 	P_NATIVE_END;
 }
 // End Class UCTLModel Function EvaluateFormula
@@ -201,6 +207,57 @@ DEFINE_FUNCTION(UCTLModel::execGetFormulas)
 	P_NATIVE_END;
 }
 // End Class UCTLModel Function GetFormulas
+
+// Begin Class UCTLModel Function GetPlayerActionRates
+struct Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics
+{
+	struct CTLModel_eventGetPlayerActionRates_Parms
+	{
+		TMap<ECharacterActions,float> ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Model" },
+		{ "ModuleRelativePath", "Public/Model/CTLModel.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_ReturnValue_ValueProp;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_ReturnValue_Key_KeyProp_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_ReturnValue_Key_KeyProp;
+	static const UECodeGen_Private::FMapPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::NewProp_ReturnValue_ValueProp = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::NewProp_ReturnValue_Key_KeyProp_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::NewProp_ReturnValue_Key_KeyProp = { "ReturnValue_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions, METADATA_PARAMS(0, nullptr) }; // 997799828
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventGetPlayerActionRates_Parms, ReturnValue), EMapPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 997799828
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::NewProp_ReturnValue_ValueProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::NewProp_ReturnValue_Key_KeyProp_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::NewProp_ReturnValue_Key_KeyProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UCTLModel, nullptr, "GetPlayerActionRates", nullptr, nullptr, Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::PropPointers), sizeof(Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::CTLModel_eventGetPlayerActionRates_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x54020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::Function_MetaDataParams), Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::CTLModel_eventGetPlayerActionRates_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_UCTLModel_GetPlayerActionRates()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UCTLModel_GetPlayerActionRates_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(UCTLModel::execGetPlayerActionRates)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(TMap<ECharacterActions,float>*)Z_Param__Result=P_THIS->GetPlayerActionRates();
+	P_NATIVE_END;
+}
+// End Class UCTLModel Function GetPlayerActionRates
 
 // Begin Class UCTLModel Function GetPredicateManager
 struct Z_Construct_UFunction_UCTLModel_GetPredicateManager_Statics
@@ -394,6 +451,7 @@ struct Z_Construct_UFunction_UCTLModel_InitializeModel_Statics
 	{
 		FString Character1Class;
 		FString Character2Class;
+		TMap<ECharacterActions,float> ActionRates;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -406,17 +464,32 @@ struct Z_Construct_UFunction_UCTLModel_InitializeModel_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Character2Class_MetaData[] = {
 		{ "NativeConst", "" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ActionRates_MetaData[] = {
+		{ "NativeConst", "" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FStrPropertyParams NewProp_Character1Class;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_Character2Class;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_ActionRates_ValueProp;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_ActionRates_Key_KeyProp_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_ActionRates_Key_KeyProp;
+	static const UECodeGen_Private::FMapPropertyParams NewProp_ActionRates;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_Character1Class = { "Character1Class", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventInitializeModel_Parms, Character1Class), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Character1Class_MetaData), NewProp_Character1Class_MetaData) };
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_Character2Class = { "Character2Class", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventInitializeModel_Parms, Character2Class), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Character2Class_MetaData), NewProp_Character2Class_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_ActionRates_ValueProp = { "ActionRates", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_ActionRates_Key_KeyProp_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_ActionRates_Key_KeyProp = { "ActionRates_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions, METADATA_PARAMS(0, nullptr) }; // 997799828
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_ActionRates = { "ActionRates", nullptr, (EPropertyFlags)0x0010000000000082, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventInitializeModel_Parms, ActionRates), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ActionRates_MetaData), NewProp_ActionRates_MetaData) }; // 997799828
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_Character1Class,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_Character2Class,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_ActionRates_ValueProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_ActionRates_Key_KeyProp_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_ActionRates_Key_KeyProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::NewProp_ActionRates,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::PropPointers) < 2048);
 const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UCTLModel, nullptr, "InitializeModel", nullptr, nullptr, Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::PropPointers), sizeof(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::CTLModel_eventInitializeModel_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::Function_MetaDataParams), Z_Construct_UFunction_UCTLModel_InitializeModel_Statics::Function_MetaDataParams) };
@@ -434,9 +507,10 @@ DEFINE_FUNCTION(UCTLModel::execInitializeModel)
 {
 	P_GET_PROPERTY(FStrProperty,Z_Param_Character1Class);
 	P_GET_PROPERTY(FStrProperty,Z_Param_Character2Class);
+	P_GET_TMAP(ECharacterActions,float,Z_Param_ActionRates);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->InitializeModel(Z_Param_Character1Class,Z_Param_Character2Class);
+	P_THIS->InitializeModel(Z_Param_Character1Class,Z_Param_Character2Class,Z_Param_ActionRates);
 	P_NATIVE_END;
 }
 // End Class UCTLModel Function InitializeModel
@@ -450,6 +524,7 @@ void UCTLModel::StaticRegisterNativesUCTLModel()
 		{ "EvaluateFormula", &UCTLModel::execEvaluateFormula },
 		{ "GetFormula", &UCTLModel::execGetFormula },
 		{ "GetFormulas", &UCTLModel::execGetFormulas },
+		{ "GetPlayerActionRates", &UCTLModel::execGetPlayerActionRates },
 		{ "GetPredicateManager", &UCTLModel::execGetPredicateManager },
 		{ "GetReachableNodes", &UCTLModel::execGetReachableNodes },
 		{ "GetRootNode", &UCTLModel::execGetRootNode },
@@ -484,6 +559,9 @@ struct Z_Construct_UClass_UCTLModel_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PredicateManager_MetaData[] = {
 		{ "ModuleRelativePath", "Public/Model/CTLModel.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_PlayerActionRates_MetaData[] = {
+		{ "ModuleRelativePath", "Public/Model/CTLModel.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_stateNodes_ValueProp;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_stateNodes_Key_KeyProp;
@@ -493,18 +571,23 @@ struct Z_Construct_UClass_UCTLModel_Statics
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Formulas_Key_KeyProp;
 	static const UECodeGen_Private::FMapPropertyParams NewProp_Formulas;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_PredicateManager;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_PlayerActionRates_ValueProp;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_PlayerActionRates_Key_KeyProp_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_PlayerActionRates_Key_KeyProp;
+	static const UECodeGen_Private::FMapPropertyParams NewProp_PlayerActionRates;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UCTLModel_DebugPrintModel, "DebugPrintModel" }, // 929795102
-		{ &Z_Construct_UFunction_UCTLModel_EvaluateFormula, "EvaluateFormula" }, // 2507309667
+		{ &Z_Construct_UFunction_UCTLModel_EvaluateFormula, "EvaluateFormula" }, // 3651810096
 		{ &Z_Construct_UFunction_UCTLModel_GetFormula, "GetFormula" }, // 2532571443
 		{ &Z_Construct_UFunction_UCTLModel_GetFormulas, "GetFormulas" }, // 3559519032
+		{ &Z_Construct_UFunction_UCTLModel_GetPlayerActionRates, "GetPlayerActionRates" }, // 233426100
 		{ &Z_Construct_UFunction_UCTLModel_GetPredicateManager, "GetPredicateManager" }, // 3149239671
 		{ &Z_Construct_UFunction_UCTLModel_GetReachableNodes, "GetReachableNodes" }, // 2871945672
 		{ &Z_Construct_UFunction_UCTLModel_GetRootNode, "GetRootNode" }, // 3047178962
 		{ &Z_Construct_UFunction_UCTLModel_GetStateNodes, "GetStateNodes" }, // 1143806030
-		{ &Z_Construct_UFunction_UCTLModel_InitializeModel, "InitializeModel" }, // 2835035698
+		{ &Z_Construct_UFunction_UCTLModel_InitializeModel, "InitializeModel" }, // 4222063141
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -520,6 +603,10 @@ const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UCTLModel_Stat
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_Formulas_Key_KeyProp = { "Formulas_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_Formulas = { "Formulas", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCTLModel, Formulas), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Formulas_MetaData), NewProp_Formulas_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_PredicateManager = { "PredicateManager", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCTLModel, PredicateManager), Z_Construct_UClass_UPredicateManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PredicateManager_MetaData), NewProp_PredicateManager_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_PlayerActionRates_ValueProp = { "PlayerActionRates", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_PlayerActionRates_Key_KeyProp_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_PlayerActionRates_Key_KeyProp = { "PlayerActionRates_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions, METADATA_PARAMS(0, nullptr) }; // 997799828
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UClass_UCTLModel_Statics::NewProp_PlayerActionRates = { "PlayerActionRates", nullptr, (EPropertyFlags)0x0040000000000000, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCTLModel, PlayerActionRates), EMapPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_PlayerActionRates_MetaData), NewProp_PlayerActionRates_MetaData) }; // 997799828
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UCTLModel_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_stateNodes_ValueProp,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_stateNodes_Key_KeyProp,
@@ -529,6 +616,10 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UCTLModel
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_Formulas_Key_KeyProp,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_Formulas,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_PredicateManager,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_PlayerActionRates_ValueProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_PlayerActionRates_Key_KeyProp_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_PlayerActionRates_Key_KeyProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCTLModel_Statics::NewProp_PlayerActionRates,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UCTLModel_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UCTLModel_Statics::DependentSingletons[])() = {
@@ -571,10 +662,10 @@ UCTLModel::~UCTLModel() {}
 struct Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCTLModel, UCTLModel::StaticClass, TEXT("UCTLModel"), &Z_Registration_Info_UClass_UCTLModel, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLModel), 867583518U) },
+		{ Z_Construct_UClass_UCTLModel, UCTLModel::StaticClass, TEXT("UCTLModel"), &Z_Registration_Info_UClass_UCTLModel, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLModel), 3943978336U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_1291080454(TEXT("/Script/CTL_Labyrinth"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_3081661700(TEXT("/Script/CTL_Labyrinth"),
 	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

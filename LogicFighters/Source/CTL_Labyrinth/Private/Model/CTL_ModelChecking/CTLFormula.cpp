@@ -279,13 +279,16 @@ void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
     SubFormula = InSubFormula;
 }
 
-TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
+TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* rootNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
 {
     // Temporary array to collect results
     TArray<UStateNode*> satisfyingStatesArray;
 
     // Set to ensure uniqueness
     TSet<UStateNode*> satisfyingStatesSet;
+
+    TArray<UStateNode*> targetStatesArray;
+    TArray<UStateNode*> tempTargetStatesArray;
 
     // Check if model, stateNode, and SubFormula are valid
     if (!model || !SubFormula)
@@ -294,14 +297,14 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     }
 
     // Evaluate the sub-formula
-    TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
+    TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, rootNode, unsatScores, subFormulaWeight);
 
     switch (GetOperator())
     {
     case ECTLOperator::NOT:
     {
         // Find all states not satisfying the sub-formula
-        for (const auto& StateNode : model->GetReachableNodes(stateNode))
+        for (const auto& StateNode : model->GetReachableNodes(rootNode))
         {
             if (!SubResults.Contains(StateNode))
             {
@@ -319,28 +322,37 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     case ECTLOperator::EX:
     {
         // Find all states from which there exists a successor satisfying the sub-formula
-        TArray<UStateNode*> PreImage = model->PreImageExistential(SubResults, stateNode);
+        /*TArray<UStateNode*> PreImage = model->PreImageExistential(SubResults, stateNode);
         for (UStateNode* Node : PreImage)
         {
             satisfyingStatesSet.Add(Node);
         }
 
         satisfyingStatesArray = satisfyingStatesSet.Array();
+        */
 
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        // since the model is loaded from the current state, it is safe to assert the existence of a path from the current state to the target states without checking
+        satisfyingStatesArray = SubResults;
         break;
+
     }
 
     case ECTLOperator::AX:
     {
         // Find all states from which all successors satisfy the sub-formula
-        TArray<UStateNode*> PreImage = model->PreImageUniversal(SubResults, stateNode);
+        TArray<UStateNode*> PreImage = model->PreImageUniversal(SubResults, targetStatesArray);
+        /*
         for (UStateNode* Node : PreImage)
         {
             satisfyingStatesSet.Add(Node);
         }
-
+        
         satisfyingStatesArray = satisfyingStatesSet.Array();
-
+        */
+        
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = targetStatesArray;
         break;
     }
 
@@ -348,7 +360,7 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     {
         // Find all states where a path exists that contains at least a state satisfying the sub-formula
 
-        TArray<UStateNode*> CurrentStates;
+        /*TArray<UStateNode*> CurrentStates;
 
         do
         {
@@ -357,6 +369,10 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
             SubResults = StatesUtils::StatesUnion(SubResults, preImage);
         } while (!StatesUtils::IsSubSet(SubResults, CurrentStates));
 
+        satisfyingStatesArray = SubResults;*/
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        // since the model is loaded from the current state, it is safe to assert the existence of a path from the current state to the target states without checking
         satisfyingStatesArray = SubResults;
 
         break;
@@ -370,12 +386,15 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
 
         do
         {
+            //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+            if (satisfyingStatesArray.IsEmpty())
+                satisfyingStatesArray = SubResults;
             CurrentStates = SubResults;
-            TArray<UStateNode*> preImage = model->PreImageUniversal(CurrentStates, stateNode);
+            TArray<UStateNode*> preImage = model->PreImageUniversal(CurrentStates, tempTargetStatesArray);
             SubResults = StatesUtils::StatesUnion(SubResults, preImage);
         } while (!StatesUtils::IsSubSet(SubResults, CurrentStates));
 
-        satisfyingStatesArray = SubResults;
+        //satisfyingStatesArray = SubResults;
 
         break;
     }
@@ -383,31 +402,45 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     case ECTLOperator::EG:
     {
         // Find all states where a path exists that is entirely within states satisfying the sub-formula
+        /*
         TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
 
         while (!StatesUtils::IsSubSet(AllStates, SubResults))
         {
             AllStates = SubResults;
-            SubResults = StatesUtils::StatesIntersection(model->PreImageExistential(AllStates, stateNode), SubResults);
+            SubResults = StatesUtils::StatesIntersection(model->PreImageExistential(AllStates, stateNode, tempTargetStatesArray), SubResults);
         }
 
         satisfyingStatesArray = AllStates;
+        */
 
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = model->EvaluateUniversalG(SubResults, false);
+        UE_LOG(LogTemp, Log, TEXT("Salve"));
+        for (UStateNode* node : satisfyingStatesArray) {
+            UE_LOG(LogTemp, Log, TEXT(" Node: %s"), *node->GetState().Id);
+        }
         break;
     }
 
     case ECTLOperator::AG:
     {
         // Find all states where every path is entirely within states satisfying the sub-formula
+        /*
         TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
 
         while (!StatesUtils::IsSubSet(AllStates, SubResults))
         {
             AllStates = SubResults;
-            SubResults = StatesUtils::StatesIntersection(model->PreImageUniversal(AllStates, stateNode), SubResults);
+            SubResults = StatesUtils::StatesIntersection(model->PreImageUniversal(AllStates, stateNode, tempTargetStatesArray), SubResults);
         }
 
         satisfyingStatesArray = AllStates;
+        */
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = model->EvaluateUniversalG(SubResults, true);
 
         break;
     }
@@ -415,6 +448,8 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
     default:
         break;
     }
+
+    satisfyingStatesArray.Remove(rootNode);
 
     for (UStateNode* Node : satisfyingStatesArray)
     {
@@ -444,6 +479,8 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
 
     // Set to ensure uniqueness
     TSet<UStateNode*> satisfyingStatesSet;
+
+    TArray<UStateNode*> targetStatesArray;
 
     // Check if stateNode, Left, or Right are null
     if (!stateNode || !Left || !Right)
@@ -495,10 +532,13 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
         // while satisfying Left up to that point
         while (!StatesUtils::IsSubSet(rightStates, satisfyingStatesArray)) {
             satisfyingStatesArray = StatesUtils::StatesUnion(satisfyingStatesArray, rightStates);
-            TArray<UStateNode*> preImage = model->PreImageExistential(satisfyingStatesArray, stateNode);
+            TArray<UStateNode*> preImage = model->PreImageExistential(satisfyingStatesArray, targetStatesArray);
             rightStates = StatesUtils::StatesIntersection(preImage, leftStates);
         }
-     
+        
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = rightStates;
+
         break;
     }
 
@@ -508,9 +548,12 @@ TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode*
         // and eventually reaches a state satisfying Left
         while (!StatesUtils::IsSubSet(rightStates, satisfyingStatesArray)) {
             satisfyingStatesArray = StatesUtils::StatesUnion(satisfyingStatesArray, rightStates);
-            TArray<UStateNode*> preImage = model->PreImageUniversal(satisfyingStatesArray, stateNode);
+            TArray<UStateNode*> preImage = model->PreImageUniversal(satisfyingStatesArray, targetStatesArray);
             rightStates = StatesUtils::StatesIntersection(preImage, leftStates);
         }
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = rightStates;
 
         break;
     }

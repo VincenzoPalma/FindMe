@@ -10,12 +10,80 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeModelStructures() {}
 
 // Begin Cross Module References
+CTL_LABYRINTH_API UEnum* Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions();
 CTL_LABYRINTH_API UScriptStruct* Z_Construct_UScriptStruct_FActionsArray();
+CTL_LABYRINTH_API UScriptStruct* Z_Construct_UScriptStruct_FActionsToNode();
 CTL_LABYRINTH_API UScriptStruct* Z_Construct_UScriptStruct_FState();
 CTL_LABYRINTH_API UScriptStruct* Z_Construct_UScriptStruct_FTransition();
 CTL_LABYRINTH_API UScriptStruct* Z_Construct_UScriptStruct_FVariantValue();
 UPackage* Z_Construct_UPackage__Script_CTL_Labyrinth();
 // End Cross Module References
+
+// Begin Enum ECharacterActions
+static FEnumRegistrationInfo Z_Registration_Info_UEnum_ECharacterActions;
+static UEnum* ECharacterActions_StaticEnum()
+{
+	if (!Z_Registration_Info_UEnum_ECharacterActions.OuterSingleton)
+	{
+		Z_Registration_Info_UEnum_ECharacterActions.OuterSingleton = GetStaticEnum(Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions, (UObject*)Z_Construct_UPackage__Script_CTL_Labyrinth(), TEXT("ECharacterActions"));
+	}
+	return Z_Registration_Info_UEnum_ECharacterActions.OuterSingleton;
+}
+template<> CTL_LABYRINTH_API UEnum* StaticEnum<ECharacterActions>()
+{
+	return ECharacterActions_StaticEnum();
+}
+struct Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Enum_MetaDataParams[] = {
+		{ "Attack.DisplayName", "Attack" },
+		{ "Attack.Name", "ECharacterActions::Attack" },
+		{ "BlueprintType", "true" },
+		{ "Buff.DisplayName", "Buff" },
+		{ "Buff.Name", "ECharacterActions::Buff" },
+		{ "CounterAttack.DisplayName", "CounterAttack" },
+		{ "CounterAttack.Name", "ECharacterActions::CounterAttack" },
+		{ "Defense.DisplayName", "Defense" },
+		{ "Defense.Name", "ECharacterActions::Defense" },
+		{ "ModuleRelativePath", "Public/Model/ModelStructures.h" },
+		{ "Null.DisplayName", "Null" },
+		{ "Null.Name", "ECharacterActions::Null" },
+		{ "SpecialAttack.DisplayName", "SpecialAttack" },
+		{ "SpecialAttack.Name", "ECharacterActions::SpecialAttack" },
+	};
+#endif // WITH_METADATA
+	static constexpr UECodeGen_Private::FEnumeratorParam Enumerators[] = {
+		{ "ECharacterActions::Attack", (int64)ECharacterActions::Attack },
+		{ "ECharacterActions::Defense", (int64)ECharacterActions::Defense },
+		{ "ECharacterActions::CounterAttack", (int64)ECharacterActions::CounterAttack },
+		{ "ECharacterActions::Buff", (int64)ECharacterActions::Buff },
+		{ "ECharacterActions::SpecialAttack", (int64)ECharacterActions::SpecialAttack },
+		{ "ECharacterActions::Null", (int64)ECharacterActions::Null },
+	};
+	static const UECodeGen_Private::FEnumParams EnumParams;
+};
+const UECodeGen_Private::FEnumParams Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions_Statics::EnumParams = {
+	(UObject*(*)())Z_Construct_UPackage__Script_CTL_Labyrinth,
+	nullptr,
+	"ECharacterActions",
+	"ECharacterActions",
+	Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions_Statics::Enumerators,
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	UE_ARRAY_COUNT(Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions_Statics::Enumerators),
+	EEnumFlags::None,
+	(uint8)UEnum::ECppForm::EnumClass,
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions_Statics::Enum_MetaDataParams), Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions_Statics::Enum_MetaDataParams)
+};
+UEnum* Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions()
+{
+	if (!Z_Registration_Info_UEnum_ECharacterActions.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUEnum(Z_Registration_Info_UEnum_ECharacterActions.InnerSingleton, Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions_Statics::EnumParams);
+	}
+	return Z_Registration_Info_UEnum_ECharacterActions.InnerSingleton;
+}
+// End Enum ECharacterActions
 
 // Begin ScriptStruct FVariantValue
 static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_VariantValue;
@@ -281,7 +349,8 @@ struct Z_Construct_UScriptStruct_FActionsArray_Statics
 		{ "ModuleRelativePath", "Public/Model/ModelStructures.h" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FIntPropertyParams NewProp_Keys_Inner;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_Keys_Inner_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_Keys_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_Keys;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static void* NewStructOps()
@@ -290,9 +359,11 @@ struct Z_Construct_UScriptStruct_FActionsArray_Statics
 	}
 	static const UECodeGen_Private::FStructParams StructParams;
 };
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UScriptStruct_FActionsArray_Statics::NewProp_Keys_Inner = { "Keys", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FActionsArray_Statics::NewProp_Keys = { "Keys", nullptr, (EPropertyFlags)0x0010000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FActionsArray, Keys), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Keys_MetaData), NewProp_Keys_MetaData) };
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FActionsArray_Statics::NewProp_Keys_Inner_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FActionsArray_Statics::NewProp_Keys_Inner = { "Keys", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions, METADATA_PARAMS(0, nullptr) }; // 997799828
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FActionsArray_Statics::NewProp_Keys = { "Keys", nullptr, (EPropertyFlags)0x0010000000000000, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FActionsArray, Keys), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Keys_MetaData), NewProp_Keys_MetaData) }; // 997799828
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FActionsArray_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FActionsArray_Statics::NewProp_Keys_Inner_Underlying,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FActionsArray_Statics::NewProp_Keys_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FActionsArray_Statics::NewProp_Keys,
 };
@@ -320,19 +391,98 @@ UScriptStruct* Z_Construct_UScriptStruct_FActionsArray()
 }
 // End ScriptStruct FActionsArray
 
+// Begin ScriptStruct FActionsToNode
+static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_ActionsToNode;
+class UScriptStruct* FActionsToNode::StaticStruct()
+{
+	if (!Z_Registration_Info_UScriptStruct_ActionsToNode.OuterSingleton)
+	{
+		Z_Registration_Info_UScriptStruct_ActionsToNode.OuterSingleton = GetStaticStruct(Z_Construct_UScriptStruct_FActionsToNode, (UObject*)Z_Construct_UPackage__Script_CTL_Labyrinth(), TEXT("ActionsToNode"));
+	}
+	return Z_Registration_Info_UScriptStruct_ActionsToNode.OuterSingleton;
+}
+template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<FActionsToNode>()
+{
+	return FActionsToNode::StaticStruct();
+}
+struct Z_Construct_UScriptStruct_FActionsToNode_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
+		{ "ModuleRelativePath", "Public/Model/ModelStructures.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ToNodeId_MetaData[] = {
+		{ "Category", "ActionsToNode" },
+		{ "ModuleRelativePath", "Public/Model/ModelStructures.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Actions_MetaData[] = {
+		{ "Category", "ActionsToNode" },
+		{ "ModuleRelativePath", "Public/Model/ModelStructures.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStrPropertyParams NewProp_ToNodeId;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_Actions_Inner_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_Actions_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_Actions;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static void* NewStructOps()
+	{
+		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FActionsToNode>();
+	}
+	static const UECodeGen_Private::FStructParams StructParams;
+};
+const UECodeGen_Private::FStrPropertyParams Z_Construct_UScriptStruct_FActionsToNode_Statics::NewProp_ToNodeId = { "ToNodeId", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FActionsToNode, ToNodeId), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ToNodeId_MetaData), NewProp_ToNodeId_MetaData) };
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FActionsToNode_Statics::NewProp_Actions_Inner_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FActionsToNode_Statics::NewProp_Actions_Inner = { "Actions", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UEnum_CTL_Labyrinth_ECharacterActions, METADATA_PARAMS(0, nullptr) }; // 997799828
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FActionsToNode_Statics::NewProp_Actions = { "Actions", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FActionsToNode, Actions), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Actions_MetaData), NewProp_Actions_MetaData) }; // 997799828
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FActionsToNode_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FActionsToNode_Statics::NewProp_ToNodeId,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FActionsToNode_Statics::NewProp_Actions_Inner_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FActionsToNode_Statics::NewProp_Actions_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FActionsToNode_Statics::NewProp_Actions,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FActionsToNode_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FActionsToNode_Statics::StructParams = {
+	(UObject* (*)())Z_Construct_UPackage__Script_CTL_Labyrinth,
+	nullptr,
+	&NewStructOps,
+	"ActionsToNode",
+	Z_Construct_UScriptStruct_FActionsToNode_Statics::PropPointers,
+	UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FActionsToNode_Statics::PropPointers),
+	sizeof(FActionsToNode),
+	alignof(FActionsToNode),
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	EStructFlags(0x00000001),
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FActionsToNode_Statics::Struct_MetaDataParams), Z_Construct_UScriptStruct_FActionsToNode_Statics::Struct_MetaDataParams)
+};
+UScriptStruct* Z_Construct_UScriptStruct_FActionsToNode()
+{
+	if (!Z_Registration_Info_UScriptStruct_ActionsToNode.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUScriptStruct(Z_Registration_Info_UScriptStruct_ActionsToNode.InnerSingleton, Z_Construct_UScriptStruct_FActionsToNode_Statics::StructParams);
+	}
+	return Z_Registration_Info_UScriptStruct_ActionsToNode.InnerSingleton;
+}
+// End ScriptStruct FActionsToNode
+
 // Begin Registration
 struct Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_Statics
 {
+	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
+		{ ECharacterActions_StaticEnum, TEXT("ECharacterActions"), &Z_Registration_Info_UEnum_ECharacterActions, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 997799828U) },
+	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
 		{ FVariantValue::StaticStruct, Z_Construct_UScriptStruct_FVariantValue_Statics::NewStructOps, TEXT("VariantValue"), &Z_Registration_Info_UScriptStruct_VariantValue, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FVariantValue), 249394340U) },
 		{ FState::StaticStruct, Z_Construct_UScriptStruct_FState_Statics::NewStructOps, TEXT("State"), &Z_Registration_Info_UScriptStruct_State, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FState), 4185286744U) },
 		{ FTransition::StaticStruct, Z_Construct_UScriptStruct_FTransition_Statics::NewStructOps, TEXT("Transition"), &Z_Registration_Info_UScriptStruct_Transition, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FTransition), 3906078826U) },
-		{ FActionsArray::StaticStruct, Z_Construct_UScriptStruct_FActionsArray_Statics::NewStructOps, TEXT("ActionsArray"), &Z_Registration_Info_UScriptStruct_ActionsArray, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FActionsArray), 2461348248U) },
+		{ FActionsArray::StaticStruct, Z_Construct_UScriptStruct_FActionsArray_Statics::NewStructOps, TEXT("ActionsArray"), &Z_Registration_Info_UScriptStruct_ActionsArray, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FActionsArray), 88869364U) },
+		{ FActionsToNode::StaticStruct, Z_Construct_UScriptStruct_FActionsToNode_Statics::NewStructOps, TEXT("ActionsToNode"), &Z_Registration_Info_UScriptStruct_ActionsToNode, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FActionsToNode), 4027915148U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_2753366825(TEXT("/Script/CTL_Labyrinth"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_132512720(TEXT("/Script/CTL_Labyrinth"),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_Statics::ScriptStructInfo),
-	nullptr, 0);
+	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_Statics::EnumInfo));
 // End Registration
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

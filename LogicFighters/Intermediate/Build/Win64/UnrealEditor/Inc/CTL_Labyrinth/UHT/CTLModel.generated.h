@@ -11,9 +11,11 @@
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
  class UCTLFormula;
  class UStateNode;
+ struct FActionsToNode;
 class UCTLFormula;
 class UPredicateManager;
 class UStateNode;
+enum class ECharacterActions : uint8; 
 #ifdef CTL_LABYRINTH_CTLModel_generated_h
 #error "CTLModel.generated.h already included, missing '#pragma once' in CTLModel.h"
 #endif
@@ -26,6 +28,7 @@ class UStateNode;
 	DECLARE_FUNCTION(execGetPredicateManager); \
 	DECLARE_FUNCTION(execGetFormulas); \
 	DECLARE_FUNCTION(execGetStateNodes); \
+	DECLARE_FUNCTION(execGetPlayerActionRates); \
 	DECLARE_FUNCTION(execGetRootNode); \
 	DECLARE_FUNCTION(execGetFormula); \
 	DECLARE_FUNCTION(execInitializeModel);

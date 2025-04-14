@@ -14,36 +14,55 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define CTL_LABYRINTH_ModelStructures_generated_h
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_10_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_21_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FVariantValue_Statics; \
 	CTL_LABYRINTH_API static class UScriptStruct* StaticStruct();
 
 
 template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<struct FVariantValue>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_79_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_90_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FState_Statics; \
 	CTL_LABYRINTH_API static class UScriptStruct* StaticStruct();
 
 
 template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<struct FState>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_92_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_103_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FTransition_Statics; \
 	CTL_LABYRINTH_API static class UScriptStruct* StaticStruct();
 
 
 template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<struct FTransition>();
 
-#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_104_GENERATED_BODY \
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_115_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FActionsArray_Statics; \
 	CTL_LABYRINTH_API static class UScriptStruct* StaticStruct();
 
 
 template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<struct FActionsArray>();
 
+#define FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h_139_GENERATED_BODY \
+	friend struct Z_Construct_UScriptStruct_FActionsToNode_Statics; \
+	CTL_LABYRINTH_API static class UScriptStruct* StaticStruct();
+
+
+template<> CTL_LABYRINTH_API UScriptStruct* StaticStruct<struct FActionsToNode>();
+
 #undef CURRENT_FILE_ID
 #define CURRENT_FILE_ID FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_ModelStructures_h
 
+
+#define FOREACH_ENUM_ECHARACTERACTIONS(op) \
+	op(ECharacterActions::Attack) \
+	op(ECharacterActions::Defense) \
+	op(ECharacterActions::CounterAttack) \
+	op(ECharacterActions::Buff) \
+	op(ECharacterActions::SpecialAttack) \
+	op(ECharacterActions::Null) 
+
+enum class ECharacterActions : uint8;
+template<> struct TIsUEnumClass<ECharacterActions> { enum { Value = true }; };
+template<> CTL_LABYRINTH_API UEnum* StaticEnum<ECharacterActions>();
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

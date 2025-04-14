@@ -4,6 +4,17 @@
 #include "UObject/NoExportTypes.h"
 #include "ModelStructures.generated.h"
 
+UENUM(BlueprintType)
+enum class ECharacterActions : uint8
+{
+    Attack        UMETA(DisplayName = "Attack"),
+    Defense     UMETA(DisplayName = "Defense"),
+    CounterAttack     UMETA(DisplayName = "CounterAttack"),
+    Buff     UMETA(DisplayName = "Buff"),
+    SpecialAttack     UMETA(DisplayName = "SpecialAttack"),
+    Null     UMETA(DisplayName = "Null")
+};
+
 USTRUCT(BlueprintType)
 struct FVariantValue
 {
@@ -104,7 +115,7 @@ struct FActionsArray
     GENERATED_BODY()
 
     UPROPERTY()
-    TArray<int32> Keys;
+    TArray<ECharacterActions> Keys;
 
     bool operator==(const FActionsArray& Other) const
     {
@@ -115,10 +126,26 @@ struct FActionsArray
 FORCEINLINE uint32 GetTypeHash(const FActionsArray& ActionsArray)
 {
     uint32 Hash = 0;
-    for (const int32 Key : ActionsArray.Keys)
+    for (const ECharacterActions Key : ActionsArray.Keys)
     {
         Hash = HashCombine(Hash, GetTypeHash(Key));
     }
     return Hash;
 }
 
+USTRUCT(BlueprintType)
+struct FActionsToNode
+{
+    GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    FString ToNodeId;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    TArray<ECharacterActions> Actions;
+
+    bool operator==(const FActionsToNode& Other) const
+    {
+        return Actions == Other.Actions && ToNodeId == Other.ToNodeId;
+    }
+};

@@ -29,7 +29,7 @@ public:
     TSharedPtr<FJsonObject> GetJsonFile();
 
     UFUNCTION(BlueprintCallable, Category = "Model")
-    void InitializeModel(const FString& Character1Class, const FString& Character2Class);
+    void InitializeModel(const FString& Character1Class, const FString& Character2Class, const TMap<ECharacterActions, float> ActionRates);
 
     UFUNCTION(BlueprintCallable, Category = "Model")
     UCTLFormula* GetFormula(int32 Id) const;
@@ -37,6 +37,11 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Model")
     UStateNode* GetRootNode() const {
         return rootNode;
+    }
+
+    UFUNCTION(BlueprintCallable, Category = "Model")
+    TMap<ECharacterActions, float> GetPlayerActionRates() const {
+        return PlayerActionRates;
     }
 
     UFUNCTION(BlueprintCallable, Category = "Model")
@@ -62,15 +67,16 @@ public:
     void DebugPrintModel() const;
 
 
-
     virtual void PostInitProperties() override;
 
-    TArray<UStateNode*> PreImageUniversal(const TArray<UStateNode*>& states, UStateNode* StartNode) const;
+    TArray<UStateNode*> PreImageUniversal(const TArray<UStateNode*>& states, TArray<UStateNode*>& targetStates) const;
 
-    TArray<UStateNode*> PreImageExistential(const TArray<UStateNode*>& states, UStateNode* StartNode) const;
+    TArray<UStateNode*> PreImageExistential(const TArray<UStateNode*>& states, TArray<UStateNode*>& targetStates) const;
+
+    TArray<UStateNode*> EvaluateUniversalG(TArray<UStateNode*>& targetStates, bool universalCheck = true) const;
 
     UFUNCTION(BlueprintCallable, Category = "Model")
-    TArray<UStateNode*> EvaluateFormula(UStateNode* node, UCTLFormula* formula);
+    TMap<FString, FActionsToNode> EvaluateFormula(UStateNode* node, UCTLFormula* formula, bool ShortestPath = True);
 
     void UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& unsatScores, int32 depth, int32 MAX_UNSAT_SCORE);
 
@@ -88,4 +94,7 @@ private:
     UPredicateManager* PredicateManager;
 
     TSharedPtr<FJsonObject> JsonFile;
+
+    UPROPERTY()
+    TMap<ECharacterActions, float> PlayerActionRates;
 };
