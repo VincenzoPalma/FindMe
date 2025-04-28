@@ -2,7 +2,7 @@
 	"BuildId": "33043543",
 	"Modules": 
 	{
-		"CTL_Labyrinth": "UnrealEditor-CTL_Labyrinth-0588.dll",
-		"LogicFighters": "UnrealEditor-LogicFighters-8293.dll"
+		"CTL_Labyrinth": "UnrealEditor-CTL_Labyrinth.dll",
+		"LogicFighters": "UnrealEditor-LogicFighters.dll"
 	}
 }
