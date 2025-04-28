@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\progetti\\progetti unreal\\findme\\logicfighters\\source\\logicfighters\\logicfighters.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\x64\\logicfighterseditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\logicfighters\\definitions.logicfighters.h",
+            "e:\\progetti\\progetti unreal\\findme\\logicfighters\\source\\logicfighters\\logicfighters.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

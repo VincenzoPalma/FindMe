@@ -1,0 +1,13 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\unrealeditor\\inc\\ctl_labyrinth\\uht\\ctl_labyrinth.init.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\x64\\logicfighterseditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\ctl_labyrinth\\definitions.ctl_labyrinth.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

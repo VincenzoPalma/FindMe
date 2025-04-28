@@ -1,0 +1,614 @@
+﻿#include "../Public/Model/CTL_ModelChecking/CTLFormula.h"
+#include "Model/CTLModel.h"
+
+UAtomicBoolFormula::UAtomicBoolFormula()
+{
+}
+
+void UAtomicBoolFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+{
+    Predicate = InPredicate;
+}
+
+void UAtomicBoolFormula::Initialize(TFunction<bool(const FState&, const FState&)> InPredicate)
+{
+    TwoParametersPredicate = InPredicate;
+}
+
+bool UAtomicBoolFormula::EvaluatePredicate(UStateNode* stateNode, UStateNode* CurrentNode) const
+{
+    if (stateNode)
+    {
+        if (Predicate) {
+            return Predicate(stateNode->GetState());
+        }
+        else {
+            return TwoParametersPredicate(stateNode->GetState(), CurrentNode->GetState());
+        }
+    }
+    return false;
+}
+
+UAtomicIntFormula::UAtomicIntFormula()
+{
+}
+
+void UAtomicIntFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+{
+    Predicate = InPredicate;
+}
+
+void UAtomicIntFormula::Initialize(TFunction<bool(const FState&, const FState&)> InPredicate)
+{
+    TwoParametersPredicate = InPredicate;
+}
+
+bool UAtomicIntFormula::EvaluatePredicate(UStateNode* stateNode, UStateNode* CurrentNode) const
+{
+    if (stateNode)
+    {
+        if (Predicate) {
+            return Predicate(stateNode->GetState());
+        }
+        else {
+            return TwoParametersPredicate(stateNode->GetState(), CurrentNode->GetState());
+        }
+    }
+    return false;
+}
+
+UAtomicDoubleFormula::UAtomicDoubleFormula()
+{
+}
+
+void UAtomicDoubleFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+{
+    Predicate = InPredicate;
+}
+
+void UAtomicDoubleFormula::Initialize(TFunction<bool(const FState&, const FState&)> InPredicate)
+{
+    TwoParametersPredicate = InPredicate;
+}
+
+bool UAtomicDoubleFormula::EvaluatePredicate(UStateNode* stateNode, UStateNode* CurrentNode) const
+{
+    if (stateNode)
+    {
+        if (Predicate) {
+            return Predicate(stateNode->GetState());
+        }
+        else {
+            return TwoParametersPredicate(stateNode->GetState(), CurrentNode->GetState());
+        }
+    }
+    return false;
+}
+
+UAtomicStringFormula::UAtomicStringFormula()
+{
+}
+
+void UAtomicStringFormula::Initialize(TFunction<bool(const FState&)> InPredicate)
+{
+    Predicate = InPredicate;
+}
+
+void UAtomicStringFormula::Initialize(TFunction<bool(const FState&, const FState&)> InPredicate)
+{
+    TwoParametersPredicate = InPredicate;
+}
+
+bool UAtomicStringFormula::EvaluatePredicate(UStateNode* stateNode, UStateNode* CurrentNode) const
+{
+    if (stateNode)
+    {
+        if (Predicate) {
+            return Predicate(stateNode->GetState());
+        }
+        else {
+            return TwoParametersPredicate(stateNode->GetState(), CurrentNode->GetState());
+        }
+    }
+    return false;
+}
+
+TArray<UStateNode*> UAtomicBoolFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
+{
+
+    TArray<UStateNode*> satisfyingStates;
+
+    if (!model)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Invalid model passed to Evaluate"));
+        return satisfyingStates;
+    }
+
+    // If stateNode is null, verifies all states in the model
+    if (!stateNode)
+    {
+        const TMap<FString, UStateNode*>& allStateNodes = model->GetStateNodes();
+        for (const auto& StateNodeEntry : allStateNodes)
+        {
+
+            UStateNode* node = StateNodeEntry.Value;
+            if (EvaluatePredicate(node, model->GetRootNode()))
+            {
+                satisfyingStates.Add(node);
+            }
+        }
+    }
+    else
+    {
+        // Verifies the predicate on the passed stateNode and all reachable nodes
+        for (UStateNode* currentNode: model->GetReachableNodes(stateNode)){
+            if (EvaluatePredicate(currentNode, model->GetRootNode()))
+            {
+                satisfyingStates.Add(currentNode);
+            }
+        }
+    }
+
+    return satisfyingStates;
+}
+
+TArray<UStateNode*> UAtomicIntFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
+{
+
+    TArray<UStateNode*> satisfyingStates;
+
+    if (!model)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Invalid model passed to Evaluate"));
+        return satisfyingStates;
+    }
+
+    // If stateNode is null, verifies all states in the model
+    if (!stateNode)
+    {
+        const TMap<FString, UStateNode*>& allStateNodes = model->GetStateNodes();
+        for (const auto& StateNodeEntry : allStateNodes)
+        {
+
+            UStateNode* node = StateNodeEntry.Value;
+            if (EvaluatePredicate(node, model->GetRootNode()))
+            {
+                satisfyingStates.Add(node);
+            }
+        }
+    }
+    else
+    {
+        // Verifies the predicate on the passed stateNode and all reachable nodes
+        for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
+            if (EvaluatePredicate(currentNode, model->GetRootNode()))
+            {
+                satisfyingStates.Add(currentNode);
+            }
+        }
+    }
+
+    return satisfyingStates;
+}
+
+TArray<UStateNode*> UAtomicDoubleFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
+{
+
+    TArray<UStateNode*> satisfyingStates;
+
+    if (!model)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Invalid model passed to Evaluate"));
+        return satisfyingStates;
+    }
+
+    // If stateNode is null, verifies all states in the model
+    if (!stateNode)
+    {
+        const TMap<FString, UStateNode*>& allStateNodes = model->GetStateNodes();
+        for (const auto& StateNodeEntry : allStateNodes)
+        {
+
+            UStateNode* node = StateNodeEntry.Value;
+            if (EvaluatePredicate(node, model->GetRootNode()))
+            {
+                satisfyingStates.Add(node);
+            }
+        }
+    }
+    else
+    {
+        // Verifies the predicate on the passed stateNode and all reachable nodes
+        for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
+            if (EvaluatePredicate(currentNode, model->GetRootNode()))
+            {
+                satisfyingStates.Add(currentNode);
+            }
+        }
+    }
+
+    return satisfyingStates;
+}
+
+TArray<UStateNode*> UAtomicStringFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
+{
+
+    TArray<UStateNode*> satisfyingStates;
+
+    if (!model)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Invalid model passed to Evaluate"));
+        return satisfyingStates;
+    }
+
+    // If stateNode is null, verifies all states in the model
+    if (!stateNode)
+    {
+        const TMap<FString, UStateNode*>& allStateNodes = model->GetStateNodes();
+        for (const auto& StateNodeEntry : allStateNodes)
+        {
+
+            UStateNode* node = StateNodeEntry.Value;
+            if (EvaluatePredicate(node, model->GetRootNode()))
+            {
+                satisfyingStates.Add(node);
+            }
+        }
+    }
+    else
+    {
+        // Verifies the predicate on the passed stateNode and all reachable nodes
+        for (UStateNode* currentNode : model->GetReachableNodes(stateNode)) {
+            if (EvaluatePredicate(currentNode, model->GetRootNode()))
+            {
+                satisfyingStates.Add(currentNode);
+            }
+        }
+    }
+
+    return satisfyingStates;
+}
+
+UUnaryFormula::UUnaryFormula()
+{
+}
+
+void UUnaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InSubFormula)
+{
+    SetOperator(InOp);
+    SubFormula = InSubFormula;
+}
+
+TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* rootNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
+{
+    // Temporary array to collect results
+    TArray<UStateNode*> satisfyingStatesArray;
+
+    // Set to ensure uniqueness
+    TSet<UStateNode*> satisfyingStatesSet;
+
+    TArray<UStateNode*> targetStatesArray;
+    TArray<UStateNode*> tempTargetStatesArray;
+
+    // Check if model, stateNode, and SubFormula are valid
+    if (!model || !SubFormula)
+    {
+        return satisfyingStatesArray;
+    }
+
+    // Evaluate the sub-formula
+    TArray<UStateNode*> SubResults = SubFormula->Evaluate(model, rootNode, unsatScores, subFormulaWeight);
+
+    switch (GetOperator())
+    {
+    case ECTLOperator::NOT:
+    {
+        // Find all states not satisfying the sub-formula
+        for (const auto& StateNode : model->GetReachableNodes(rootNode))
+        {
+            if (!SubResults.Contains(StateNode))
+            {
+                satisfyingStatesSet.Add(StateNode);
+            }
+        }
+        
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
+        return satisfyingStatesArray;
+
+        break;
+    }
+
+    case ECTLOperator::EX:
+    {
+        // Find all states from which there exists a successor satisfying the sub-formula
+        /*TArray<UStateNode*> PreImage = model->PreImageExistential(SubResults, stateNode);
+        for (UStateNode* Node : PreImage)
+        {
+            satisfyingStatesSet.Add(Node);
+        }
+
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+        */
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        // since the model is loaded from the current state, it is safe to assert the existence of a path from the current state to the target states without checking
+        satisfyingStatesArray = SubResults;
+        break;
+
+    }
+
+    case ECTLOperator::AX:
+    {
+        // Find all states from which all successors satisfy the sub-formula
+        TArray<UStateNode*> PreImage = model->PreImageUniversal(SubResults, targetStatesArray);
+        /*
+        for (UStateNode* Node : PreImage)
+        {
+            satisfyingStatesSet.Add(Node);
+        }
+        
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+        */
+        
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = targetStatesArray;
+        break;
+    }
+
+    case ECTLOperator::EF:
+    {
+        // Find all states where a path exists that contains at least a state satisfying the sub-formula
+
+        /*TArray<UStateNode*> CurrentStates;
+
+        do
+        {
+            CurrentStates = SubResults;
+            TArray<UStateNode*> preImage = model->PreImageExistential(CurrentStates, stateNode);
+            SubResults = StatesUtils::StatesUnion(SubResults, preImage);
+        } while (!StatesUtils::IsSubSet(SubResults, CurrentStates));
+
+        satisfyingStatesArray = SubResults;*/
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        // since the model is loaded from the current state, it is safe to assert the existence of a path from the current state to the target states without checking
+        satisfyingStatesArray = SubResults;
+
+        break;
+    }
+
+    case ECTLOperator::AF:
+    {
+        // Find all states where every path contains at least a state satisfying the sub-formula
+
+        TArray<UStateNode*> CurrentStates;
+
+        do
+        {
+            //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+            if (satisfyingStatesArray.IsEmpty())
+                satisfyingStatesArray = SubResults;
+            CurrentStates = SubResults;
+            TArray<UStateNode*> preImage = model->PreImageUniversal(CurrentStates, tempTargetStatesArray);
+            SubResults = StatesUtils::StatesUnion(SubResults, preImage);
+        } while (!StatesUtils::IsSubSet(SubResults, CurrentStates));
+
+        //satisfyingStatesArray = SubResults;
+
+        break;
+    }
+
+    case ECTLOperator::EG:
+    {
+        // Find all states where a path exists that is entirely within states satisfying the sub-formula
+        /*
+        TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
+
+        while (!StatesUtils::IsSubSet(AllStates, SubResults))
+        {
+            AllStates = SubResults;
+            SubResults = StatesUtils::StatesIntersection(model->PreImageExistential(AllStates, stateNode, tempTargetStatesArray), SubResults);
+        }
+
+        satisfyingStatesArray = AllStates;
+        */
+
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = model->EvaluateUniversalG(SubResults, false);
+        UE_LOG(LogTemp, Log, TEXT("Salve"));
+        for (UStateNode* node : satisfyingStatesArray) {
+            UE_LOG(LogTemp, Log, TEXT(" Node: %s"), *node->GetState().Id);
+        }
+        break;
+    }
+
+    case ECTLOperator::AG:
+    {
+        // Find all states where every path is entirely within states satisfying the sub-formula
+        /*
+        TArray<UStateNode*> AllStates = model->GetReachableNodes(stateNode);
+
+        while (!StatesUtils::IsSubSet(AllStates, SubResults))
+        {
+            AllStates = SubResults;
+            SubResults = StatesUtils::StatesIntersection(model->PreImageUniversal(AllStates, stateNode, tempTargetStatesArray), SubResults);
+        }
+
+        satisfyingStatesArray = AllStates;
+        */
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = model->EvaluateUniversalG(SubResults, true);
+
+        break;
+    }
+
+    default:
+        break;
+    }
+
+    satisfyingStatesArray.Remove(rootNode);
+
+    for (UStateNode* Node : satisfyingStatesArray)
+    {
+        unsatScores.Add(Node->GetState().Id) = unsatScores.FindOrAdd(Node->GetState().Id) - subFormulaWeight;
+    }
+
+    return satisfyingStatesArray;
+}
+
+
+
+UBinaryFormula::UBinaryFormula()
+{
+}
+
+void UBinaryFormula::Initialize(ECTLOperator InOp, UCTLFormula* InLeft, UCTLFormula* InRight)
+{
+    SetOperator(InOp);
+    Left = InLeft;
+    Right = InRight;
+}
+
+TArray<UStateNode*> UBinaryFormula::Evaluate(const UCTLModel* model, UStateNode* stateNode, TMap<FString, int32>& unsatScores, int subFormulaWeight) const
+{
+    // Temporary array to collect results
+    TArray<UStateNode*> satisfyingStatesArray;
+
+    // Set to ensure uniqueness
+    TSet<UStateNode*> satisfyingStatesSet;
+
+    TArray<UStateNode*> targetStatesArray;
+
+    // Check if stateNode, Left, or Right are null
+    if (!stateNode || !Left || !Right)
+    {
+        return satisfyingStatesArray;
+    }
+
+    // Evaluate the left and right formulas
+    TArray<UStateNode*> leftStates = Left->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
+    TArray<UStateNode*> rightStates = Right->Evaluate(model, stateNode, unsatScores, subFormulaWeight);
+
+    switch (GetOperator())
+    {
+    case ECTLOperator::AND:
+    {
+        // Find states satisfying both Left and Right formulas
+        for (UStateNode* leftNode : leftStates)
+        {
+            if (rightStates.Contains(leftNode))
+            {
+                satisfyingStatesSet.Add(leftNode);
+            }
+        }
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
+        break;
+    }
+
+    case ECTLOperator::OR:
+    {
+        // Find states satisfying either Left or Right formula
+        for (UStateNode* node : leftStates)
+        {
+            satisfyingStatesSet.Add(node);
+        }
+
+        for (UStateNode* node : rightStates)
+        {
+            satisfyingStatesSet.Add(node);
+        }
+        satisfyingStatesArray = satisfyingStatesSet.Array();
+
+        break;
+    }
+
+    case ECTLOperator::EU:
+    {
+        // Existential Until: States from which we can eventually reach a state satisfying Right,
+        // while satisfying Left up to that point
+        while (!StatesUtils::IsSubSet(rightStates, satisfyingStatesArray)) {
+            satisfyingStatesArray = StatesUtils::StatesUnion(satisfyingStatesArray, rightStates);
+            TArray<UStateNode*> preImage = model->PreImageExistential(satisfyingStatesArray, targetStatesArray);
+            rightStates = StatesUtils::StatesIntersection(preImage, leftStates);
+        }
+        
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = rightStates;
+
+        break;
+    }
+
+    case ECTLOperator::AU:
+    {
+        // Always Until: States from which every path remains in states satisfying Right,
+        // and eventually reaches a state satisfying Left
+        while (!StatesUtils::IsSubSet(rightStates, satisfyingStatesArray)) {
+            satisfyingStatesArray = StatesUtils::StatesUnion(satisfyingStatesArray, rightStates);
+            TArray<UStateNode*> preImage = model->PreImageUniversal(satisfyingStatesArray, targetStatesArray);
+            rightStates = StatesUtils::StatesIntersection(preImage, leftStates);
+        }
+
+        //for the purpose of the application, it is necessary to find the target states and not the starting states. 
+        satisfyingStatesArray = rightStates;
+
+        break;
+    }
+
+    default:
+        break;
+    }
+
+    for (UStateNode* Node : satisfyingStatesArray)
+    {
+        unsatScores.Add(Node->GetState().Id) = unsatScores.FindOrAdd(Node->GetState().Id) - subFormulaWeight;
+    }
+
+    return satisfyingStatesArray;
+}
+
+int32 UCTLFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UAtomicDoubleFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UAtomicBoolFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UAtomicIntFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UAtomicStringFormula::CountSubformulas() const
+{
+    return 0;
+}
+
+int32 UUnaryFormula::CountSubformulas() const
+{
+    if (GetOperator() == ECTLOperator::NOT)
+    {
+        return (SubFormula ? SubFormula->CountSubformulas() : 0);
+    }
+    else {
+        return 1 + (SubFormula ? SubFormula->CountSubformulas() : 0);
+    }
+}
+
+int32 UBinaryFormula::CountSubformulas() const
+{
+    int32 leftCount = Left ? Left->CountSubformulas() : 0;
+    int32 rightCount = Right ? Right->CountSubformulas() : 0;
+    return 1 + leftCount + rightCount;
+}

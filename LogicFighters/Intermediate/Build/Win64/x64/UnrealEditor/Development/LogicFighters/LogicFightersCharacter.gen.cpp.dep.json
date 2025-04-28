@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\unrealeditor\\inc\\logicfighters\\uht\\logicfighterscharacter.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\x64\\logicfighterseditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\logicfighters\\definitions.logicfighters.h",
+            "e:\\progetti\\progetti unreal\\findme\\logicfighters\\source\\logicfighters\\logicfighterscharacter.h",
+            "e:\\games\\epic games\\ue_5.4\\engine\\source\\runtime\\engine\\classes\\gameframework\\character.h",
+            "e:\\games\\epic games\\ue_5.4\\engine\\source\\runtime\\engine\\classes\\gameframework\\charactermovementreplication.h",
+            "e:\\games\\epic games\\ue_5.4\\engine\\source\\runtime\\experimental\\iris\\core\\public\\iris\\serialization\\irisobjectreferencepackagemap.h",
+            "e:\\games\\epic games\\ue_5.4\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\iriscore\\uht\\irisobjectreferencepackagemap.generated.h",
+            "e:\\games\\epic games\\ue_5.4\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\charactermovementreplication.generated.h",
+            "e:\\games\\epic games\\ue_5.4\\engine\\source\\runtime\\engine\\classes\\gameframework\\rootmotionsource.h",
+            "e:\\games\\epic games\\ue_5.4\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\rootmotionsource.generated.h",
+            "e:\\games\\epic games\\ue_5.4\\engine\\intermediate\\build\\win64\\unrealeditor\\inc\\engine\\uht\\character.generated.h",
+            "e:\\progetti\\progetti unreal\\findme\\logicfighters\\intermediate\\build\\win64\\unrealeditor\\inc\\logicfighters\\uht\\logicfighterscharacter.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
