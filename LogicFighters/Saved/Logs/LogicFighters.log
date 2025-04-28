@@ -4718,3 +4718,8 @@ Script Stack (0 frames) :
 [2025.04.28-17.20.01:015][458]LogPython: Display: Object '/Engine/PythonTypes.set_bone_reference_pose' was externally referenced when shutting down Python. Forcibly releasing its Python resources!
 [2025.04.28-17.20.01:015][458]LogPython: Display: Object '/Engine/PythonTypes.import_ik_rig_options' was externally referenced when shutting down Python. Forcibly releasing its Python resources!
 [2025.04.28-17.20.01:015][458]LogPython: Display: Object '/Engine/PythonTypes.ControlOutputFormat' was externally referenced when shutting down Python. Forcibly releasing its Python resources!
+[2025.04.28-17.20.02:328][458]LogDemo: Cleaned up 0 splitscreen connections, owner deletion: enabled
+[2025.04.28-17.20.02:685][458]LogExit: Editor shut down
+[2025.04.28-17.20.02:688][458]LogExit: Transaction tracking system shut down
+[2025.04.28-17.20.06:501][458]LogExit: Object subsystem successfully closed.
+[2025.04.28-17.20.06:564][458]LogShaderCompilers: Display: Shaders left to compile 0
