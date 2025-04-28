@@ -13,7 +13,8 @@ public:
 	AStar();
 	~AStar();
 
-	static TMap<FString, FActionsToNode> ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula, bool ShortestPath = true);
+	static TMap<FString, FActionsToNode> ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula);
+	static TMap<FString, FActionsToNode> ExecuteBFS(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula);
 	static void AddToOpenSet(TArray <UStateNode*>& openSet, UStateNode* node, TMap<FString, int32> HeuristicTotalCosts);
 	static TMap<FString, FActionsToNode> ReconstructPath(FString currentNodeId, const TMap<FString, FActionsToNode>& cameFrom);
 	static void InitializeScores(const TMap<FString, int32>& unsatScores, TMap<FString, float>& pathCost, TMap<FString, int32>& HeuristicTotalCosts);

@@ -148,4 +148,10 @@ struct FActionsToNode
     {
         return Actions == Other.Actions && ToNodeId == Other.ToNodeId;
     }
+
+    FActionsToNode() : Actions(), ToNodeId("") {}
+
+    FActionsToNode(FString& InToNodeId, const TArray<ECharacterActions>& InActions)
+        : Actions(InActions), ToNodeId(InToNodeId) {
+    }
 };

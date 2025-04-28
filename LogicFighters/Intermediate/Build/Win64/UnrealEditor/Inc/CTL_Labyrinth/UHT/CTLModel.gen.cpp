@@ -59,16 +59,20 @@ struct Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics
 	{
 		UStateNode* node;
 		UCTLFormula* formula;
+		bool ShortestPath;
 		TMap<FString,FActionsToNode> ReturnValue;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
 		{ "Category", "Model" },
+		{ "CPP_Default_ShortestPath", "true" },
 		{ "ModuleRelativePath", "Public/Model/CTLModel.h" },
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_node;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_formula;
+	static void NewProp_ShortestPath_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_ShortestPath;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue_ValueProp;
 	static const UECodeGen_Private::FStrPropertyParams NewProp_ReturnValue_Key_KeyProp;
 	static const UECodeGen_Private::FMapPropertyParams NewProp_ReturnValue;
@@ -77,12 +81,18 @@ struct Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_node = { "node", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventEvaluateFormula_Parms, node), Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_formula = { "formula", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventEvaluateFormula_Parms, formula), Z_Construct_UClass_UCTLFormula_NoRegister, METADATA_PARAMS(0, nullptr) };
+void Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ShortestPath_SetBit(void* Obj)
+{
+	((CTLModel_eventEvaluateFormula_Parms*)Obj)->ShortestPath = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ShortestPath = { "ShortestPath", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(CTLModel_eventEvaluateFormula_Parms), &Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ShortestPath_SetBit, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_ValueProp = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UScriptStruct_FActionsToNode, METADATA_PARAMS(0, nullptr) }; // 4027915148
 const UECodeGen_Private::FStrPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_Key_KeyProp = { "ReturnValue_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FMapPropertyParams Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(CTLModel_eventEvaluateFormula_Parms, ReturnValue), EMapPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 4027915148
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_node,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_formula,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ShortestPath,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_ValueProp,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue_Key_KeyProp,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UCTLModel_EvaluateFormula_Statics::NewProp_ReturnValue,
@@ -103,9 +113,10 @@ DEFINE_FUNCTION(UCTLModel::execEvaluateFormula)
 {
 	P_GET_OBJECT(UStateNode,Z_Param_node);
 	P_GET_OBJECT(UCTLFormula,Z_Param_formula);
+	P_GET_UBOOL(Z_Param_ShortestPath);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	*(TMap<FString,FActionsToNode>*)Z_Param__Result=P_THIS->EvaluateFormula(Z_Param_node,Z_Param_formula);
+	*(TMap<FString,FActionsToNode>*)Z_Param__Result=P_THIS->EvaluateFormula(Z_Param_node,Z_Param_formula,Z_Param_ShortestPath);
 	P_NATIVE_END;
 }
 // End Class UCTLModel Function EvaluateFormula
@@ -579,7 +590,7 @@ struct Z_Construct_UClass_UCTLModel_Statics
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UCTLModel_DebugPrintModel, "DebugPrintModel" }, // 929795102
-		{ &Z_Construct_UFunction_UCTLModel_EvaluateFormula, "EvaluateFormula" }, // 3651810096
+		{ &Z_Construct_UFunction_UCTLModel_EvaluateFormula, "EvaluateFormula" }, // 2565437833
 		{ &Z_Construct_UFunction_UCTLModel_GetFormula, "GetFormula" }, // 2532571443
 		{ &Z_Construct_UFunction_UCTLModel_GetFormulas, "GetFormulas" }, // 3559519032
 		{ &Z_Construct_UFunction_UCTLModel_GetPlayerActionRates, "GetPlayerActionRates" }, // 233426100
@@ -659,14 +670,14 @@ UCTLModel::~UCTLModel() {}
 // End Class UCTLModel
 
 // Begin Registration
-struct Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics
+struct Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UCTLModel, UCTLModel::StaticClass, TEXT("UCTLModel"), &Z_Registration_Info_UClass_UCTLModel, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLModel), 3943978336U) },
+		{ Z_Construct_UClass_UCTLModel, UCTLModel::StaticClass, TEXT("UCTLModel"), &Z_Registration_Info_UClass_UCTLModel, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCTLModel), 3389768684U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_3081661700(TEXT("/Script/CTL_Labyrinth"),
-	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_2542082379(TEXT("/Script/CTL_Labyrinth"),
+	Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_CTL_Labyrinth_Public_Model_CTLModel_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // End Registration

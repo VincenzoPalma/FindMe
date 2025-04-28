@@ -294,7 +294,12 @@ void UCTLModel::DebugPrintModel() const
 
 TMap<FString, FActionsToNode> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* formula, bool ShortestPath)
 {
-    TMap<FString, FActionsToNode> result = AStar::ExecuteAStar(this, node, formula, ShortestPath);
+    TMap<FString, FActionsToNode> result;
+    if (ShortestPath)
+        result = AStar::ExecuteAStar(this, node, formula);
+    else
+        result = AStar::ExecuteBFS(this, node, formula);
+
     this->rootNode = nullptr;
     this->stateNodes.Empty();
     return result;

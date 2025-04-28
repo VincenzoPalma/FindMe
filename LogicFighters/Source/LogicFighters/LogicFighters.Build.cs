@@ -10,7 +10,7 @@ public class LogicFighters : ModuleRules
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "NavigationSystem", "AIModule", "Niagara", "EnhancedInput" });
 
-        PublicIncludePaths.Add("../../ModelChecking/CTL_Labyrinth/Public");
+        PublicIncludePaths.Add("../../CTL_Labyrinth/Public");
 
         PrivateDependencyModuleNames.AddRange(new string[] { "CTL_Labyrinth" });
 
