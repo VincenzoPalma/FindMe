@@ -14,9 +14,15 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTL_LabyrinthModuleRules")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Development")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< Updated upstream:CTL_Labyrinth/Intermediate/Build/BuildRulesProjects/CTL_LabyrinthModuleRules/obj/Development/CTL_LabyrinthModuleRules.AssemblyInfo.cs
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69642ac9f64c0316bacaf9faee83d35fd889dba7")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTL_LabyrinthModuleRules")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTL_LabyrinthModuleRules")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bec413116ef55c10f25f6637fbd9665fd38a5aac")]
+[assembly: System.Reflection.AssemblyProductAttribute("LogicFightersModuleRules")]
+[assembly: System.Reflection.AssemblyTitleAttribute("LogicFightersModuleRules")]
+>>>>>>> Stashed changes:LogicFighters/Intermediate/Build/BuildRulesProjects/LogicFightersModuleRules/obj/Development/LogicFightersModuleRules.AssemblyInfo.cs
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Generato dalla classe WriteCodeFragment di MSBuild.
