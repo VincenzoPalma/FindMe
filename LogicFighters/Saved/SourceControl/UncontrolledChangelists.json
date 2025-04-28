@@ -5,6 +5,9 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Changelist non controllate predefinite",
 			"files": [
+				"E:/Progetti/Progetti Unreal/FindMe/LogicFighters/Content/LogicFighters/Characters/AI/CharacterAI.uasset",
+				"E:/Progetti/Progetti Unreal/FindMe/LogicFighters/Content/LogicFighters/Characters/BaseCharacter.uasset",
+				"E:/Progetti/Progetti Unreal/FindMe/LogicFighters/Content/LogicFighters/Characters/Warrior.uasset",
 				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/BaseCharacter.uasset",
 				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/Wizard.uasset",
 				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/Warrior.uasset",

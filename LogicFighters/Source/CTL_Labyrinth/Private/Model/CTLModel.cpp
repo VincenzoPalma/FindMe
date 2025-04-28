@@ -294,6 +294,7 @@ void UCTLModel::DebugPrintModel() const
 
 TMap<FString, FActionsToNode> UCTLModel::EvaluateFormula(UStateNode* node, UCTLFormula* formula, bool ShortestPath)
 {
+    UE_LOG(LogTemp, Warning, TEXT("NON CAPISCO SE STA FUNZIONANDO LA COMPILAZIONE"));
     TMap<FString, FActionsToNode> result;
     if (ShortestPath)
         result = AStar::ExecuteAStar(this, node, formula);

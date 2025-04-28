@@ -13,6 +13,7 @@ insieme al g score, quando incontriamo un nodo già messo nell'open set, invece d
 */
 TMap<FString, FActionsToNode> AStar::ExecuteAStar(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula)
 {
+	UE_LOG(LogTemp, Warning, TEXT("SONO DISPERATO"));
 	//Structures for the path, if found
 	UStateNode* bestNode = NULL;
 	TMap<FString, FActionsToNode> finalPath;
@@ -113,6 +114,8 @@ TMap<FString, FActionsToNode> AStar::ExecuteAStar(UCTLModel* model, UStateNode* 
 
 TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula)
 {
+
+	UE_LOG(LogTemp, Warning, TEXT("NODE ESTERNO"));
 	FString bestNodeId = "";
 	int bestValue = MAX_int32;
 
@@ -181,15 +184,17 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 			}
 		}
 	}
-
+	UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS"));
 	for (int32 Depth = MAX_DEPTH; Depth >= 0 && !bTargetFound; --Depth)
 	{
 		if (TArray<FString>* NodesAtDepth = NodesByDepth.Find(Depth))
 		{
 			for (FString CurrentId : *NodesAtDepth)
 			{
+				UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS"));
 				if (*unsatScores.Find(CurrentId) == 0)
 				{
+					UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS %s"), *bestNodeId);
 					bestNodeId = CurrentId;
 					bTargetFound = true;
 					break;

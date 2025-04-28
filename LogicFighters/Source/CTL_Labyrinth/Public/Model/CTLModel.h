@@ -76,7 +76,7 @@ public:
     TArray<UStateNode*> EvaluateUniversalG(TArray<UStateNode*>& targetStates, bool universalCheck = true) const;
 
     UFUNCTION(BlueprintCallable, Category = "Model")
-    TMap<FString, FActionsToNode> EvaluateFormula(UStateNode* node, UCTLFormula* formula, bool ShortestPath = true);
+    TMap<FString, FActionsToNode> EvaluateFormula(UStateNode* node, UCTLFormula* formula, bool ShortestPath);
 
     void UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString, int32>& unsatScores, int32 depth, int32 MAX_UNSAT_SCORE);
 
