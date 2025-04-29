@@ -146,6 +146,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 	AddToOpenSet(openSet, startingNode, unsatScores);
 
 	NodeDepth.Add(startingNodeId, 0);
+	
 
 	//Get the adjacent states, updating the model and initializing their scores
 	if (startingNode->GetChildren().IsEmpty() && totalDepth < MAX_DEPTH)
@@ -155,6 +156,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 
 		totalDepth = MAX_DEPTH;
 	}
+	
 
 	//BFS Algorithm
 	while (!openSet.IsEmpty()) {
@@ -178,24 +180,28 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 	
 				openSet.Add(Child);
 			}
-			else if (model->GetPlayerActionRates().Find(CurrActions.Keys[0]) > model->GetPlayerActionRates().Find((*Predecessors.Find(Child->GetState().Id)).Key.Keys[0]))
+			else if (Predecessors.Find(Child->GetState().Id) != NULL && *model->GetPlayerActionRates().Find(CurrActions.Keys[0]) > *model->GetPlayerActionRates().Find((*Predecessors.Find(Child->GetState().Id)).Key.Keys[0]))
 			{
 				Predecessors.Add(Child->GetState().Id, TPair<FActionsArray, FString>(CurrActions, currentNode->GetState().Id));
 			}
 		}
 	}
+	
 	UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS"));
 	for (int32 Depth = MAX_DEPTH; Depth >= 0 && !bTargetFound; --Depth)
 	{
-		if (TArray<FString>* NodesAtDepth = NodesByDepth.Find(Depth))
+		TArray<FString> *NodesAtDepth = NodesByDepth.Find(Depth);
+		if (NodesAtDepth != NULL)
 		{
 			for (FString CurrentId : *NodesAtDepth)
 			{
+				
 				UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS"));
 				if (*unsatScores.Find(CurrentId) == 0)
 				{
-					UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS %s"), *bestNodeId);
 					bestNodeId = CurrentId;
+					UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS %s"), *bestNodeId);
+					
 					bTargetFound = true;
 					break;
 				}
@@ -204,13 +210,13 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 					bestNodeId = CurrentId;
 					bestValue = *unsatScores.Find(CurrentId);
 				}
+				
 			}
 		}
-
 		if (bTargetFound)
 			break;
 	}
-
+	
 	if (!bestNodeId.IsEmpty())
 	{
 		FString CurrentId = bestNodeId;
@@ -226,7 +232,6 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 			CurrentId = ParentId;
 		}
 	}
-
 	return finalPath;
 }
 
