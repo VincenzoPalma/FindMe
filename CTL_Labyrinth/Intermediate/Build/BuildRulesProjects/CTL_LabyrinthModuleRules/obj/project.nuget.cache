@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "J55tfaEvYsM=",
+  "dgSpecHash": "pHf7niYl864=",
   "success": true,
-  "projectFilePath": "C:\\Users\\vince\\Documents\\Unreal Projects\\CTL_Labyrinth\\Intermediate\\Build\\BuildRulesProjects\\CTL_LabyrinthModuleRules\\CTL_LabyrinthModuleRules.csproj",
+  "projectFilePath": "C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\CTL_Labyrinth\\Intermediate\\Build\\BuildRulesProjects\\CTL_LabyrinthModuleRules\\CTL_LabyrinthModuleRules.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vince\\.nuget\\packages\\bitfaster.caching\\2.4.1\\bitfaster.caching.2.4.1.nupkg.sha512",
     "C:\\Users\\vince\\.nuget\\packages\\blake3\\0.5.1\\blake3.0.5.1.nupkg.sha512",
@@ -148,10 +148,7 @@
     "C:\\Users\\vince\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\vince\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
     "C:\\Users\\vince\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
-    "C:\\Users\\vince\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\vince\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.32\\microsoft.windowsdesktop.app.ref.6.0.32.nupkg.sha512",
-    "C:\\Users\\vince\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.32\\microsoft.netcore.app.ref.6.0.32.nupkg.sha512",
-    "C:\\Users\\vince\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.32\\microsoft.aspnetcore.app.ref.6.0.32.nupkg.sha512"
+    "C:\\Users\\vince\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

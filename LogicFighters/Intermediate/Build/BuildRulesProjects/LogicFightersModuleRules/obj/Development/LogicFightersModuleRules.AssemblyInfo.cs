@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LogicFightersModuleRules")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Development")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8c23455ae67a2c5841b692bff32b573813c5d2fd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4833ac21da1f94d2e2bd6344f6fdc27ff86639f7")]
 [assembly: System.Reflection.AssemblyProductAttribute("LogicFightersModuleRules")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LogicFightersModuleRules")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
