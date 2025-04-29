@@ -1,8 +1,0 @@
-{
-	"BuildId": "33043543",
-	"Modules": 
-	{
-		"CTL_Labyrinth": "UnrealEditor-CTL_Labyrinth-Win64-DebugGame.dll",
-		"LogicFighters": "UnrealEditor-LogicFighters-Win64-DebugGame.dll"
-	}
-}
