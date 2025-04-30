@@ -5,6 +5,25 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Changelist non controllate predefinite",
 			"files": [
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/LogicFighters_GameMode.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/CharacterBehaviorTree.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/CharacterBlackBoard.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Decorators/BTDecorator_10chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Decorators/BTDecorator_20chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Decorators/BTDecorator_50chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Decorators/BTDecorator_30chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Decorators/BTDecorator_60chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Tasks/SubBTs/EnemyDefenseNotReady.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Tasks/SubBTs/EnemySpecialAttackReady.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Tasks/SubBTs/EnemyCounterAttackNotReady.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Tasks/SubBTs/NeutralBehaviour.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Tasks/SubBTs/NeutralBehavior.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/Tasks/SubBTs/SpecialAttackReady.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/BTDecorator_60chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/BTDecorator_20chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/BTDecorator_10chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/BTDecorator_30chance.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/AI/AI_BT/BTDecorator_50chance.uasset",
 				"E:/Progetti/Progetti Unreal/FindMe/LogicFighters/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset"
 			]
 		}
