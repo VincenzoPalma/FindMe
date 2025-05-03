@@ -31,7 +31,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteAStar(UCTLModel* model, UStateNode* 
 
 	bool found = false;
 	int totalDepth = 0, bestValue = MAX_int32;
-	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 4;
+	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 3;
 
 	//Initialization of the pathCost and HeuristicTotalCosts values for the starting state
 	TMap<FString, float> pathCost;
@@ -137,7 +137,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 
 	bool bTargetFound = false;
 	int totalDepth = 0;
-	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 4;
+	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 3;
 
 	FString startingNodeId = startingNode->GetState().Id;
 
