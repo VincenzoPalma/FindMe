@@ -180,7 +180,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 	
 				openSet.Add(Child);
 			}
-			else if (Predecessors.Find(Child->GetState().Id) != NULL && *model->GetPlayerActionRates().Find(CurrActions.Keys[0]) > *model->GetPlayerActionRates().Find((*Predecessors.Find(Child->GetState().Id)).Key.Keys[0]))
+			else if (Predecessors.Find(Child->GetState().Id) != NULL && *model->GetPlayerActionRates().Find(CurrActions.Keys[0]) < *model->GetPlayerActionRates().Find((*Predecessors.Find(Child->GetState().Id)).Key.Keys[0]))
 			{
 				Predecessors.Add(Child->GetState().Id, TPair<FActionsArray, FString>(CurrActions, currentNode->GetState().Id));
 			}
