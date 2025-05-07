@@ -85,29 +85,27 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
 
     //AG(CurrentAIHealthPoints - AIHealthPoints < x)
     UAtomicIntFormula* AIHealthAtomic = NewObject<UAtomicIntFormula>();
-    AIHealthAtomic->Initialize([](const FState& State, const FState& CurrentState)
+    UAtomicIntFormula* AIHealthAtomicLeft = NewObject<UAtomicIntFormula>();
+    AIHealthAtomicLeft->Initialize([](const FState& State, const FState& CurrentState)
+        {
+            int32 CurrentAIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
+            int32 StartingAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
+            return StartingAIHealthPoints - CurrentAIHealthPoints >= 0;
+        });
+
+    UAtomicIntFormula* AIHealthAtomicRight = NewObject<UAtomicIntFormula>();
+    AIHealthAtomicRight->Initialize([](const FState& State, const FState& CurrentState)
         {
             int32 CurrentAIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
             int32 StartingAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
             return StartingAIHealthPoints - CurrentAIHealthPoints <= 20;
         });
 
+    UBinaryFormula* AIHealthAND = NewObject<UBinaryFormula>();
+    AIHealthAND->Initialize(ECTLOperator::AND, AIHealthAtomicLeft, AIHealthAtomicRight);
     UUnaryFormula* AIHealthAG = NewObject<UUnaryFormula>();
-    AIHealthAG->Initialize(ECTLOperator::EG, AIHealthAtomic);
+    AIHealthAG->Initialize(ECTLOperator::EG, AIHealthAND);
     Formulas.Add(0, AIHealthAG);
-
-    //AG(CurrentPlayerHealthPoints - PlayerHealthPoints < x)
-    UAtomicIntFormula* PlayerHealthAtomic = NewObject<UAtomicIntFormula>();
-    PlayerHealthAtomic->Initialize([](const FState& State, const FState& CurrentState)
-        {
-            int32 PlayerHealthPoints = State.Properties.Find("PlayerHealthPoints")->IntValue;
-            int32 CurrentPlayerHealthPoints = State.Properties.Find("PlayerHealthPoints")->IntValue;
-            return CurrentPlayerHealthPoints - PlayerHealthPoints > 10;
-        });
-
-    UUnaryFormula* PlayerHealthAG = NewObject<UUnaryFormula>();
-    PlayerHealthAG->Initialize(ECTLOperator::AG, PlayerHealthAtomic);
-    Formulas.Add(1, PlayerHealthAG);
 
     //AG(AIAbilityPoints - CurrentAIAbilityPoints > x)
     UAtomicIntFormula* AIAbilityAtomic = NewObject<UAtomicIntFormula>();
