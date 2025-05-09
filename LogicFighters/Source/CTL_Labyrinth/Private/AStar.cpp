@@ -144,7 +144,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 	TArray<FString> closedSet;
 	TMap<FString, int32> NodeDepth;
 	int currDepth = 0;
-	int currPathSteps, bestPathSteps = -1;
+	int currPathSteps, bestPathSteps = 0;
     float currPathValue, bestPathValue = MAX_int32;
 	FString currNodeId;
 
