@@ -114,8 +114,6 @@ TMap<FString, FActionsToNode> AStar::ExecuteAStar(UCTLModel* model, UStateNode* 
 
 TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula)
 {
-
-	UE_LOG(LogTemp, Warning, TEXT("HO CAMBIATO IL CODICE CAMBIATO GG"));
 	FString bestNodeId = "";
 
 	//Structures for the path, if found
@@ -133,11 +131,6 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 
 	ECTLOperator formulaOp = formula->GetOperator();
 	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 3;
-	
-	
-	FActionsArray bestActions;
-	
-
 
 	UStateNode* currNode;
 	TArray<UStateNode*> openSet, satisfyingStates;
@@ -169,13 +162,14 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 
 			if (!NodeDepth.Contains(Child->GetState().Id))
 			{
-				NodeDepth.Add(Child->GetState().Id, currDepth);
+				NodeDepth.Add(Child->GetState().Id, currDepth + 1);
 				Predecessors.Add(Child->GetState().Id, TPair<FActionsArray, FString>(CurrActions, currNode->GetState().Id));
 				openSet.Add(Child);
 			}
 		}
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("HO CAMBIATO IL CODICE CAMBIATO GG"));
 	for (UStateNode* node : satisfyingStates)
 	{
 		currPathSteps = *NodeDepth.Find(node->GetState().Id);
