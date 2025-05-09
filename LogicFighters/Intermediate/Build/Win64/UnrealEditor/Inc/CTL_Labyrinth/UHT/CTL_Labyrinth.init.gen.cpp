@@ -17,7 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeCTL_Labyrinth_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0x96D41E60,
+				0xC0232B8C,
 				0x510DC9D3,
 				METADATA_PARAMS(0, nullptr)
 			};
@@ -25,5 +25,5 @@ void EmptyLinkFunctionForGeneratedCodeCTL_Labyrinth_init() {}
 		}
 		return Z_Registration_Info_UPackage__Script_CTL_Labyrinth.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_CTL_Labyrinth(Z_Construct_UPackage__Script_CTL_Labyrinth, TEXT("/Script/CTL_Labyrinth"), Z_Registration_Info_UPackage__Script_CTL_Labyrinth, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x96D41E60, 0x510DC9D3));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_CTL_Labyrinth(Z_Construct_UPackage__Script_CTL_Labyrinth, TEXT("/Script/CTL_Labyrinth"), Z_Registration_Info_UPackage__Script_CTL_Labyrinth, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xC0232B8C, 0x510DC9D3));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

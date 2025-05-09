@@ -35,7 +35,7 @@ void UCTLModel::AddTransition(FActionsArray actions, UStateNode* FromNode, UStat
     if (FromNode && ToNode)
     {
         FromNode->AddChild(actions, ToNode);
-        ToNode->AddParent(FromNode);
+        ToNode->AddParent(FromNode, actions);
     }
 }
 
@@ -88,9 +88,9 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
     UAtomicIntFormula* AIHealthAtomicLeft = NewObject<UAtomicIntFormula>();
     AIHealthAtomicLeft->Initialize([](const FState& State, const FState& CurrentState)
         {
-            int32 CurrentAIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
-            int32 StartingAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
-            return StartingAIHealthPoints - CurrentAIHealthPoints >= 0;
+            int32 CurrentPlayerHealthPoints = State.Properties.Find("PlayerHealthPoints")->IntValue;
+            int32 StartingPlayerHealthPoints = CurrentState.Properties.Find("PlayerHealthPoints")->IntValue;
+            return StartingPlayerHealthPoints - CurrentPlayerHealthPoints >= 6;
         });
 
     UAtomicIntFormula* AIHealthAtomicRight = NewObject<UAtomicIntFormula>();
@@ -98,13 +98,13 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
         {
             int32 CurrentAIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
             int32 StartingAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
-            return StartingAIHealthPoints - CurrentAIHealthPoints <= 20;
+            return StartingAIHealthPoints - CurrentAIHealthPoints <= 16;
         });
 
     UBinaryFormula* AIHealthAND = NewObject<UBinaryFormula>();
     AIHealthAND->Initialize(ECTLOperator::AND, AIHealthAtomicLeft, AIHealthAtomicRight);
     UUnaryFormula* AIHealthAG = NewObject<UUnaryFormula>();
-    AIHealthAG->Initialize(ECTLOperator::EG, AIHealthAND);
+    AIHealthAG->Initialize(ECTLOperator::EF, AIHealthAND);
     Formulas.Add(0, AIHealthAG);
 
     //AG(AIAbilityPoints - CurrentAIAbilityPoints > x)
@@ -154,10 +154,13 @@ UCTLFormula* UCTLModel::GetFormula(int32 Id) const
 TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& states, TArray<UStateNode*>& targetStates) const
 {
     TSet<UStateNode*> PreImage;
+    TArray<UStateNode*> tmp;
 
     for (UStateNode* StateNode : states)
-        PreImage.Append(StateNode->GetParents());
-
+    {
+        StateNode->GetParents().GenerateKeyArray(tmp);
+        PreImage.Append(tmp);
+    }
     targetStates = states;
 
     return PreImage.Array();
@@ -166,10 +169,12 @@ TArray<UStateNode*> UCTLModel::PreImageExistential(const TArray<UStateNode*>& st
 TArray<UStateNode*> UCTLModel::PreImageUniversal(const TArray<UStateNode*>& states, TArray<UStateNode*>& targetStates) const
 {
     TSet<UStateNode*> PreImage;
+    TArray<UStateNode*> tmp;
 
     for (UStateNode* StateNode : states)
     {
-        for (UStateNode* parents : StateNode->GetParents())
+        StateNode->GetParents().GenerateKeyArray(tmp);
+        for (UStateNode* parents : tmp)
         {
             TArray<UStateNode*> Successors = parents->GetChildren();
             bool AllSuccessorsInQ = true;
@@ -239,6 +244,9 @@ void UCTLModel::DebugPrintModel() const
 {
     if (GEngine)
     {
+
+        TArray<UStateNode*> tmp;
+
         for (const TPair<FString, UStateNode*>& NodePair : stateNodes)
         {
             UStateNode* CurrentNode = NodePair.Value;
@@ -262,7 +270,8 @@ void UCTLModel::DebugPrintModel() const
 
             // Print adjacent nodes
             UE_LOG(LogTemp, Log, TEXT("  Adjacent Nodes:"));
-            for (const UStateNode* Parent : CurrentNode->GetParents())
+            CurrentNode->GetParents().GenerateKeyArray(tmp);
+            for (const UStateNode* Parent : tmp)
             {
                 FString KeyString;
 
@@ -311,6 +320,7 @@ void UCTLModel::UpdateModel(UStateNode* node, UCTLFormula* formula, TMap<FString
 TArray<UStateNode*> UCTLModel::EvaluateUniversalG(TArray<UStateNode*>& targetStates, bool universalCheck) const
 {
     TSet<UStateNode*> validTargets;
+    TArray<UStateNode*> tmp;
 
     // Process each target node individually.
     for (UStateNode* target : targetStates)
@@ -334,7 +344,8 @@ TArray<UStateNode*> UCTLModel::EvaluateUniversalG(TArray<UStateNode*>& targetSta
                 continue;
 
             // Iterate over each parent of the current node.
-            for (UStateNode* parentNode : currentNode->GetParents())
+            currentNode->GetParents().GenerateKeyArray(tmp);
+            for (UStateNode* parentNode : tmp)
             {
                 //Ensure that the parent itself is in the targetStates set.
                 if (!targetStates.Contains(parentNode))

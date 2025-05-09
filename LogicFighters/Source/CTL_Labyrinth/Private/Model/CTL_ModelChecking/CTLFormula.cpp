@@ -375,6 +375,10 @@ TArray<UStateNode*> UUnaryFormula::Evaluate(const UCTLModel* model, UStateNode* 
         // since the model is loaded from the current state, it is safe to assert the existence of a path from the current state to the target states without checking
         satisfyingStatesArray = SubResults;
 
+        for(UStateNode* node : SubResults)
+            UE_LOG(LogTemp, Warning, TEXT("STATI SUBRESULT %s"), *node->GetState().Id);
+
+
         break;
     }
 

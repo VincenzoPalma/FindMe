@@ -115,123 +115,110 @@ TMap<FString, FActionsToNode> AStar::ExecuteAStar(UCTLModel* model, UStateNode* 
 TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* startingNode, UCTLFormula* formula)
 {
 
-	UE_LOG(LogTemp, Warning, TEXT("NODE ESTERNO"));
+	UE_LOG(LogTemp, Warning, TEXT("HO CAMBIATO IL CODICE CAMBIATO GG"));
 	FString bestNodeId = "";
-	int bestValue = MAX_int32;
 
 	//Structures for the path, if found
 	TMap<FString, FActionsToNode> finalPath;
-	TMap<FString, int32> NodeDepth;
 	TMap<FString, TPair<FActionsArray, FString>> Predecessors;
-	TMap<int32, TArray<FString>> NodesByDepth;
 
 	//Initialization and evaluation of the score for the starting state
 	int MAX_UNSAT_SCORE = 12;
 	int subFormulasNum = formula->CountSubformulas();
 	int subFormulaWeight = MAX_UNSAT_SCORE / subFormulasNum;
+	
 	TMap<FString, int32> unsatScores;
-
 	unsatScores.Add(startingNode->GetState().Id, MAX_UNSAT_SCORE);
 	formula->Evaluate(model, startingNode, unsatScores, subFormulaWeight);
+
 	ECTLOperator formulaOp = formula->GetOperator();
-
-	bool bTargetFound = false;
-	int totalDepth = 0;
 	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 3;
-
-	FString startingNodeId = startingNode->GetState().Id;
-
-	//Initialization of the priority queue
-	TArray<UStateNode*> openSet;
-	AddToOpenSet(openSet, startingNode, unsatScores);
-
-	NodeDepth.Add(startingNodeId, 0);
 	
+	
+	FActionsArray bestActions;
+	
+
+
+	UStateNode* currNode;
+	TArray<UStateNode*> openSet, satisfyingStates;
+	TArray<FString> closedSet;
+	TMap<FString, int32> NodeDepth;
+	int currDepth = 0;
+	int currPathSteps, bestPathSteps = -1;
+    float currPathValue, bestPathValue = MAX_int32;
+	FString currNodeId;
+
 
 	//Get the adjacent states, updating the model and initializing their scores
-	if (startingNode->GetChildren().IsEmpty() && totalDepth < MAX_DEPTH)
+	model->UpdateModel(startingNode, formula, unsatScores, MAX_DEPTH, MAX_UNSAT_SCORE);
+	satisfyingStates = formula->Evaluate(model, startingNode, unsatScores, subFormulaWeight);
+
+	openSet.Add(startingNode);
+	NodeDepth.Add(startingNode->GetState().Id, 0);
+
+	while (!openSet.IsEmpty())
 	{
-		model->UpdateModel(startingNode, formula, unsatScores, MAX_DEPTH, MAX_UNSAT_SCORE);
-		formula->Evaluate(model, startingNode, unsatScores, subFormulaWeight);
-
-		totalDepth = MAX_DEPTH;
-	}
-	
-
-	//BFS Algorithm
-	while (!openSet.IsEmpty()) {
-		//The state in position 0 will always be the best choice
-		UStateNode* currentNode = openSet[0];
+		currNode = openSet[0];
 		openSet.RemoveAt(0);
-		int32 CurrentDepth = *NodeDepth.Find(currentNode->GetState().Id);
+		currDepth = *NodeDepth.Find(currNode->GetState().Id);
 
-		NodesByDepth.FindOrAdd(CurrentDepth).Add(currentNode->GetState().Id);
-
-		for (const TPair<FActionsArray, UStateNode*>& Pair : currentNode->GetChildrenMap())
+		for (TPair<FActionsArray, UStateNode*> PairChild : currNode->GetChildrenMap())
 		{
-			const FActionsArray& CurrActions = Pair.Key;
-			UStateNode* Child = Pair.Value;
+			const FActionsArray& CurrActions = PairChild.Key;
+			UStateNode* Child = PairChild.Value;
 
 			if (!NodeDepth.Contains(Child->GetState().Id))
 			{
-				//it's only an estimate of the node lowest depth
-				NodeDepth.Add(Child->GetState().Id, CurrentDepth + 1);
-				Predecessors.Add(Child->GetState().Id, TPair<FActionsArray, FString>(CurrActions, currentNode->GetState().Id));
-	
+				NodeDepth.Add(Child->GetState().Id, currDepth);
+				Predecessors.Add(Child->GetState().Id, TPair<FActionsArray, FString>(CurrActions, currNode->GetState().Id));
 				openSet.Add(Child);
 			}
-			else if (Predecessors.Find(Child->GetState().Id) != NULL && *model->GetPlayerActionRates().Find(CurrActions.Keys[0]) < *model->GetPlayerActionRates().Find((*Predecessors.Find(Child->GetState().Id)).Key.Keys[0]))
+		}
+	}
+
+	for (UStateNode* node : satisfyingStates)
+	{
+		currPathSteps = *NodeDepth.Find(node->GetState().Id);
+
+		if (currPathSteps >= bestPathSteps)
+		{
+			currPathValue = 0;
+
+			currNodeId = node->GetState().Id;
+
+			while (Predecessors.Contains(currNodeId))
 			{
-				Predecessors.Add(Child->GetState().Id, TPair<FActionsArray, FString>(CurrActions, currentNode->GetState().Id));
+				TPair<FActionsArray, FString> tmpPair = *Predecessors.Find(currNodeId);
+				FActionsArray actions = tmpPair.Key;
+				
+				currPathValue += *model->GetPlayerActionRates().Find(actions.Keys[0]);
+
+				currNodeId = tmpPair.Value;
+			}
+
+			//cross-multiplication works also with negative PathValues
+			if (currPathValue * bestPathSteps < bestPathValue * currPathSteps)
+			{
+				bestPathValue = currPathValue;
+				bestPathSteps = currPathSteps;
+				bestNodeId = node->GetState().Id;
 			}
 		}
 	}
 	
-	UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS"));
-	for (int32 Depth = MAX_DEPTH; Depth >= 0 && !bTargetFound; --Depth)
+	currNodeId = bestNodeId;
+	while (!currNodeId.IsEmpty() && Predecessors.Contains(currNodeId))
 	{
-		TArray<FString> *NodesAtDepth = NodesByDepth.Find(Depth);
-		if (NodesAtDepth != NULL)
-		{
-			for (FString CurrentId : *NodesAtDepth)
-			{
-				
-				UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS"));
-				if (*unsatScores.Find(CurrentId) == 0)
-				{
-					bestNodeId = CurrentId;
-					UE_LOG(LogTemp, Error, TEXT("NODE SATSDSDS %s"), *bestNodeId);
-					
-					bTargetFound = true;
-					break;
-				}
-				else if (*unsatScores.Find(CurrentId) < bestValue)
-				{
-					bestNodeId = CurrentId;
-					bestValue = *unsatScores.Find(CurrentId);
-				}
-				
-			}
-		}
-		if (bTargetFound)
-			break;
+		TPair<FActionsArray, FString> Info = *Predecessors.Find(currNodeId);
+		const FActionsArray& Actions = Info.Key;
+		FString ParentId = Info.Value;
+
+		FActionsToNode Entry(currNodeId, Actions.Keys);
+		finalPath.Add(ParentId, Entry);
+
+		currNodeId = ParentId;
 	}
 	
-	if (!bestNodeId.IsEmpty())
-	{
-		FString CurrentId = bestNodeId;
-		while (!CurrentId.IsEmpty() && Predecessors.Contains(CurrentId))
-		{
-			TPair<FActionsArray, FString> Info = *Predecessors.Find(CurrentId);
-			const FActionsArray& Actions = Info.Key;
-			FString ParentId = Info.Value;
-
-			FActionsToNode Entry(CurrentId, Actions.Keys);
-			finalPath.Add(ParentId, Entry);
-
-			CurrentId = ParentId;
-		}
-	}
 	return finalPath;
 }
 

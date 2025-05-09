@@ -29,16 +29,16 @@ public:
     }
 
     UFUNCTION(BlueprintCallable, Category = "StateNode")
-    void AddParent(UStateNode* parent)
+    void AddParent(UStateNode* parent, FActionsArray actions)
     {
         if (parent)
         {
-            Parents.Add(parent);
+            Parents.Add(parent, actions);
         }
     }
 
     UFUNCTION(BlueprintCallable, Category = "StateNode")
-    TArray<UStateNode*> GetParents()
+    TMap<UStateNode*, FActionsArray> GetParents()
     {
         return Parents;
     }
@@ -77,5 +77,5 @@ private:
     UPROPERTY(BlueprintGetter = GetChildrenMap, BlueprintSetter = SetChildrenMap, Category = "StateNode")
     TMap<FActionsArray, UStateNode*> Children;
 
-    TArray<UStateNode*> Parents;
+    TMap<UStateNode*, FActionsArray> Parents;
 };

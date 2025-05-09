@@ -14,7 +14,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define LOGICFIGHTERS_LogicFightersCharacter_generated_h
 
-#define FID_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_INCLASS_NO_PURE_DECLS \
+#define FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesALogicFightersCharacter(); \
 	friend struct Z_Construct_UClass_ALogicFightersCharacter_Statics; \
@@ -23,7 +23,7 @@ public: \
 	DECLARE_SERIALIZER(ALogicFightersCharacter)
 
 
-#define FID_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_ENHANCED_CONSTRUCTORS \
+#define FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	ALogicFightersCharacter(ALogicFightersCharacter&&); \
@@ -35,12 +35,12 @@ public: \
 	NO_API virtual ~ALogicFightersCharacter();
 
 
-#define FID_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_9_PROLOG
-#define FID_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_GENERATED_BODY \
+#define FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_9_PROLOG
+#define FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_INCLASS_NO_PURE_DECLS \
-	FID_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_ENHANCED_CONSTRUCTORS \
+	FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_INCLASS_NO_PURE_DECLS \
+	FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h_12_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -48,7 +48,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> LOGICFIGHTERS_API UClass* StaticClass<class ALogicFightersCharacter>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h
+#define CURRENT_FILE_ID FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersCharacter_h
 
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

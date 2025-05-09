@@ -74,6 +74,7 @@ struct Z_Construct_UFunction_UStateNode_AddParent_Statics
 	struct StateNode_eventAddParent_Parms
 	{
 		UStateNode* parent;
+		FActionsArray actions;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -82,12 +83,15 @@ struct Z_Construct_UFunction_UStateNode_AddParent_Statics
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_parent;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_actions;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UStateNode_AddParent_Statics::NewProp_parent = { "parent", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StateNode_eventAddParent_Parms, parent), Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UStateNode_AddParent_Statics::NewProp_actions = { "actions", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StateNode_eventAddParent_Parms, actions), Z_Construct_UScriptStruct_FActionsArray, METADATA_PARAMS(0, nullptr) }; // 88869364
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UStateNode_AddParent_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UStateNode_AddParent_Statics::NewProp_parent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UStateNode_AddParent_Statics::NewProp_actions,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UStateNode_AddParent_Statics::PropPointers) < 2048);
 const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UStateNode_AddParent_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UStateNode, nullptr, "AddParent", nullptr, nullptr, Z_Construct_UFunction_UStateNode_AddParent_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UStateNode_AddParent_Statics::PropPointers), sizeof(Z_Construct_UFunction_UStateNode_AddParent_Statics::StateNode_eventAddParent_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UStateNode_AddParent_Statics::Function_MetaDataParams), Z_Construct_UFunction_UStateNode_AddParent_Statics::Function_MetaDataParams) };
@@ -104,9 +108,10 @@ UFunction* Z_Construct_UFunction_UStateNode_AddParent()
 DEFINE_FUNCTION(UStateNode::execAddParent)
 {
 	P_GET_OBJECT(UStateNode,Z_Param_parent);
+	P_GET_STRUCT(FActionsArray,Z_Param_actions);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->AddParent(Z_Param_parent);
+	P_THIS->AddParent(Z_Param_parent,Z_Param_actions);
 	P_NATIVE_END;
 }
 // End Class UStateNode Function AddParent
@@ -212,7 +217,7 @@ struct Z_Construct_UFunction_UStateNode_GetParents_Statics
 {
 	struct StateNode_eventGetParents_Parms
 	{
-		TArray<UStateNode*> ReturnValue;
+		TMap<UStateNode*,FActionsArray> ReturnValue;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -220,15 +225,18 @@ struct Z_Construct_UFunction_UStateNode_GetParents_Statics
 		{ "ModuleRelativePath", "Public/Model/StateTree/StateNode.h" },
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
-	static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue_ValueProp;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Key_KeyProp;
+	static const UECodeGen_Private::FMapPropertyParams NewProp_ReturnValue;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StateNode_eventGetParents_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue_ValueProp = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 1, Z_Construct_UScriptStruct_FActionsArray, METADATA_PARAMS(0, nullptr) }; // 88869364
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue_Key_KeyProp = { "ReturnValue_Key", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_UStateNode_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FMapPropertyParams Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Map, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(StateNode_eventGetParents_Parms, ReturnValue), EMapPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 88869364
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UStateNode_GetParents_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue_ValueProp,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue_Key_KeyProp,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UStateNode_GetParents_Statics::NewProp_ReturnValue,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_UStateNode_GetParents_Statics::PropPointers) < 2048);
@@ -247,7 +255,7 @@ DEFINE_FUNCTION(UStateNode::execGetParents)
 {
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	*(TArray<UStateNode*>*)Z_Param__Result=P_THIS->GetParents();
+	*(TMap<UStateNode*,FActionsArray>*)Z_Param__Result=P_THIS->GetParents();
 	P_NATIVE_END;
 }
 // End Class UStateNode Function GetParents
@@ -496,10 +504,10 @@ struct Z_Construct_UClass_UStateNode_Statics
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_UStateNode_AddChild, "AddChild" }, // 3485558364
-		{ &Z_Construct_UFunction_UStateNode_AddParent, "AddParent" }, // 2738781144
+		{ &Z_Construct_UFunction_UStateNode_AddParent, "AddParent" }, // 3711454024
 		{ &Z_Construct_UFunction_UStateNode_GetChildren, "GetChildren" }, // 2815656688
 		{ &Z_Construct_UFunction_UStateNode_GetChildrenMap, "GetChildrenMap" }, // 1529632741
-		{ &Z_Construct_UFunction_UStateNode_GetParents, "GetParents" }, // 4196206742
+		{ &Z_Construct_UFunction_UStateNode_GetParents, "GetParents" }, // 2974707723
 		{ &Z_Construct_UFunction_UStateNode_GetState, "GetState" }, // 3453357491
 		{ &Z_Construct_UFunction_UStateNode_GetStateData, "GetStateData" }, // 1482120008
 		{ &Z_Construct_UFunction_UStateNode_SetChildrenMap, "SetChildrenMap" }, // 2872923616
@@ -565,14 +573,14 @@ UStateNode::~UStateNode() {}
 // End Class UStateNode
 
 // Begin Registration
-struct Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_StateTree_StateNode_h_Statics
+struct Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_CTL_Labyrinth_Public_Model_StateTree_StateNode_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UStateNode, UStateNode::StaticClass, TEXT("UStateNode"), &Z_Registration_Info_UClass_UStateNode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UStateNode), 655022056U) },
+		{ Z_Construct_UClass_UStateNode, UStateNode::StaticClass, TEXT("UStateNode"), &Z_Registration_Info_UClass_UStateNode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UStateNode), 4162874802U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_StateTree_StateNode_h_2491393617(TEXT("/Script/CTL_Labyrinth"),
-	Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_StateTree_StateNode_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_CTL_Labyrinth_Public_Model_StateTree_StateNode_h_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_CTL_Labyrinth_Public_Model_StateTree_StateNode_h_938733600(TEXT("/Script/CTL_Labyrinth"),
+	Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_CTL_Labyrinth_Public_Model_StateTree_StateNode_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_CTL_Labyrinth_Public_Model_StateTree_StateNode_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // End Registration
