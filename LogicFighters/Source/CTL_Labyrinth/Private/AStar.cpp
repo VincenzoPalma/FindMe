@@ -130,7 +130,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 	formula->Evaluate(model, startingNode, unsatScores, subFormulaWeight);
 
 	ECTLOperator formulaOp = formula->GetOperator();
-	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 3;
+	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 2;
 
 	UStateNode* currNode;
 	TArray<UStateNode*> openSet, satisfyingStates;
@@ -149,7 +149,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 	openSet.Add(startingNode);
 	NodeDepth.Add(startingNode->GetState().Id, 0);
 
-	while (!openSet.IsEmpty())
+	while (!openSet.IsEmpty() && currDepth < MAX_DEPTH)
 	{
 		currNode = openSet[0];
 		openSet.RemoveAt(0);
@@ -169,7 +169,6 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 		}
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("HO CAMBIATO IL CODICE CAMBIATO GG"));
 	for (UStateNode* node : satisfyingStates)
 	{
 		currPathSteps = *NodeDepth.Find(node->GetState().Id);
@@ -190,8 +189,10 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 				currNodeId = tmpPair.Value;
 			}
 
+			UE_LOG(LogTemp, Warning, TEXT("nodo soddisfacente: %s, profondità attuale: %d, valore attuale: %f, profondità migliore: %d, valore migliore: %f"), *node->GetState().Id, currPathSteps, currPathValue, bestPathSteps, bestPathValue);
+
 			//cross-multiplication works also with negative PathValues
-			if (currPathValue * bestPathSteps < bestPathValue * currPathSteps)
+			if (currPathValue * bestPathSteps <= bestPathValue * currPathSteps)
 			{
 				bestPathValue = currPathValue;
 				bestPathSteps = currPathSteps;

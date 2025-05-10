@@ -547,7 +547,6 @@
       <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles_1)</ForcedIncludeFiles>
     </ClCompile>
     <ClInclude Include="..\..\Source\CTL_Labyrinth\CTL_Labyrinth.h"/>
-    <None Include="..\..\Source\CTL_Labyrinth\ModelFiles\Warrior_Warrior_gameplay.json"/>
     <ClCompile Include="..\..\Source\CTL_Labyrinth\Private\AStar.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories_1)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>$(ClCompile_ForcedIncludeFiles_1)</ForcedIncludeFiles>
