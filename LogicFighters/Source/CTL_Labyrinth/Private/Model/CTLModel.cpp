@@ -50,6 +50,7 @@ void UCTLModel::AddFormula(int32 FormulaId, UCTLFormula* Formula)
 
 void UCTLModel::InitializeModel(const FString& Character1Class, const FString& Character2Class, const TMap<ECharacterActions, float> ActionRates)
 {
+    if (!JsonFile.IsValid()) {
     //Opens JSON file
     FString JsonFileName = Character1Class + TEXT("_") + Character2Class + TEXT("_") + TEXT("gameplay") + TEXT(".json");
     FString JsonFilePath = FPaths::ProjectContentDir() / TEXT("ModelFiles") / JsonFileName;
@@ -62,15 +63,16 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
     }
     UE_LOG(LogTemp, Log, TEXT("Successfully loaded JSON file: %s"), *JsonFilePath);
 
-    TSharedPtr<FJsonObject> JsonObject;
-    TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonString);
-    if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed to parse JSON file"));
-        return;
-    }
+        TSharedPtr<FJsonObject> JsonObject;
+        TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonString);
+        if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
+        {
+            UE_LOG(LogTemp, Error, TEXT("Failed to parse JSON file"));
+            return;
+        }
 
-    JsonFile = JsonObject;
+        JsonFile = JsonObject;
+    }
 
     //Creates formulas
     /*PropertyNames = {
