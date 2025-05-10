@@ -1,0 +1,19 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-LogicFighters-Win64-DebugGame.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\LogicFightersEditor\DebugGame\UnrealEd\SharedPCH.UnrealEd.Project.NonOptimized.ValApi.Cpp20.h.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\LogicFighters.init.gen.cpp.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\LogicFightersCharacter.gen.cpp.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\LogicFightersGameMode.gen.cpp.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\LogicFightersPlayerController.gen.cpp.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\LogicFighters.cpp.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\LogicFightersCharacter.cpp.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\LogicFightersGameMode.cpp.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\LogicFightersPlayerController.cpp.obj"
+"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\Default.rc2.res"
+/OUT:"C:\Users\vince\Documents\Unreal Projects\CTLGames\LogicFighters\Intermediate\Build\Win64\x64\UnrealEditor\DebugGame\LogicFighters\UnrealEditor-LogicFighters-Win64-DebugGame.lib"
