@@ -50,8 +50,8 @@ void UCTLModel::AddFormula(int32 FormulaId, UCTLFormula* Formula)
 
 void UCTLModel::InitializeModel(const FString& Character1Class, const FString& Character2Class, const TMap<ECharacterActions, float> ActionRates)
 {
-    if (!JsonFile.IsValid()) {
     //Opens JSON file
+    if (!JsonFile.IsValid()) {
     FString JsonFileName = Character1Class + TEXT("_") + Character2Class + TEXT("_") + TEXT("gameplay") + TEXT(".json");
     FString JsonFilePath = FPaths::ProjectContentDir() / TEXT("ModelFiles") / JsonFileName;
 

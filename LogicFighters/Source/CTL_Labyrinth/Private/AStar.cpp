@@ -130,7 +130,7 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 	formula->Evaluate(model, startingNode, unsatScores, subFormulaWeight);
 
 	ECTLOperator formulaOp = formula->GetOperator();
-	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 2;
+	int MAX_DEPTH = (formulaOp == ECTLOperator::EX || formulaOp == ECTLOperator::AX) ? 1 : 3;
 
 	UStateNode* currNode;
 	TArray<UStateNode*> openSet, satisfyingStates;
