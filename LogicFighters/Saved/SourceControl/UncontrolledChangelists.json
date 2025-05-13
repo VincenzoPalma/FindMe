@@ -1,0 +1,24 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Changelist non controllate predefinite",
+			"files": [
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/StarterContent/HDRI/HDRI_Epic_Courtyard_Daylight.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/ClassChoiceUI.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/ChoosenActionsUI.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/LogicFighters_GameMode.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/LogosUI.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/Logos/logo1.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/Logos/TP-ExEd-Horizontal-770x313.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/BattleUI.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/Characters/Ranger.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/Logos/logo2.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/Logos/Logo-UNINA.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/Logos/TelecomParis_endossem_IPP_RVB_150pix.uasset",
+				"C:/Users/vince/Documents/Unreal Projects/CTLGames/LogicFighters/Content/LogicFighters/UI/Logos/unina-logo.uasset"
+			]
+		}
+	]
+}
