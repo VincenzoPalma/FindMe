@@ -78,14 +78,14 @@ ALogicFightersGameMode::~ALogicFightersGameMode() {}
 // End Class ALogicFightersGameMode
 
 // Begin Registration
-struct Z_CompiledInDeferFile_FID_LogicFighters_Source_LogicFighters_LogicFightersGameMode_h_Statics
+struct Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersGameMode_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
 		{ Z_Construct_UClass_ALogicFightersGameMode, ALogicFightersGameMode::StaticClass, TEXT("ALogicFightersGameMode"), &Z_Registration_Info_UClass_ALogicFightersGameMode, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(ALogicFightersGameMode), 241036853U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_LogicFighters_Source_LogicFighters_LogicFightersGameMode_h_3843774482(TEXT("/Script/LogicFighters"),
-	Z_CompiledInDeferFile_FID_LogicFighters_Source_LogicFighters_LogicFightersGameMode_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_LogicFighters_Source_LogicFighters_LogicFightersGameMode_h_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersGameMode_h_3843774482(TEXT("/Script/LogicFighters"),
+	Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersGameMode_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Progetti_Progetti_Unreal_FindMe_LogicFighters_Source_LogicFighters_LogicFightersGameMode_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // End Registration

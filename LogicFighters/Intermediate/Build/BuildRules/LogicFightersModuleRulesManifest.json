@@ -1,10 +1,10 @@
 {
 	"SourceFiles": [
-		"C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\LogicFighters\\Source\\CTL_Labyrinth\\CTL_Labyrinth.Build.cs",
-		"C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\LogicFighters\\Source\\LogicFighters\\LogicFighters.Build.cs",
-		"C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\LogicFighters\\Plugins\\VisualStudioTools\\Source\\VisualStudioTools\\VisualStudioTools.Build.cs",
-		"C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\LogicFighters\\Source\\LogicFighters.Target.cs",
-		"C:\\Users\\vince\\Documents\\Unreal Projects\\CTLGames\\LogicFighters\\Source\\LogicFightersEditor.Target.cs"
+		"E:\\Progetti\\Progetti Unreal\\FindMe\\LogicFighters\\Source\\CTL_Labyrinth\\CTL_Labyrinth.Build.cs",
+		"E:\\Progetti\\Progetti Unreal\\FindMe\\LogicFighters\\Source\\LogicFighters\\LogicFighters.Build.cs",
+		"E:\\Progetti\\Progetti Unreal\\FindMe\\LogicFighters\\Plugins\\VisualStudioTools\\Source\\VisualStudioTools\\VisualStudioTools.Build.cs",
+		"E:\\Progetti\\Progetti Unreal\\FindMe\\LogicFighters\\Source\\LogicFighters.Target.cs",
+		"E:\\Progetti\\Progetti Unreal\\FindMe\\LogicFighters\\Source\\LogicFightersEditor.Target.cs"
 	],
-	"EngineVersion": "5.4.3"
+	"EngineVersion": "5.4.4"
 }
