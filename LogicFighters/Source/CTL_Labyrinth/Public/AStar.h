@@ -20,4 +20,5 @@ public:
 	static void InitializeScores(const TMap<FString, int32>& unsatScores, TMap<FString, float>& pathCost, TMap<FString, int32>& HeuristicTotalCosts);
 	static void UpdatePathCosts(TMap<FString, float>& pathCost, FString nodeId, float newValue);
 	static void UpdateHeuristicTotalCosts(TMap<FString, int32>& HeuristicTotalCosts, FString nodeId, TMap<FString, float>& pathCost, TMap<FString, int32>& unsatScores);
+	static float NPCCounterAttackBonus(TArray<ECharacterActions> actionsTuple);
 };

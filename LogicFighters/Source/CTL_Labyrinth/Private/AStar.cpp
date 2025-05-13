@@ -187,6 +187,8 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 				currPathValue += *model->GetPlayerActionRates().Find(actions.Keys[0]);
 
 				currNodeId = tmpPair.Value;
+
+				currPathValue += NPCCounterAttackBonus(actions.Keys);
 			}
 
 			UE_LOG(LogTemp, Warning, TEXT("nodo soddisfacente: %s, profondità attuale: %d, valore attuale: %f, profondità migliore: %d, valore migliore: %f"), *node->GetState().Id, currPathSteps, currPathValue, bestPathSteps, bestPathValue);
@@ -215,6 +217,43 @@ TMap<FString, FActionsToNode> AStar::ExecuteBFS(UCTLModel* model, UStateNode* st
 	}
 	
 	return finalPath;
+}
+
+float AStar::NPCCounterAttackBonus(TArray<ECharacterActions> ActionsTuple)
+{
+	float bonus = 0;
+
+	switch (ActionsTuple[0])
+	{
+	case ECharacterActions::Attack:
+		if (ActionsTuple[1] == ECharacterActions::Defense)
+			bonus = -0.3f;
+		break;
+	case ECharacterActions::Defense:
+		if (ActionsTuple[1] == ECharacterActions::Buff || ActionsTuple[1] == ECharacterActions::SpecialAttack)
+			bonus = -0.3f;
+		else if (ActionsTuple[1] == ECharacterActions::CounterAttack)
+			bonus = -0.7f;
+		break;
+	case ECharacterActions::CounterAttack:
+		if (ActionsTuple[1] == ECharacterActions::Attack || ActionsTuple[1] == ECharacterActions::Buff)
+			bonus = -0.3f;
+		else if (ActionsTuple[1] == ECharacterActions::SpecialAttack)
+			bonus = -0.7f;
+		break;
+	case ECharacterActions::Buff:
+		if (ActionsTuple[1] == ECharacterActions::Attack)
+			bonus = -0.3f;
+		else if (ActionsTuple[1] == ECharacterActions::SpecialAttack)
+			bonus = -0.7f;
+		break;
+	case ECharacterActions::SpecialAttack:
+		if (ActionsTuple[1] == ECharacterActions::Defense || ActionsTuple[1] == ECharacterActions::Buff)  //consider adding a check to acknowledge if buff would buff defense or attack
+			bonus = -0.3f;
+		break;
+	}
+
+	return bonus;
 }
 
 void AStar::AddToOpenSet(TArray<UStateNode*>& openSet, UStateNode* node, TMap<FString, int32> HeuristicTotalCosts)
