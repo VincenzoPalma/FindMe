@@ -48,7 +48,7 @@ void UCTLModel::AddFormula(int32 FormulaId, UCTLFormula* Formula)
     }
 }
 
-void UCTLModel::InitializeModel(const FString& Character1Class, const FString& Character2Class, const TMap<ECharacterActions, float> ActionRates)
+bool UCTLModel::InitializeModel(const FString& Character1Class, const FString& Character2Class, const TMap<ECharacterActions, float> ActionRates)
 {
     //Opens JSON file
     if (!JsonFile.IsValid()) {
@@ -59,7 +59,7 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
     if (!FFileHelper::LoadFileToString(JsonString, *JsonFilePath))
     {
         UE_LOG(LogTemp, Error, TEXT("Failed to load JSON file: %s"), *JsonFilePath);
-        return;
+        return false;
     }
     UE_LOG(LogTemp, Log, TEXT("Successfully loaded JSON file: %s"), *JsonFilePath);
 
@@ -68,7 +68,7 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
         if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
         {
             UE_LOG(LogTemp, Error, TEXT("Failed to parse JSON file"));
-            return;
+            return false;
         }
 
         JsonFile = JsonObject;
@@ -136,6 +136,8 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
     Formulas.Add(3, PlayerAbilityAG);
 
     PlayerActionRates = ActionRates;
+
+    return true;
 }
 
 TSharedPtr<FJsonObject> UCTLModel::GetJsonFile()

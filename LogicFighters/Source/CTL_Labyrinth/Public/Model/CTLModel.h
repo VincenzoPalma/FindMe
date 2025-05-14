@@ -29,7 +29,7 @@ public:
     TSharedPtr<FJsonObject> GetJsonFile();
 
     UFUNCTION(BlueprintCallable, Category = "Model")
-    void InitializeModel(const FString& Character1Class, const FString& Character2Class, const TMap<ECharacterActions, float> ActionRates);
+    bool InitializeModel(const FString& Character1Class, const FString& Character2Class, const TMap<ECharacterActions, float> ActionRates);
 
     UFUNCTION(BlueprintCallable, Category = "Model")
     UCTLFormula* GetFormula(int32 Id) const;
