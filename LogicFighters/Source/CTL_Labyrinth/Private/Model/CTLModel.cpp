@@ -92,7 +92,7 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
         {
             int32 CurrentPlayerHealthPoints = State.Properties.Find("PlayerHealthPoints")->IntValue;
             int32 StartingPlayerHealthPoints = CurrentState.Properties.Find("PlayerHealthPoints")->IntValue;
-            return StartingPlayerHealthPoints - CurrentPlayerHealthPoints >= 6;
+            return StartingPlayerHealthPoints - CurrentPlayerHealthPoints > 0;
         });
 
     UAtomicIntFormula* AIHealthAtomicRight = NewObject<UAtomicIntFormula>();
@@ -100,7 +100,7 @@ void UCTLModel::InitializeModel(const FString& Character1Class, const FString& C
         {
             int32 CurrentAIHealthPoints = State.Properties.Find("AIHealthPoints")->IntValue;
             int32 StartingAIHealthPoints = CurrentState.Properties.Find("AIHealthPoints")->IntValue;
-            return StartingAIHealthPoints - CurrentAIHealthPoints <= 16;
+            return StartingAIHealthPoints - CurrentAIHealthPoints <= 12;
         });
 
     UBinaryFormula* AIHealthAND = NewObject<UBinaryFormula>();

@@ -1003,7 +1003,9 @@ UCTLModel* UModelParser::UpdateModelFromState(const UStateNode* Node, UCTLModel*
         const UStateNode* CurrentNode;
         while (NodeQueue.Dequeue(CurrentNode))
         {
-            if (CurrentNode)
+            if (CurrentNode && 
+                CurrentNode->GetStateData().Properties.Find("PlayerHealthPoints")->IntValue > 0 &&
+                CurrentNode->GetStateData().Properties.Find("AIHealthPoints")->IntValue > 0)
             {
                 CurrentLevelNodes.Add(CurrentNode);
             }

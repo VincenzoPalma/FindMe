@@ -226,26 +226,28 @@ float AStar::NPCCounterAttackBonus(TArray<ECharacterActions> ActionsTuple)
 	switch (ActionsTuple[0])
 	{
 	case ECharacterActions::Attack:
-		if (ActionsTuple[1] == ECharacterActions::Defense)
+		if (ActionsTuple[1] == ECharacterActions::Defense || ActionsTuple[1] == ECharacterActions::Buff)
 			bonus = -0.3f;
+		else if (ActionsTuple[1] == ECharacterActions::Attack)
+			bonus = -0.2f;
 		break;
 	case ECharacterActions::Defense:
 		if (ActionsTuple[1] == ECharacterActions::Buff || ActionsTuple[1] == ECharacterActions::SpecialAttack)
 			bonus = -0.3f;
 		else if (ActionsTuple[1] == ECharacterActions::CounterAttack)
-			bonus = -0.7f;
+			bonus = -0.5f;
 		break;
 	case ECharacterActions::CounterAttack:
 		if (ActionsTuple[1] == ECharacterActions::Attack || ActionsTuple[1] == ECharacterActions::Buff)
 			bonus = -0.3f;
 		else if (ActionsTuple[1] == ECharacterActions::SpecialAttack)
-			bonus = -0.7f;
+			bonus = -0.5f;
 		break;
 	case ECharacterActions::Buff:
 		if (ActionsTuple[1] == ECharacterActions::Attack)
 			bonus = -0.3f;
 		else if (ActionsTuple[1] == ECharacterActions::SpecialAttack)
-			bonus = -0.7f;
+			bonus = -0.5f;
 		break;
 	case ECharacterActions::SpecialAttack:
 		if (ActionsTuple[1] == ECharacterActions::Defense || ActionsTuple[1] == ECharacterActions::Buff)  //consider adding a check to acknowledge if buff would buff defense or attack
