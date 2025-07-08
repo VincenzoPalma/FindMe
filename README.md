@@ -4,9 +4,13 @@ Developed in Unreal Engine 5, with the core system implemented in C++ and its fu
 
 The system has been utilized to model the behavior of NPCs in a turn-based game named Logic Fighters and in a simple chase game set within a labyrinthine map.
 
+## Logic Fighters
+
 [Logic Fighters demo video](https://youtu.be/S6BNATnkXI0)
 
 ![Logic Fighters](https://i.imgur.com/kfcFnDW.jpeg)
+
+## Labyrinth Hunt
 
 ![Map](https://i.imgur.com/S6Yh2kp.png)
 
