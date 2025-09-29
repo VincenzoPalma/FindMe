@@ -6,6 +6,5 @@ The system has been utilized to model the behavior of NPCs in a turn-based game 
 
 ## Logic Fighters
 
-[Logic Fighters demo video](https://youtu.be/S6BNATnkXI0)
 
 ![Logic Fighters](https://i.imgur.com/kfcFnDW.jpeg)
